@@ -18,20 +18,24 @@ class Player {
         this.gold = MAX_VAL/10;
         this.power = MAX_VAL;
         this.agility = MAX_VAL;
+        this.intelligence= MAX_VAL;
         this.goodness = MAX_VAL/2;
     }
 }
 
 class Event {
-    constructor(id, name, img, line, posLine, negLine, subsequent, effects) {
+    constructor(id, name, img, line, posLine, negLine, startstage, type, subsequent, effects) {
         this.id = id;
         this.name = name;
         this.img = img;
         this.lines = lines;
         this.posLine = posLine;
         this.negLine = negLine;
+        this.startstage = startstage;
+        this.type = type;
         this.subsequent = subsequent;
         this.effects = effects;
+
     }
 }
 

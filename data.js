@@ -7,9 +7,10 @@ var data=[
         "posLine":"1.义不容辞。",
         "negLine":"2.我还有要事在身。",
         "subsequent":[-1,-1],
+        "type":"normal",
         "effects":{
-            "type":"",
-            "":"",
+            "type":"pos",
+            "val":""
         }
 
     },
