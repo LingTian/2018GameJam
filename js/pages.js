@@ -24,7 +24,7 @@ class Player {
 }
 
 class Event {
-    constructor(id, name, img, line, posLine, negLine, startstage, type, subsequent, effects) {
+    constructor(id, name, img, line, posLine, negLine, startstage, type, subsequent, posEffects, negEffects, playerId) {
         this.id = id;
         this.name = name;
         this.img = img;
@@ -34,16 +34,40 @@ class Event {
         this.startstage = startstage;
         this.type = type;
         this.subsequent = subsequent;
-        this.effects = effects;
-
+        this.posEffects = posEffects;
+        this.negEffects = negEffects;
+        this.playerId = playerId;
     }
 }
 
+const ATTRS = ['spirit', 'gold', 'power', 'agility', 'intelligence', 'goodness'];
+
+function createEvent(id, name, img, line, posLine, negLine, stage, type, posAttrEffects, negAttrEffects, playerId) {
+    const posEffects = [];
+    const negEffects = [];
+    for (let i = 0; i < ATTRS.length; i++) {
+        posEffects.push(new Effect(id, 'pos', ATTRS[i], posAttrEffects[i]));
+        negEffects.push(new Effect(id, 'neg', ATTRS[i], negAttrEffects[i]));
+    }
+    return new Event(id, name, name, line, posLine, negLine, stage, type, posEffects, negEffects, playerId);
+}
+
+function createEvents() {
+    const allEvents = [];
+    allEvents.push(createEvent);
+}
+
 class Effect {
-    constructor(type, val) {
+    constructor(eventId, type, attr, val) {
+        this.eventId = eventId;
+        this.attr = attr;
         this.type = type;
         this.val = val;
     }
+}
+
+function loadAllEvents() {
+
 }
 
 (function ($) {
