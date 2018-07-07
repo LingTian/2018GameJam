@@ -3397,6 +3397,9 @@ function loadAllEvents() {
 })(jQuery);
 
 $(window).ready(function () {
+    $('.content-out').click(function() {
+      $('.content-out').fadeOut("slow");
+    })
     $('.pages').turn({
         duration: 1500,
         width: 800,

@@ -7,18 +7,23 @@ img {
     max-width: 100%;
 }
 
-body {
-    background:  linear-gradient(
-            rgba(255, 255, 255, 0.9),
-            rgba(255, 255, 255, 0.9)),
-    url(https://s-media-cache-ak0.pinimg.com/originals/30/b3/a9/30b3a9b27032a6b9c1d7a69d2400fb9e.jpg);
-    font-family: 'Stalemate', cursive;
-}
-
 .instructions {
+    font-family: 'Stalemate', cursive;
     text-align: center;
     font-family: f;
+    color: black;
+    margin-top: 25%;
 }
+
+html {
+    background:  linear-gradient(
+            rgba(255, 255, 255, 0.2),
+            rgba(255, 255, 255, 0.2)),
+    url(https://image.ibb.co/eUMtCT/769ffc2b694bd49d7b68de96a68418d0.png) no-repeat transparent;
+    background-size: 100% auto;
+    overflow: hidden;
+}
+
 .container {
     margin-top: 3%;
 }
@@ -27,6 +32,7 @@ body {
     position: relative;
     margin: 30px auto;
     width: 860px;
+    visibility: hidden;
 }
 
 .book-wrapper img {
@@ -42,9 +48,6 @@ body {
     height: 91%;
 }
 
-.pages {
-
-}
 .pages [class^="page-num-"] {
     background-image: url("../paper_texture.jpg");
     background-size: auto 100%;
