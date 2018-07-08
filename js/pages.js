@@ -162,11 +162,11 @@ function createEvents() {
     allEvents.push(createEvent(624, "称号", "1.png", "恐怖巨兽", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
 
 
-    allEvents.push(createEvent(800, "称号", "1.png", "卷土重来", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createEvent(800, "称号", "1.png", "咫尺天堂", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createEvent(800, "称号", "1.png", "咫尺地狱", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createEvent(800, "称号", "1.png", "一念天堂", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createEvent(800, "称号", "1.png", "一念地狱", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(800, "称号", "14.jpg", "卷土重来", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(800, "称号", "14.jpg", "咫尺天堂", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(800, "称号", "14.jpg", "咫尺地狱", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(800, "称号", "14.jpg", "一念天堂", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(800, "称号", "14.jpg", "一念地狱", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
 
     return allEvents;
 }
@@ -444,6 +444,7 @@ function updateScene(lastEvent) {
     //If the player dies, game ends
     // player
     // last event
+    addDeadPage(eventMap[800]);
 
     // need to load next level in advance because the last page cannot be flip
     if (currentEvents.length <= 1 && currentLevel < STAGE_IDS.length) {
@@ -509,12 +510,7 @@ function createEventPageDiv(event) {
 
 function addPages(events, turn) {
     for (let i = 0; i < events.length; i++) {
-        const div = createPage(events[i]);
-        console.log("page div:", div);
-        $('.pages').append(div);
-        if (turn) {
-            $('.pages').turn('addPage', div);
-        }
+        addPage(events[i], turn);
     }
 }
 
@@ -621,7 +617,6 @@ function createEventPageAndTurn(eventPage) {
         // Number of pages in the DOM, minimum value: 6
 
         pagesInDOM = 6,
-
 
         turnMethods = {
 
@@ -1206,6 +1201,14 @@ function createEventPageAndTurn(eventPage) {
                         this.turn('removePage', data.totalPages);
                     }
 
+                } else if (page === 'l') {
+
+                    // this.turn('addPage', div);
+
+                    while (data.totalPages !== 2) {
+                        this.turn('removePage', data.totalPages - 1);
+                    }
+
                 } else {
 
                     if (page < 1 || page > data.totalPages)
@@ -1215,6 +1218,8 @@ function createEventPageAndTurn(eventPage) {
 
                         // Stop animations
                         this.turn('stop');
+
+                        console.log("removing: ", page);
 
                         // Remove `page`
                         turnMethods._removePageFromDOM.call(this, page);
@@ -3402,24 +3407,12 @@ function createEventPageAndTurn(eventPage) {
                                     $(`.page-num-${currentPage} .pos-line`).addClass('show');
                                     // $('.notification-top').removeClass('show');
                                     // $('.notification-bot').addClass('show');
-                                    choiceId = 0;
 
-                                    // this.append('' +
-                                    //     '<div class="page-num-6">\n' +
-                                    //     '          <div class="pages-content">\n' +
-                                    //     '            <div class="content-inner">\n' +
-                                    //     '              <h1>So again</h1>\n' +
-                                    //     '              <h2>Thank You both.</h2>\n' +
-                                    //     '              <h3></h3>\n' +
-                                    //     '              <h4> added.</h4>\n' +
-                                    //     '            </div>\n' +
-                                    //     '          </div>\n' +
-                                    //     '        </div>');
-                                    //
-                                    // console.log("Added!!!");
-                                    //
-                                    // this.turn('addPage', $('.page-num-6'));
+
+
+                                    choiceId = 0;
                                     console.log("choiceId: " + choiceId);
+                                    console.log("total: " + data.totalPages);
                                 } else if (point.corner === 'br') {
                                     $(`.page-num-${currentPage} .pos-line`).removeClass('show');
                                     $(`.page-num-${currentPage} .neg-line`).addClass('show');
@@ -3427,6 +3420,7 @@ function createEventPageAndTurn(eventPage) {
                                     // $('.notification-top').addClass('show');
 
                                     console.log("choiceId: " + choiceId);
+                                    console.log("total: " + data.totalPages);
                                     choiceId = 1;
                                 }
                             }
@@ -3871,20 +3865,30 @@ function createEventPageAndTurn(eventPage) {
 
 })(jQuery);
 
-function addPage() {
-    const div = document.createElement('div');
-    div.innerHTML = '<div class="page-num-6">\n' +
-        '          <div class="pages-content">\n' +
-        '            <div class="content-inner">\n' +
-        '              <h1>So again</h1>\n' +
-        '              <h2>Thank You both.</h2>\n' +
-        '              <h3></h3>\n' +
-        '              <h4> added.</h4>\n' +
-        '            </div>\n' +
-        '          </div>\n' +
-        '        </div>';
+function addDeadPage(event) {
+    $('.pages').turn('disable', true);
+    $(`.page-num-${currentPage}`).html(`<div class="pages-content">
+            <div class="pages-background"></div>
+            <div class="content-inner">
+              <div class="img-container">
+                <img src="14.jpg"/>
+              </div>
+              <h1>GG</h1>
+              <p>SI MI DA</p>
+            </div>
+          </div>`).addClass('puff-in-center');
+}
 
-    $('.pages').turn('addPage', div);
+function removePage(idx) {
+    $('.pages').turn('removePage', idx);
+}
+
+function addPage(event, turn) {
+    const div = createPage(event);
+    $('.pages').append(div);
+    if (turn) {
+        $('.pages').turn('addPage', div);
+    }
 }
 
 $(window).ready(function () {
@@ -3917,12 +3921,14 @@ $(window).ready(function () {
                 }
 
                 console.log("lastEvent: ", lastEvent);
-                // addPage();
+
                 updateScene(lastEvent);
                 $(`.page-num-${currentPage} .to-fade`).addClass('fade-in');
+
             },
             flip: function (e, page) {
                 console.log("flipping ...");
+
                 $(`.page-num-${currentPage} .pos-line`).removeClass('show');
                 $(`.page-num-${currentPage} .neg-line`).removeClass('show');
             }
