@@ -3407,10 +3407,9 @@ $(window).ready(function () {
         $('.instructions h3:eq(5)').hide().fadeIn(11000),
         $('.instructions h3:eq(6)').hide().fadeIn(12000),
         $('html').click(function() {
-          $('html').fadeOut(5000);
+          $('.instructions').fadeOut(5000);
+          $('.book-wrapper').next().fadeIn(2000);
         })
-    ).then(
-        
     );
     $('.pages').turn({
         duration: 1500,
