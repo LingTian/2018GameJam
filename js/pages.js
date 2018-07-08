@@ -3919,11 +3919,20 @@ function addPage(event, turn) {
 }
 
 $(window).ready(function () {
-    initModels();
-    addPages(currentEvents, false);
-    // $('.content-out').click(function() {
-    //   $('.content-out').fadeOut("slow");
-    // });
+    $('html').hide().fadeIn(2000).then(
+        $('.instructions h1').hide().fadeIn(5000),
+        $('.instructions h3:eq(0)').hide().fadeIn(6000),
+        $('.instructions h3:eq(1)').hide().fadeIn(7000),
+        $('.instructions h3:eq(2)').hide().fadeIn(8000),
+        $('.instructions h3:eq(3)').hide().fadeIn(9000),
+        $('.instructions h3:eq(4)').hide().fadeIn(10000),
+        $('.instructions h3:eq(5)').hide().fadeIn(11000),
+        $('.instructions h3:eq(6)').hide().fadeIn(12000),
+        $('html').click(function() {
+          $('.instructions').fadeOut(5000);
+          $('.book-wrapper').next().fadeIn(2000);
+        })
+    );
     $('.pages').turn({
         duration: 1500,
         width: 800,
