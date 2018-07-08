@@ -1,25 +1,199 @@
-/**
- * turn.js 4th release
- * turnjs.com
- * turnjs.com/license.txt
- *
- * Copyright (C) 2012 Emmanuel Garcia
- * All rights reserved
- **/
-let choiceId = null;
+//Data loading
 
-const MAX_VAL = 100;
+function createEvent(id, name, img, line, posLine, negLine, stage, type, subsequent, leftAttrEffects, rightAttrEffects, playerId) {
+    const leftEffects = [];
+    const rightEffects = [];
+    for (let i = 0; i < ATTRS.length; i++) {
+        leftEffects.push(new Effect(id, 'add', ATTRS[i], leftAttrEffects[i]));
+        rightEffects.push(new Effect(id, 'add', ATTRS[i], rightAttrEffects[i]));
+    }
+    return new Event(id, name, img, line, posLine, negLine, stage, type, subsequent, leftEffects, rightEffects, playerId);
+}
+
+function createEvents() {
+    const loadfooter = [];
+
+    loadfooter.push("Many who are first will be last, and the last first. ");
+    loadfooter.push("Let there be light: and there was light.");
+    loadfooter.push("Many who are first will be last, and the last first. ");
+    loadfooter.push("I am the way and the truth and the life. No one comes to the Father except through me. ");
+    loadfooter.push("Many who are first will be last, and the last first. ");
+    loadfooter.push("Even 'sinners' love those who love them.");
+    loadfooter.push("Forgive, and you will be forgiven. ");
+    loadfooter.push("Do not judge, and you will not be judged.  ");
+    loadfooter.push("He who has been forgiven little loves little.");
+    loadfooter.push("Any kingdom divided against itself will be ruined, and a house divided against itself will fall.   ");
+    loadfooter.push("Do not be conceited.");
+    loadfooter.push("Wise about what is good, and innocent about what is evil.");
+    loadfooter.push("Let no one deceive you with empty words.");
+    loadfooter.push("A great forest is set on fire by a small spark.");
+    loadfooter.push("Out of the same mouth come praise and cursing.");
+    loadfooter.push("Avoid godless chatter.");
+
+
+    const allEvents = [];
+    allEvents.push(createEvent(1, "修女", "1.png", "冒险家，你能帮我讨伐邪恶的术士嘛？", "义不容辞。", "我还有要事在身.", "1", "normal", [-1, -1], [0, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
+    allEvents.push(createEvent(2, "修女", "1.png", "你愿意帮忙捐助一下教会嘛？", "乐于奉献。", "我手边有点紧.", "1", "normal", [-1, -1], [10, -10, 0, 0, 0, 1], [5, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(3, "修女", "1.png", "教会的经书隐藏着智慧。", "能借我阅读一下嘛？", "我还是想休息一下。", "1", "normal", [-1, -1], [0, 0, 10, 10, 10, 0], [10, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(4, "修女", "1.png", "我很后悔我之前做过的错事，能否帮我去跟骑士道歉？", "我可以帮助你，愿你能得到解脱。", "如果做错的事情都可以重来，那么经历将毫无意义。", "3", "normal", [-1, -1], [0, 0, 0, 0, 0, 20], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(5, "修女", "1.png", "听闻东方有种神奇的草药，我这里有它标示的地图，现在免费赠送给您。", "修女的话似乎可信，值得尝试。", "此去不知归途，还是休息休息吧。", "2", "normal", [-1, -1], [-20, 0, 0, 0, 0, 0], [10, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(6, "修女", "1.png", "西边悬崖上有把勇者之剑，快去拿回来吧～", "赶紧去取一下。", "悬崖上真的只有宝剑嘛？", "5", "normal", [600, 500], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, -1], ""));
+    allEvents.push(createEvent(7, "牧师", "1.png", "年轻的冒险者，来吃些免费的食物吧。", "正有此意。", "不劳者不食.", "1", "normal", [-1, -1], [10, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 10], ""));
+    allEvents.push(createEvent(8, "牧师", "1.png", "教会附近有一些僵尸，能否帮忙清理。", "要我出手的话可是费用不菲。", "就顺手帮一下吧。", "1", "normal", [-1, -1], [-10, 20, 0, 0, 0, -10], [-10, 0, 0, 0, 0, 10], ""));
+    allEvents.push(createEvent(9, "牧师", "1.png", "这里有些杂书，免费赠予给你。", "免费送的东西肯定心怀鬼胎。", "来看看里面有没有有用的信息吧。", "1", "normal", [-1, -1], [0, 0, 0, 0, 0, -10], [-10, 0, 10, 10, 10, 0], ""));
+    allEvents.push(createEvent(10, "牧师", "1.png", "生前我也曾经迷惘挣扎，现在只能提供一些有用的信息给你。", "具体是什么呢?。", "孤魂野鬼，选择走开。", "5", "normal", [501, -1], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, -1], ""));
+    allEvents.push(createEvent(10, "医生", "1.png", "能否借我些金钱去帮助我的病人？", "我又不是慈善家。", "我只有这些了，代表我的心意。", "1", "normal", [-1, -1], [0, 0, 0, 0, 0, -10], [0, -10, 0, 0, 0, 10], ""));
+    //分叉
+    allEvents.push(createEvent(11, "医生", "1.png", "能否帮我寻找一些草药？", "如果报酬不菲，那自然可以。", "我乐于前往。", "1", "normal", [-1, -1], [0, 10, 0, 0, 0, 10], [-10, 0, 0, 0, 0, 10], ""));
+    allEvents.push(createEvent(12, "医生", "1.png", "需要治疗下吗?", "我刚好需要休息。", "不必了。", "1", "normal", [-1, -1], [10, -10, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    //special
+    allEvents.push(createEvent(14, "医生", "1.png", "交不起钱的穷人，能否帮我驱赶一下。", "报酬足够的话可以的。", "不能违背自己的良心啊。", "3", "normal", [608, -1], [0, 0, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10], ""));
+    allEvents.push(createEvent(15, "医生", "1.png", "医者仁心，王子病重而亡。王却因此处死我，能否帮我复仇。", "公正与怜悯，我会帮助你！", "你将带着怨恨长眠于此。。", "1", "normal", [615, -1], [0, 0, 0, 0, 0, 20], [0, 0, 0, 0, 0, -20], ""));
+    allEvents.push(createEvent(16, "僧侣", "1.png", "需要学习下武技嘛?", "当然愿意。", "已经没有精力耗费在这种地方了。", "1", "normal", [-1, -1], [-10, 0, 10, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(17, "僧侣", "1.png", "年轻的冒险家需要治疗吗?", "感谢你的帮助。", "我并不信任你。", "1", "normal", [-1, -1], [20, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(18, "僧侣", "1.png", "我有一本武技的密卷，想要购买吗?", "如果不交出密卷，你只有死路一条。", "好的，我买下来了。", "1", "normal", [607, -1], [0, 0, 20, 0, 0, -20], [-10, 0, 20, 0, 0, -1], ""));
+    allEvents.push(createEvent(19, "僧侣", "1.png", "我正在被疯狂的教会追杀，你能保护我吗？", "保护他。", "听说告发他还有奖金。", "1", "normal", [615, -1], [0, 0, 0, 0, 0, 20], [0, 20, 0, 0, 0, -20], ""));
+
+    allEvents.push(createEvent(20, "白骑士", "1.png", "每一个人都是勇士，打败敌人最好的方法就是让自己变得更强。", "我想跟您学习武技。", "让我拜您为师吧。", "1", "normal", [-1, -1], [-10, 0, 10, 0, 0, 0], [-10, -10, 20, 10, 0, 10], ""));
+    allEvents.push(createEvent(21, "白骑士", "1.png", "骑士也许会妥协，但是其实绝不会放弃执行正义。", "你说的很对。", "似乎过于迂腐。", "1", "normal", [-1, -1], [0, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
+    allEvents.push(createEvent(22, "白骑士", "1.png", "在童话里，王子和公主会很幸福很幸福的永远生活在一起，他们看不见的是骑士的守护。", "这就是骑士的指责。", "似乎骑士的压力过于重大。", "1", "normal", [-1, -1], [10, 0, 10, 10, 10, 10], [-10, 0, -10, -10, -10, -10], ""));
+
+    allEvents.push(createEvent(20, "黑骑士", "1.png", "曾经的天真，帮助愚蠢的我长大。", "这不是你堕落的理由。", "也许他是个真正的骑士。", "1", "normal", [-1, -1], [0, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
+    allEvents.push(createEvent(21, "黑骑士", "1.png", "大众总喜欢将真相扭曲到自己可以接受的程度，这就是一种充满惰性的思维方式。", "我想跟你学习武艺。", "我并不认为你很强大。", "1", "normal", [-1, 610], [0, 0, 10, 0, 0, -10], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(22, "黑骑士", "1.png", "在现实里，王子和公主可能不会在一起，因为他们都以为自己是骑士，只会默默的等待。", "非常悲哀的存在呢。", "也许等待才能会有奇迹的结局。", "1", "normal", [-1, -1], [10, 0, 10, 10, 10, 10], [-10, 0, -10, -10, -10, -10], ""));
+    allEvents.push(createEvent(23, "黑骑士", "1.png", "有人需要真皮，所以才有了猎人去虐杀动物， 最终被捕的是猎人，那么披着真皮的人呢？", "这就是堕落的借口吗？", "也许错的不是他。", "1", "normal", [-1, -1], [0, 0, 0, 0, 0, 10], [10, 0, 10, 10, 10, -10], ""));
+
+    allEvents.push(createEvent(24, "蒙面旅人", "1.png", "朋友，你见到过大海吗？", "大海是什么。", "我并不想去做无谓的冒险。", "1", "normal", [-1, -1], [-10, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(25, "蒙面旅人", "1.png", "人生的轨迹纵横交错，就是世界上最美的一幅图。", "交错的命运是为了什么呢？", "我对你没有任何所求。", "3", "normal", [620, 606], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+
+    allEvents.push(createEvent(26, "商人", "1.png", "我这里正需要人手，要不要来打零工换些金钱。", "我真有此意。", "没什么时间。", "1", "normal", [-1, -1], [-10, 10, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(27, "商人", "1.png", "zzzzzzz（打盹）", "摸摸看他身手有啥？", "还是不打扰他了。", "1", "normal", [-1, -1], [0, 10, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10], ""));
+
+    allEvents.push(createEvent(28, "巫妖", "1.png", "亡灵国度是容不得活人的。", "人类世界就容得下活人吗？", "这不过是亡灵虚假的谎言。", "1", "normal", [-1, -1], [0, 0, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10], ""));
+    allEvents.push(createEvent(29, "巫妖", "1.png", "年份即智慧，什么阴谋、背叛、欺骗没有见识过。", "我想向您请教魔法的知识", "但是这不是你背叛的借口。", "1", "normal", [-1, -1], [-10, 0, 0, 0, 10, 0], [0, 0, 0, 0, 0, 10], ""));
+    allEvents.push(createEvent(30, "巫妖", "1.png", "会去尊重崇尚献出生命的人，都是与你无关紧要的人。真正在乎你的人，只希望你好好的活着。", "为了守护所爱之人，有些牺牲是必须的 ", "我会保护好自己。", "1", "normal", [-1, -1], [10, 0, 10, 10, 10, 10], [10, 0, 10, 10, 10, -10], ""));
+
+    allEvents.push(createEvent(31, "盗贼", "1.png", "要不要跟我学学身手。", "我正好想变的更加灵活。", "偷窃的本事还是算了。", "1", "normal", [-1, -1], [-10, 0, 0, 10, 0, 0], [0, 0, 0, 0, 0, 10], ""));
+    allEvents.push(createEvent(29, "盗贼", "1.png", "跟我一起去历练吧。", "刚好出去历练一下", "成为一个盗贼并没有很有趣。", "1", "normal", [-1, -1], [10, 10, 10, 10, 10, 0], [0, 0, 0, 0, 0, 10], ""));
+    allEvents.push(createEvent(30, "法师", "1.png", "要么安于现状，要么改变现状，改变的总是要付出。", "我愿意跟你修炼。", "要钱还是算了吧。", "1", "normal", [-1, -1], [-10, -10, 0, 0, 20, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(31, "法师", "1.png", "听说过法师塔吗？", "我想进入学习。", "我会保护好自己。", "1", "normal", [-1, -1], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, -1], ""));
+    allEvents.push(createEvent(32, "法师", "1.png", "知识才是一个魔法师最虔诚的信仰。", "知识也是我的信仰。", "我并不信仰知识。", "1", "normal", [-1, -1], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, -1], ""));
+    allEvents.push(createEvent(33, "野鬼", "1.png", "失去的，就是失去的，时间什么都不会冲淡，只会让自己对过去的事情变得麻木。", "还是不要打扰这个孤独的灵魂。", "鬼魂似乎想要传达什么。", "1", "normal", [-1, -1], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, -1], ""));
+    allEvents.push(createEvent(34, "猎人", "1.png", "跟我一起去打猎吧。", "去练练身手也不错。", "确实想打猎换点钱。", "1", "normal", [-1, -1], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, -1], ""));
+
+    //new
+    allEvents.push(createEvent(35,"密探","1.png","想要钱嘛，告诉我点消息？","告诉他人的秘密。","此等不义之举不能参与。","1","normal",[-1,-1],[0,10,0,0,0,-10],[0,0,0,0,0,10],""));
+    allEvents.push(createEvent(36,"牧师","1.png","这座教堂里有一泉从天国流淌下来的圣水，传说被洗涤的人会更加的好运。","请洗涤我。","我从不相信传说。","1","normal",[-1,-1],[10,0,10,10,10,0],[0,0,0,0,0,0],""));
+    allEvents.push(createEvent(37,"牧师","1.png","城外有一批战争的难民我们应该去救援他们吗？","我会保护他们。","我们不必去。","1","normal",[-1,-1],[-10,0,0,0,0,10],[0,0,0,0,0,-10],""));
+    allEvents.push(createEvent(38,"士兵","1.png","我是一名现役的军官，是否需要我传授你一些武艺？？","我想听听。","我没有多余的金币。","1","normal",[-1,-1],[-10,-10,10,10,0,1],[0,0,0,0,0,0],""));
+    allEvents.push(createEvent(39,"白骑士","1.png","荣誉的背后，是千百倍的心酸。","荣耀，与你同在。","有人考虑过骑士的感受吗。","1","normal",[-1,-1],[-10,0,10,10,10,10],[-10,0,10,10,10,-10],""));
+    allEvents.push(createEvent(40,"白骑士","1.png","世上总有一些人值得用一生去守护。","我也有想要守护的人。","我先要保护我自己。","1","normal",[-1,-1],[-10,0,10,10,10,10],[-10,0,0,0,0,-10],""));
+    allEvents.push(createEvent(41,"黑骑士","1.png","手中有剑，便提剑前行；手中无剑，便忘剑前进。","言之有理。","手无寸铁该如何战斗。","1","normal",[-1,-1],[-10,0,10,10,10,-10],[-10,0,0,0,0,10],""));
+    allEvents.push(createEvent(42,"黑骑士","1.png","伟大的代价就是责任。","我想听听。","没空理会。","1","normal",[-1,-1],[-10,0,10,10,0,-10],[0,0,0,0,0,10],""));
+
+    allEvents.push(createEvent(43,"猎人","1.png","需要跟我学习猎人技巧吗。","听起来不错。","要钱就算了。","1","normal",[-1,-1],[-10,-10,0,0,10,0],[0,0,0,0,0,0],""));
+    allEvents.push(createEvent(44,"商人","1.png","我这里有两个上古的圣物，你选一个吧。","腐朽的巨剑。","泛黄的魔法书。","1","normal",[-1,-1],[0,0,10,0,0,0],[0,0,0,0,10,0],""));
+    allEvents.push(createEvent(45,"法师","1.png","我这里有两个法器暂时不用，送你一个吧","发光的魔法球。","充满魔力的法杖。","1","normal",[-1,-1],[-10,0,0,0,10,0],[-10,0,0,0,20,0],""));
+    allEvents.push(createEvent(46,"酒馆老板","1.png","需要休息吗？","正有此意。","手边没钱。","1","normal",[-1,-1],[30,-30,0,0,0,0],[0,0,0,0,0,0],""));
+    allEvents.push(createEvent(47,"酒馆老板","1.png","来吃顿好的吧。","正有此意。","手边没钱。","1","normal",[-1,-1],[20,-20,0,0,0,0],[0,0,0,0,0,0],""));
+    allEvents.push(createEvent(48,"酒馆老板","1.png","要不要来喝一杯。","正有此意。","手边没钱。","1","normal",[-1,-1],[-10,-10,0,0,0,0],[0,0,0,0,0,0],""));
+    allEvents.push(createEvent(49,"酒馆老板","1.png","要不要来打工赚点钱。","刚好手边有点紧。","没时间浪费精力了。","1","normal",[-1,-1],[-10,10,0,0,0,0],[0,0,0,0,0,0],""));
+    allEvents.push(createEvent(50,"酒馆老板","1.png","上次旅行的法师落下了个法杖，你需要吗？","看起来很不错，买了！","刚好手边有点紧。","1","normal",[-1,-1],[-10,0,0,0,10,0],[0,0,0,0,0,0],""));
+    allEvents.push(createEvent(51,"酒馆老板","1.png","上次旅行的战士落下了个巨剑，你需要吗？","看起来很不错，买了！","刚好手边有点紧。","1","normal",[-1,-1],[-10,0,10,0,0,0],[0,0,0,0,0,0],""));
+    allEvents.push(createEvent(52,"酒馆老板","1.png","上次旅行的盗贼落下了个匕首，你需要吗？","看起来很不错，买了！","刚好手边有点紧。","1","normal",[-1,-1],[-10,0,0,10,0,0],[0,0,0,0,0,0],""));
+    allEvents.push(createEvent(53,"亚当","1.png","传闻黑骑士因修女而堕落。","原来如此","可怜的骑士。","1","normal",[-1,-1],[-10,0,0,0,0,10],[-10,0,0,0,0,-10],""));
+    allEvents.push(createEvent(54,"亚当","1.png","据说北方的洞窟里有一只魔龙","我也听说类似的传说","让我来想想如何打败它。","1","normal",[-1,-1],[-10,0,0,0,0,0],[-10,0,0,0,0,0],""));
+    allEvents.push(createEvent(55,"亚当","1.png","善良的王和黑暗的王都是由迷途的灵魂幻化而成？","你知道白色的王的具体消息吗？","你知道黑色的王的的具体消息吗？","1","normal",[-1,-1],[-10,0,0,0,0,0],[-10,0,0,0,0,0],""));
+    allEvents.push(createEvent(55,"亚当","1.png","世间万物皆有两面性，灵魂亦亦不能跳出规则。","你是在说灵魂的反转吗？","具体的规则是？","1","normal",[-1,-1],[-10,0,0,0,0,0],[-10,0,0,0,0,0],""));
+    allEvents.push(createEvent(56,"矮人","1.png","需要矮人的烈酒吗？","真有此意？","手边没钱了？","1","normal",[-1,-1],[10,10,0,0,0,0],[0,0,0,0,0,0],""));
+    allEvents.push(createEvent(57,"矮人","1.png","需要跟我学矮人优秀的战斗技巧吗？","我正好想跟您学习？","并不是很感兴趣？","1","normal",[-1,-1],[-10,-10,10,0,0,0],[0,0,0,0,0,0],""));
+    allEvents.push(createEvent(58,"蒙面的旅人","1.png","是否要跟我学习下偷窃技术？","我正好想跟您学习？","并不是很感兴趣？","1","normal",[-1,-1],[-10,-10,0,10,0,0],[0,0,0,0,0,0],""));
+    allEvents.push(createEvent(59,"地狱犬","1.png","狗爱他们的朋友,咬他们的敌人,和人不同。","看招吧恶魔","似乎也有道理","1","normal",[-1,-1],[-20,0,0,0,0,10],[0,0,0,0,0,-10],""));
+    allEvents.push(createEvent(60,"蒙面的旅人","1.png","是否要跟我学习下法术？","我正好想跟您学习？","并不是很感兴趣？","1","normal",[-1,-1],[-10,-10,0,0,10,0],[0,0,0,0,0,0],""));
+    allEvents.push(createEvent(61,"蒙面的旅人","1.png","是否要跟我学习下战斗技巧？","我正好想跟您学习？","并不是很感兴趣？","1","normal",[-1,-1],[-10,-10,10,0,0,0],[0,0,0,0,0,0],""));
+    allEvents.push(createEvent(62,"夜枭","1.png","不知从哪一天开始，我喜欢上了黑夜？","黑夜给了你力量吗？","为何？","1","normal",[-1,-1],[0,0,10,10,10,-10],[0,0,-10,-10,-10,10],""));
+    allEvents.push(createEvent(63,"巫妖","1.png","转瞬拜年，诸事无常。","巫妖不会懂得生命的意义","我也想获得长生","1","normal",[-1,-1],[0,0,10,10,10,10],[0,0,10,10,10,-10],""));
+
+
+    allEvents.push(createEvent(13, "医生", "1.png", "西方的悬崖上传闻有魔龙作恶。", "无论多么危险我都将带头征讨。", "这肯定是无稽之谈。", "5", "normal", [-1, -1], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, -1], ""));
+    allEvents.push(createEvent(500, "修女", "1.png", "也有可能有怪物守护。", "勇者无畏，愿意接受挑战。", "太危险了还是算了吧。", "", "normal", [600, 601], [-50, 0, 0, 0, 0, 30], [0, 0, 0, 0, 0, -10], ""));
+    allEvents.push(createEvent(501, "牧师", "1.png", "西方的巨人手中，持有勇者之剑，但却作恶多端。", "我将前往讨伐。", "这种危险的事情我可不去。", "", "normal", [600, 601], [-50, 0, 0, 0, 0, 30], [0, 0, 0, 0, 0, -10], ""));
+
+    allEvents.push(createEvent(502, "邪恶的王", "1.png", "你身上的味道我很讨厌。", "岂能放过你。", "岂能放过你。", "1", "normal", [-1, -1], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, -1], ""));
+    allEvents.push(createEvent(503, "善良的王", "1.png", "你难道不觉得可悲吗？", "愚昧者不自知。", "愚昧者不自知。", "1", "normal", [-1, -1], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, -1], ""));
+
+
+
+    allEvents.push(createEvent(91, "村落", "1.png", "从黑夜中醒来，晨起的星光璀璨，照亮了远方的小村。", "", "", "1", "stage", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(92, "城镇", "1.png", "行走了许久，也没有丝毫感到饥饿，前方似乎有个更大的城镇。", "", "", "1", "stage", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(93, "城堡", "1.png", "高耸的城堡是贵族的象征。", "", "", "1", "stage", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(94, "洞窟", "1.png", "", "", "", "1", "stage", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(95, "森林", "1.png", "", "", "", "1", "stage", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(96, "悬崖", "1.png", "", "", "", "1", "stage", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(97, "沼泽", "1.png", "", "", "", "1", "stage", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(98, "冰原", "1.png", "", "", "", "1", "stage", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(99, "岩浆", "1.png", "", "", "", "1", "stage", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+
+    //0结束 -1 随机 其他数字是链接
+    allEvents.push(createEvent(600, "称号", "1.png", "孤魂野鬼", "Pass", "Pass.", "", "title", [0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(601, "称号", "1.png", "法海无边", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(602, "称号", "1.png", "时光飞逝", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(603, "称号", "1.png", "时光荏苒", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(604, "称号", "1.png", "战争艺术", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(605, "称号", "1.png", "海上传奇", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(606, "称号", "1.png", "别无所求", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(607, "称号", "1.png", "屠杀殆尽", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(608, "称号", "1.png", "恃强凌弱", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(609, "称号", "1.png", "巨龙传说", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(610, "称号", "1.png", "傲气冲天", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(611, "称号", "1.png", "英雄气短", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(612, "称号", "1.png", "任人宰割", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(613, "称号", "1.png", "勇者之路", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(614, "称号", "1.png", "殊死一搏", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(615, "称号", "1.png", "英雄本色", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(616, "称号", "1.png", "胜利逃亡", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(617, "称号", "1.png", "妙手空空", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(618, "称号", "1.png", "凤凰涅槃", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(619, "称号", "1.png", "巨人杀手", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(620, "称号", "1.png", "命运星空", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(621, "称号", "1.png", "战士之魂", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(622, "称号", "1.png", "九头蛇之死", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(623, "称号", "1.png", "舍生取法", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(624, "称号", "1.png", "恐怖巨兽", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+
+
+    allEvents.push(createEvent(800, "称号", "14.jpg", "卷土重来", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(800, "称号", "14.jpg", "咫尺天堂", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(800, "称号", "14.jpg", "咫尺地狱", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(800, "称号", "14.jpg", "一念天堂", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createEvent(800, "称号", "14.jpg", "一念地狱", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+
+    return allEvents;
+}
+
+
+//Utils
+function getRandomArrayElements(arr, count) {
+    var shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index;
+    while (i-- > min) {
+        index = Math.floor((i + 1) * Math.random());
+        temp = shuffled[index];
+        shuffled[index] = shuffled[i];
+        shuffled[i] = temp;
+    }
+    return shuffled.slice(min);
+}
 
 class Player {
     constructor(name) {
         this.name = name;
-        this.fatigue = MAX_VAL;
-        this.spirit = MAX_VAL;
-        this.gold = MAX_VAL/10;
-        this.power = MAX_VAL;
-        this.agility = MAX_VAL;
-        this.intelligence= MAX_VAL;
-        this.goodness = MAX_VAL/2;
+        this.fatigue = MAX_VAL / 5;
+        this.spirit = MAX_VAL / 5;
+        this.gold = MAX_VAL / 10;
+        this.power = MAX_VAL / 5;
+        this.agility = MAX_VAL / 5;
+        this.intelligence = MAX_VAL / 5;
+        this.goodness = MAX_VAL / 2;
     }
 }
 
@@ -28,7 +202,7 @@ class Event {
         this.id = id;
         this.name = name;
         this.img = img;
-        this.lines = lines;
+        this.line = line;
         this.posLine = posLine;
         this.negLine = negLine;
         this.startstage = startstage;
@@ -42,21 +216,6 @@ class Event {
 
 const ATTRS = ['spirit', 'gold', 'power', 'agility', 'intelligence', 'goodness'];
 
-function createEvent(id, name, img, line, posLine, negLine, stage, type, posAttrEffects, negAttrEffects, playerId) {
-    const posEffects = [];
-    const negEffects = [];
-    for (let i = 0; i < ATTRS.length; i++) {
-        posEffects.push(new Effect(id, 'pos', ATTRS[i], posAttrEffects[i]));
-        negEffects.push(new Effect(id, 'neg', ATTRS[i], negAttrEffects[i]));
-    }
-    return new Event(id, name, name, line, posLine, negLine, stage, type, posEffects, negEffects, playerId);
-}
-
-function createEvents() {
-    const allEvents = [];
-    allEvents.push(createEvent);
-}
-
 class Effect {
     constructor(eventId, type, attr, val) {
         this.eventId = eventId;
@@ -66,8 +225,298 @@ class Effect {
     }
 }
 
-function loadAllEvents() {
 
+let choiceId = null;
+const MAX_VAL = 100;
+const START_LEVEL = 0;
+const EVENT_PER_LEVEL = 8;
+const STAGE_IDS = [91, 92, 93, 94, 95, 96, 97, 98, 99, 100];
+
+let eventsByLevel = {};
+let eventMap = {};
+let currentLevel;
+let currentEvents = [];
+let player;
+let currentMaxPage;
+let currentPage;
+
+function loadAllEvents(rawEvents) {
+    const events = {};
+    for (let i = 0; i < rawEvents.length; i++) {
+        const event = rawEvents[i];
+        const level = event.startstage;
+        if (!(level in events)) {
+            events[level] = [];
+        }
+        events[level].push(event);
+    }
+    return events;
+}
+
+function initPlayer(name) {
+    return new Player(name);
+}
+
+// TODO: better random
+function getEventsForLevel(level) {
+    const prob = Math.min(1.0, EVENT_PER_LEVEL / eventsByLevel[level].length) * 0.8;
+    let allValidEvents = [];
+    for (let curLevel = 1; curLevel <= level; curLevel++) {
+        allValidEvents = allValidEvents.concat(eventsByLevel[curLevel]);
+    }
+    allValidEvents = allValidEvents.filter((event) => event.type === 'normal');
+    return getRandomArrayElements(allValidEvents, EVENT_PER_LEVEL);
+}
+
+function initModels() {
+    player = initPlayer('Knight III');
+    currentLevel = START_LEVEL;
+
+    //add events to map
+    const allEvents = createEvents();
+    for (let i = 0; i < allEvents.length; i++) {
+        eventMap[allEvents[i].id] = allEvents[i];
+    }
+
+    eventsByLevel = loadAllEvents(allEvents);
+    currentEvents.push(eventMap[STAGE_IDS[currentLevel]]);
+    currentEvents = currentEvents.concat(getEventsForLevel(currentLevel + 1));
+    currentMaxPage = 0;
+    currentPage = 0;
+}
+
+function updatePlayerStatus(lastEvent) {
+
+    // pos
+    if (lastEvent !== null) {
+        if (choiceId == 0) {
+            console.log("pos:", JSON.stringify(lastEvent.posEffects));
+            player.spirit += lastEvent.posEffects[0].val;
+            player.gold += lastEvent.posEffects[1].val;
+            player.power += lastEvent.posEffects[2].val;
+            player.agility += lastEvent.posEffects[3].val;
+            player.intelligence += lastEvent.posEffects[4].val;
+            player.goodness += lastEvent.posEffects[5].val;
+        } else {
+            console.log("neg:", JSON.stringify(lastEvent.negEffects));
+            player.spirit += lastEvent.negEffects[0].val;
+            player.gold += lastEvent.negEffects[1].val;
+            player.power += lastEvent.negEffects[2].val;
+            player.agility += lastEvent.negEffects[3].val;
+            player.intelligence += lastEvent.negEffects[4].val;
+            player.goodness += lastEvent.negEffects[5].val;
+        }
+    }
+
+    //update fatigue
+    // $(".fatigue").text(player.fatigue);
+    // $(".spirit").text(player.spirit);
+    // $(".gold").text(player.gold);
+    // $(".power").text(player.power);
+    // $(".agility").text(player.agility);
+    // $(".intelligence").text(player.intelligence);
+
+    $(".fatigue").animate({
+            color: getColorByValue(player.fatigue),
+            val: player.fatigue
+        },
+        {
+            duration: 1000,
+            step: function () {
+                const ele = $(".fatigue");
+                ele.text(Math.floor(this.val));
+                ele.css("color", this.color);
+            },
+            complete: function () {
+                const ele = $(".fatigue");
+                ele.text(this.val);
+                ele.css("color", this.color);
+                console.log("color:" + this.color);
+            }
+        });
+
+    $(".spirit").animate({
+            color: getColorByValue(player.spirit),
+            val: player.spirit
+        },
+        {
+            duration: 1000,
+            step: function () {
+                const ele = $(".spirit");
+                ele.text(Math.floor(this.val));
+                ele.css("color", this.color);
+            },
+            complete: function () {
+                const ele = $(".spirit");
+                ele.text(this.val);
+                ele.css("color", this.color);
+            }
+        });
+
+    $(".gold").animate({
+            color: getColorByValue(player.gold),
+            val: player.gold
+        },
+        {
+            duration: 1000,
+            step: function () {
+                const ele = $(".gold");
+                ele.text(Math.floor(this.val));
+                ele.css("color", this.color);
+            },
+            complete: function () {
+                const ele = $(".gold");
+                ele.text(this.val);
+                ele.css("color", this.color);
+            }
+        });
+
+    $(".power").animate({
+            color: getColorByValue(player.power),
+            val: player.power
+        },
+        {
+            duration: 1000,
+            step: function () {
+                const ele = $(".power");
+                ele.text(Math.floor(this.val));
+                ele.css("color", this.color);
+            },
+            complete: function () {
+                const ele = $(".power");
+                ele.text(this.val);
+                ele.css("color", this.color);
+            }
+        });
+
+    $(".agility").animate({
+            color: getColorByValue(player.agility),
+            val: player.agility
+        },
+        {
+            duration: 1000,
+            step: function () {
+                const ele = $(".agility");
+                ele.text(Math.floor(this.val));
+                ele.css("color", this.color);
+            },
+            complete: function () {
+                const ele = $(".agility");
+                ele.text(this.val);
+                ele.css("color", this.color);
+            }
+        });
+
+    $(".intelligence").animate({
+            color: getColorByValue(player.intelligence),
+            val: player.intelligence
+        },
+        {
+            duration: 1000,
+            step: function () {
+                const ele = $(".intelligence");
+                ele.text(Math.floor(this.val));
+                ele.css("color", this.color);
+            },
+            complete: function () {
+                const ele = $(".intelligence");
+                ele.text(this.val);
+                ele.css("color", this.color);
+            }
+        });
+}
+
+function getColorByValue(value) {
+    if (value < 20) {
+        return "red";
+    } else if (value < 60) {
+        return "#2b6aff";
+    } else {
+        return "black";
+    }
+}
+
+
+function updateScene(lastEvent) {
+    //update player status
+    updatePlayerStatus(lastEvent);
+
+    //If the player dies, game ends
+    // player
+    // last event
+    addDeadPage(eventMap[800]);
+
+    // need to load next level in advance because the last page cannot be flip
+    if (currentEvents.length <= 1 && currentLevel < STAGE_IDS.length) {
+        const nextLevel = currentLevel + 1;
+        let newEvents = [];
+        newEvents.push(eventMap[STAGE_IDS[nextLevel - 1]]);
+        newEvents = newEvents.concat(getEventsForLevel(nextLevel));
+        addPages(newEvents, true);
+        currentEvents = currentEvents.concat(newEvents);
+    }
+
+    //update stage info
+
+    //update events
+
+}
+
+function createPage(event) {
+    if (event.type === 'normal') {
+        return createEventPageDiv(event);
+    } else if (event.type === 'stage') {
+        return createStagePageDiv(event);
+    }
+}
+
+function createStagePageDiv(event) {
+    const div = document.createElement('div');
+    currentMaxPage++;
+    div.className = `page-num-${currentMaxPage}`;
+    div.innerHTML =
+        `<div class="pages-content">
+            <div class="pages-background"></div>
+            <div class="content-inner">
+              <div class="img-container">
+                <img src="${event.img}"/>
+              </div>
+              <h1>Stage ${currentLevel + 1}</h1>
+              <p class="to-fade">${event.name}</p>
+              <p class="to-fade">${event.line}</p>
+            </div>
+          </div>`;
+    return div;
+}
+
+function createEventPageDiv(event) {
+    const div = document.createElement('div');
+    currentMaxPage++;
+    div.className = `page-num-${currentMaxPage}`;
+    div.innerHTML =
+        `<div class="pages-content">
+            <div class="pages-background"></div>
+            <div class="content-inner">
+              <div class="img-container">
+                <img class="pulsate-fwd" src="${event.img}"/>
+              </div>
+              <p class="to-fade"><font color='#dc143c'>${event.name}: </font>${event.line}</p>
+              <p class="pos-line">${event.posLine}</p>
+              <p class="neg-line">${event.negLine}</p>
+            </div>
+          </div>`;
+    return div;
+}
+
+function addPages(events, turn) {
+    for (let i = 0; i < events.length; i++) {
+        addPage(events[i], turn);
+    }
+}
+
+function createEventPageAndTurn(eventPage) {
+    createEventPageDiv(eventPage);
+    $('.pages').turn('addPage', div);
 }
 
 (function ($) {
@@ -168,7 +617,6 @@ function loadAllEvents() {
         // Number of pages in the DOM, minimum value: 6
 
         pagesInDOM = 6,
-
 
         turnMethods = {
 
@@ -753,6 +1201,14 @@ function loadAllEvents() {
                         this.turn('removePage', data.totalPages);
                     }
 
+                } else if (page === 'l') {
+
+                    // this.turn('addPage', div);
+
+                    while (data.totalPages !== 2) {
+                        this.turn('removePage', data.totalPages - 1);
+                    }
+
                 } else {
 
                     if (page < 1 || page > data.totalPages)
@@ -762,6 +1218,8 @@ function loadAllEvents() {
 
                         // Stop animations
                         this.turn('stop');
+
+                        console.log("removing: ", page);
 
                         // Remove `page`
                         turnMethods._removePageFromDOM.call(this, page);
@@ -2082,7 +2540,7 @@ function loadAllEvents() {
                     case 'tr':
                         return point2D(this.width() - opts, opts);
                     case 'bl':
-                        return point2D(opts, this.height()-opts);
+                        return point2D(opts, this.height() - opts);
                     case 'br':
                         return point2D(this.width() - opts, this.height() - opts);
                     case 'l':
@@ -2599,7 +3057,6 @@ function loadAllEvents() {
                 }
 
                 data.point = point;
-
             },
 
             _moveFoldingPage: function (move) {
@@ -2945,15 +3402,25 @@ function loadAllEvents() {
                                 point.x = origin.x;
                                 point.y = origin.y;
                                 flipMethods._showFoldedPage.call(this, point, true);
-                                if (point.corner === 'br') {
-                                    $('.notification-top').removeClass('show');
-                                    $('.notification-bot').addClass('show');
+                                if (point.corner === 'tr') {
+                                    $(`.page-num-${currentPage} .neg-line`).removeClass('show');
+                                    $(`.page-num-${currentPage} .pos-line`).addClass('show');
+                                    // $('.notification-top').removeClass('show');
+                                    // $('.notification-bot').addClass('show');
+
+
+
                                     choiceId = 0;
                                     console.log("choiceId: " + choiceId);
-                                } else if (point.corner === 'tr') {
-                                    $('.notification-bot').removeClass('show');
-                                    $('.notification-top').addClass('show');
+                                    console.log("total: " + data.totalPages);
+                                } else if (point.corner === 'br') {
+                                    $(`.page-num-${currentPage} .pos-line`).removeClass('show');
+                                    $(`.page-num-${currentPage} .neg-line`).addClass('show');
+                                    // $('.notification-bot').removeClass('show');
+                                    // $('.notification-top').addClass('show');
+
                                     console.log("choiceId: " + choiceId);
+                                    console.log("total: " + data.totalPages);
                                     choiceId = 1;
                                 }
                             }
@@ -2962,8 +3429,10 @@ function loadAllEvents() {
 
                             if (data.status == 'hover') {
                                 data.status = '';
-                                $('.notification-top').removeClass('show');
-                                $('.notification-bot').removeClass('show');
+                                // $('.notification-top').removeClass('show');
+                                // $('.notification-bot').removeClass('show');
+                                $(`.page-num-${currentPage} .pos-line`).removeClass('show');
+                                $(`.page-num-${currentPage} .neg-line`).removeClass('show');
                                 flipMethods.hideFoldedPage.call(this, true);
                             }
 
@@ -3396,6 +3865,32 @@ function loadAllEvents() {
 
 })(jQuery);
 
+function addDeadPage(event) {
+    $('.pages').turn('disable', true);
+    $(`.page-num-${currentPage}`).html(`<div class="pages-content">
+            <div class="pages-background"></div>
+            <div class="content-inner">
+              <div class="img-container">
+                <img src="14.jpg"/>
+              </div>
+              <h1>GG</h1>
+              <p>SI MI DA</p>
+            </div>
+          </div>`).addClass('puff-in-center');
+}
+
+function removePage(idx) {
+    $('.pages').turn('removePage', idx);
+}
+
+function addPage(event, turn) {
+    const div = createPage(event);
+    $('.pages').append(div);
+    if (turn) {
+        $('.pages').turn('addPage', div);
+    }
+}
+
 $(window).ready(function () {
     $('html').hide().fadeIn(2000).then(
         $('.instructions h1').hide().fadeIn(5000),
@@ -3415,14 +3910,36 @@ $(window).ready(function () {
         duration: 1500,
         width: 800,
         height: 575,
-        //  acceleration: true,
+        // acceleration: true,
         //  display: 'single',
         autoCenter: true,
-        turnCorners: "bl,br",
+        turnCorners: "bl, br",
         elevation: 300,
         when: {
             turned: function (e, page) {
                 console.log('Current view: ', $(this).turn('view'));
+                currentPage++;
+                console.log('Current page: ', currentPage);
+                let lastEvent = null;
+                if (currentPage > 1 && currentEvents.length > 0) {
+                    lastEvent = currentEvents.shift();
+                }
+
+                if (lastEvent !== null && lastEvent.type === 'stage') {
+                    currentLevel++;
+                }
+
+                console.log("lastEvent: ", lastEvent);
+
+                updateScene(lastEvent);
+                $(`.page-num-${currentPage} .to-fade`).addClass('fade-in');
+
+            },
+            flip: function (e, page) {
+                console.log("flipping ...");
+
+                $(`.page-num-${currentPage} .pos-line`).removeClass('show');
+                $(`.page-num-${currentPage} .neg-line`).removeClass('show');
             }
         }
     });
