@@ -370,28 +370,131 @@ function updatePlayerStatus(lastEvent) {
     }
 
     //update fatigue
-    $(".fatigue").text(`Fatigue: ${player.fatigue}`);
-    $(".spirit").text(`Spirit: ${player.spirit}`);
-    $(".gold").text(`Gold: ${player.gold}`);
-    $(".power").text(`Power: ${player.power}`);
-    $(".agility").text(`Agility: ${player.agility}`);
-    $(".intelligence").text(`Intelligence: ${player.intelligence}`);
+    // $(".fatigue").text(player.fatigue);
+    // $(".spirit").text(player.spirit);
+    // $(".gold").text(player.gold);
+    // $(".power").text(player.power);
+    // $(".agility").text(player.agility);
+    // $(".intelligence").text(player.intelligence);
 
-    // const countTo = 500;
-    // $(".fatigue").animate({
-    //         backgroundColor: '#eb2a35',
-    //         color: "#eb2a35",
-    //         val: countTo
-    //     },
-    //     {
-    //         duration: 3000,
-    //         step: function (countTo) {
-    //             $(".fatigue").text(`Fatigue: ${Math.floor(this.val)}`);
-    //         },
-    //         complete: function () {
-    //             $(".fatigue").text(`Fatigue: ${this.val}`);
-    //         }
-    //     });
+    $(".fatigue").animate({
+            color: getColorByValue(player.fatigue),
+            val: player.fatigue
+        },
+        {
+            duration: 1000,
+            step: function () {
+                const ele = $(".fatigue");
+                ele.text(Math.floor(this.val));
+                ele.css("color", this.color);
+            },
+            complete: function () {
+                const ele = $(".fatigue");
+                ele.text(this.val);
+                ele.css("color", this.color);
+                console.log("color:" + this.color);
+            }
+        });
+
+    $(".spirit").animate({
+            color: getColorByValue(player.spirit),
+            val: player.spirit
+        },
+        {
+            duration: 1000,
+            step: function () {
+                const ele = $(".spirit");
+                ele.text(Math.floor(this.val));
+                ele.css("color", this.color);
+            },
+            complete: function () {
+                const ele = $(".spirit");
+                ele.text(this.val);
+                ele.css("color", this.color);
+            }
+        });
+
+    $(".gold").animate({
+            color: getColorByValue(player.gold),
+            val: player.gold
+        },
+        {
+            duration: 1000,
+            step: function () {
+                const ele = $(".gold");
+                ele.text(Math.floor(this.val));
+                ele.css("color", this.color);
+            },
+            complete: function () {
+                const ele = $(".gold");
+                ele.text(this.val);
+                ele.css("color", this.color);
+            }
+        });
+
+    $(".power").animate({
+            color: getColorByValue(player.power),
+            val: player.power
+        },
+        {
+            duration: 1000,
+            step: function () {
+                const ele = $(".power");
+                ele.text(Math.floor(this.val));
+                ele.css("color", this.color);
+            },
+            complete: function () {
+                const ele = $(".power");
+                ele.text(this.val);
+                ele.css("color", this.color);
+            }
+        });
+
+    $(".agility").animate({
+            color: getColorByValue(player.agility),
+            val: player.agility
+        },
+        {
+            duration: 1000,
+            step: function () {
+                const ele = $(".agility");
+                ele.text(Math.floor(this.val));
+                ele.css("color", this.color);
+            },
+            complete: function () {
+                const ele = $(".agility");
+                ele.text(this.val);
+                ele.css("color", this.color);
+            }
+        });
+
+    $(".intelligence").animate({
+            color: getColorByValue(player.intelligence),
+            val: player.intelligence
+        },
+        {
+            duration: 1000,
+            step: function () {
+                const ele = $(".intelligence");
+                ele.text(Math.floor(this.val));
+                ele.css("color", this.color);
+            },
+            complete: function () {
+                const ele = $(".intelligence");
+                ele.text(this.val);
+                ele.css("color", this.color);
+            }
+        });
+}
+
+function getColorByValue(value) {
+    if (value < 20) {
+        return "red";
+    } else if (value < 60) {
+        return "yellow";
+    } else {
+        return "green";
+    }
 }
 
 function updateScene(lastEvent) {
@@ -454,7 +557,7 @@ function createEventPageDiv(event) {
             <div class="pages-background"></div>
             <div class="content-inner">
               <div class="img-container">
-                <img src="${event.img}"/>
+                <img class="pulsate-fwd" src="${event.img}"/>
               </div>
               <p class="to-fade"><font color='#dc143c'>${event.name}: </font>${event.line}</p>
               <p class="pos-line">${event.posLine}</p>
