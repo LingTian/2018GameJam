@@ -430,11 +430,12 @@ function getColorByValue(value) {
     if (value < 20) {
         return "red";
     } else if (value < 60) {
-        return "yellow";
+        return "#2b6aff";
     } else {
-        return "green";
+        return "black";
     }
 }
+
 
 function updateScene(lastEvent) {
     //update player status
