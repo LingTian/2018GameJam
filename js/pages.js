@@ -1,3 +1,63 @@
+// Nebulas
+
+var NebPay = require("nebpay");
+var nebPay = new NebPay();
+
+var nebulas = require("nebulas"),
+    Account = nebulas.Account,
+    neb = new nebulas.Neb();
+neb.setRequest(new nebulas.HttpRequest("https://mainnet.nebulas.io"));
+var dappAddress = "n1r59HEWHF3bLudBZnpdhhxrdkKNGz1nBKb";
+
+function getAdam0() {
+    const func = "getAdam0";
+    const from = Account.NewAccount().getAddressString();
+    const args = 0;
+    const callArgs = JSON.stringify([args]);
+    const value = "0";
+    const nonce = "0";
+    const gas_price = "1000000";
+    const gas_limit = "2000000";
+    const contract = {
+        "function": func,
+        "args": callArgs
+    }
+
+    neb.api.call(from, dappAddress, value, nonce, gas_price, gas_limit, contract).then(function (resp) {
+        const result = resp.result;
+        const resultString = JSON.parse(result);
+        console.log("adam: ", resultString)
+    }).catch(function (err) {
+        console.log("net work unstable, rereading...");
+    })
+}
+
+function uploadData() {
+    const to = dappAddress;
+    const value = 0;
+    console.log("********* call smart contract \"sendTransaction\" *****************")
+
+    const func = "insertCharacter";
+    const deser = JSON.stringify(player);
+    const args = "[" + deser + "]";
+    console.log(args);
+
+    nebPay.call(to, value, func, args, {
+        qrcode: {
+            showQRCode: false
+        },
+        goods: {
+            name: "test",
+            desc: "test goods"
+        },
+        listener: cbCallDapp
+    });
+}
+
+function cbCallDapp(resp) {
+    console.log("Callback Resp: " + JSON.stringify(resp))
+}
+
 //Data loading
 
 function createEvent(id, name, img, line, posLine, negLine, stage, type, subsequent, leftAttrEffects, rightAttrEffects, playerId) {
@@ -483,7 +543,6 @@ function checkDead(){
             addDeadPage(eventMap[800]);
         }else{
             addDeadPage(eventMap[600]);
-
         }
     }
 
@@ -3901,9 +3960,11 @@ function addDeadPage(event) {
                 <img src="${event.img}"/>
               </div>
               <h1>${event.line}</h1>
-              <p><font color="#dc143c">"Goodness: "+${player.goodness}</font></p>
+              <h1><font color="#dc143c">"Goodness: "+${player.goodness}</font></h1>
             </div>
           </div>`).addClass('puff-in-center');
+    //upload data to Nebulas networks
+    uploadData();
 }
 
 function removePage(idx) {
