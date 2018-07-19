@@ -541,34 +541,35 @@ function updateScene(lastEvent) {
 
 }
 
-function checkDead(){
-    if(player.gold<=0 || player.spirit<=0){
-        isEnd=true;
-    }else{
-        isEnd=false;
+function checkDead() {
+    if (player.gold <= 0 || player.spirit <= 0) {
+        isEnd = true;
+    } else {
+        isEnd = false;
     }
-    if(isEnd){
-        if(player.goodness>80 && player.goodness < 100){
+    if (isEnd) {
+        if (player.goodness > 80 && player.goodness < 100) {
             addDeadPage(eventMap[801]);
-        }else if(player.goodness > 99){
+        } else if (player.goodness > 99) {
             addDeadPage(eventMap[803]);
-        }else if(player.goodness < 20 && player.goodness >0){
+        } else if (player.goodness < 20 && player.goodness > 0) {
             addDeadPage(eventMap[802]);
-        }else if(player.goodness < 1){
+        } else if (player.goodness < 1) {
             addDeadPage(eventMap[804]);
-        }else if(currentPage >50){
+        } else if (currentPage > 50) {
             addDeadPage(eventMap[800]);
-        }else{
+        } else {
             addDeadPage(eventMap[600]);
         }
     }
-
 }
 
 function createPage(event) {
     if (event.type === 'normal') {
         return createEventPageDiv(event);
     } else if (event.type === 'stage') {
+        return createStagePageDiv(event);
+    } else if (event.type === 'title') {
         return createStagePageDiv(event);
     }
 }
@@ -1298,7 +1299,7 @@ function createEventPageAndTurn(eventPage) {
                 var data = this.data();
 
                 // Delete all the pages
-                if (page == '*') {
+                if (page === '*') {
 
                     while (data.totalPages !== 0) {
                         this.turn('removePage', data.totalPages);
@@ -1306,9 +1307,7 @@ function createEventPageAndTurn(eventPage) {
 
                 } else if (page === 'l') {
 
-                    // this.turn('addPage', div);
-
-                    while (data.totalPages !== 2) {
+                    while (data.totalPages !== data.page + 1) {
                         this.turn('removePage', data.totalPages - 1);
                     }
 
@@ -3979,6 +3978,13 @@ function addDeadPage(event) {
     uploadData();
 }
 
+function addAndRemovePage(event) {
+    const div = createPage(event);
+    $('.pages').append(div);
+    $('.pages').turn('addPage', div);
+    $('.pages').turn('removePage', 'l');
+}
+
 function removePage(idx) {
     $('.pages').turn('removePage', idx);
 }
@@ -4008,6 +4014,11 @@ $(window).ready(function () {
     //       $('.book-wrapper').next().fadeIn(2000);
     //     })
     // );
+
+    $('.button1').click(
+        function () {
+            addAndRemovePage(eventMap[800]);
+        });
     $('.pages').turn({
         duration: 1500,
         width: 800,
@@ -4039,6 +4050,7 @@ $(window).ready(function () {
             },
             flip: function (e, page) {
                 console.log("flipping ...");
+
 
                 $(`.page-num-${currentPage} .pos-line`).removeClass('show');
                 $(`.page-num-${currentPage} .neg-line`).removeClass('show');
