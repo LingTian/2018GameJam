@@ -250,7 +250,7 @@ function createEvents() {
 
 //Utils
 function getRandomArrayElements(arr, count) {
-    var shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index;
+    let shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index;
     while (i-- > min) {
         index = Math.floor((i + 1) * Math.random());
         temp = shuffled[index];
@@ -270,6 +270,7 @@ class Player {
         this.agility = MAX_VAL / 5;
         this.intelligence = MAX_VAL / 5;
         this.goodness = MAX_VAL / 2;
+        this.buffSet = new Set();
     }
 }
 
@@ -290,17 +291,80 @@ class Event {
     }
 }
 
-const ATTRS = ['spirit', 'gold', 'power', 'agility', 'intelligence', 'goodness'];
+const EventType = Object.freeze({
+    NORMAL: "NORMAL",
+    STAGE: "STAGE",
+    TITLE: "TITLE",
+    SUBSEQUENT: "SUBSEQUENT"
+});
 
-class Effect {
-    constructor(eventId, type, attr, val) {
-        this.eventId = eventId;
-        this.attr = attr;
-        this.type = type;
-        this.val = val;
+
+class EventV2 {
+    constructor(id, name, img, line, eventType, choice1, choice2) {
+        this.id = id;
+        this.name = name;
+        this.img = img;
+        this.line = line;
+        this.startstage = startstage;
+        this.eventType = eventType;
+        this.choice1 = choice1;
+        this.choice2 = choice2;
+        this.playerId = playerId;
     }
 }
 
+const ATTRS = ['spirit', 'gold', 'power', 'agility', 'intelligence', 'goodness'];
+
+class Choice {
+    constructor(eventId, line, effect) {
+        this.eventId = eventId;
+        this.line = line;
+        this.effect = effect
+    }
+}
+
+const EffectType = Object.freeze({
+    STATS_CHANGE: "STATS_CHANGE",
+    ADD_BUFF: "ADD_BUFF",
+    RANDOM: "RANDOM",
+    COMPOSITE: "COMPOSITE" //复合型类型，比如随机 + buff
+});
+
+const BUFF = Object.freeze({
+    FAKE: "FAKE" // FAKE BUFF
+});
+
+
+
+class Effect {
+    constructor(effectId, effectType, callBack, subsequentId) {
+        if (!effectType in EffectType) {
+            throw Error("Invalid effectType: " + effectType);
+        }
+        this.effectId = effectId;
+        this.effectType = effectType;
+        this.callBack = callBack;
+        this.subsequentId = subsequentId;
+    }
+}
+
+// Usage
+const eventV2 = new EventV2(1, 'fakeName', 'fakeImg', 'dummy line', EventType.NORMAL,
+    new Choice(1, "this is choice 1", 
+        new Effect(
+            "effectId1", EffectType.COMPOSITE, function () { //function 作为回调
+                player.agility += 1;
+                player.intelligence -= 1;
+                player.buffSet.add(BUFF.FAKE);
+            }
+        ), null),
+    new Choice(2, "this is choice 2",
+        new Effect(
+            "effectId2", EffectType.RANDOM, () => {
+                player.gold += - 5 + 10 * Math.random(); // +-5 gold effect
+            }
+        ), null),
+    null);
 
 let choiceId = null;
 const MAX_VAL = 100;
