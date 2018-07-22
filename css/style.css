@@ -29,19 +29,35 @@ html {
 }
 
 .container {
-    margin-top: 3%;
+    /*margin-top: 3%;*/
 }
+
 
 .book-wrapper {
     position: relative;
-    margin: 30px auto;
+    margin: auto;
     width: 860px;
-    /*visibility: hidden;*/
 }
+
+/*.book-wrapper {*/
+    /*position: relative;*/
+    /*margin: 23px auto;*/
+    /*width: 645px;*/
+/*}*/
+
+/*@media only screen and (max-width: 600px) {*/
+    /*!* For mobile phones: *!*/
+    /*.book-wrapper {*/
+        /*position: relative;*/
+        /*margin: 15px auto;*/
+        /*height: 280px;*/
+    /*}*/
+/*}*/
 
 .book-wrapper img {
     filter: drop-shadow(15px 5px 5px #494338);
 }
+
 .pages-container {
     position: absolute;
     top: 4%;
@@ -57,7 +73,6 @@ html {
     background-size: auto 100%;
     position: relative;
 }
-
 
 .pages-content {
     text-align: center;
