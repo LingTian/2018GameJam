@@ -1,3 +1,20 @@
+// All game singletons
+
+let choiceId = null;
+const MAX_VAL = 100;
+const START_LEVEL = 0;
+const EVENT_PER_LEVEL = 8;
+const STAGE_IDS = [91, 92, 93, 94, 95, 96, 97, 98, 99, 100];
+
+let eventsByLevel = {};
+let eventMap = {};
+let currentLevel;
+let currentEvents = [];
+let player;
+let currentMaxPage;
+let currentPage;
+let isEnd;
+
 // Nebulas
 
 var NebPay = require("nebpay");
@@ -75,16 +92,6 @@ function cbCallDapp(resp) {
 }
 
 //Data loading
-
-function createStatsChangeEvent(id, name, img, line, posLine, negLine, stage, type, subsequent, leftAttrEffects, rightAttrEffects, playerId) {
-    const leftEffects = [];
-    const rightEffects = [];
-    for (let i = 0; i < ATTRS.length; i++) {
-        leftEffects.push(new Effect(id, 'add', ATTRS[i], leftAttrEffects[i]));
-        rightEffects.push(new Effect(id, 'add', ATTRS[i], rightAttrEffects[i]));
-    }
-    return new Event(id, name, img, line, posLine, negLine, stage, type, subsequent, leftEffects, rightEffects, playerId);
-}
 
 function createEvents() {
     const loadfooter = [];
@@ -348,7 +355,6 @@ class EventV2 {
     }
 }
 
-
 class Choice {
     constructor(eventId, line, effect) {
         this.eventId = eventId;
@@ -398,55 +404,28 @@ const eventV2 = new EventV2(1, 'fakeName', 'fakeImg', 'dummy line', 1, EventType
         ), null),
     null);
 
-// function createEvent(id, name, img, line, posLine, negLine, stage, type, subsequent, leftAttrEffects, rightAttrEffects, playerId) {
-//     const leftEffects = [];
-//     const rightEffects = [];
-//     for (let i = 0; i < ATTRS.length; i++) {
-//         leftEffects.push(new Effect(id, 'add', ATTRS[i], leftAttrEffects[i]));
-//         rightEffects.push(new Effect(id, 'add', ATTRS[i], rightAttrEffects[i]));
-//     }
-//     return new Event(id, name, img, line, posLine, negLine, stage, type, subsequent, leftEffects, rightEffects, playerId);
-// }
-
 // function to create a event with both effects are stats change event
 function createStatsChangeEvent(id, name, img, line, posLine, negLine, stage, type, subsequent, leftAttrEffects, rightAttrEffects, playerId) {
     return new EventV2(id, name, img, line, stage, type,
         new Choice(id, posLine,
-            createStatsEffect(leftAttrEffects)
+            createStatsEffect(id, subsequent, leftAttrEffects)
             , null),
         new Choice(id, negLine,
-            createStatsEffect(leftAttrEffects), null),
+            createStatsEffect(id, subsequent, rightAttrEffects), null),
         null);
 }
 
-function createStatsEffect() {
-    const callBack = function (attrChange) {
-        for (let i = 0; i < ATTRS.length; i++) {
-            player.spirit += attrChange[0].val;
-            player.gold += attrChange[1].val;
-            player.power += attrChange[2].val;
-            player.agility += attrChange[3].val;
-            player.intelligence += attrChange[4].val;
-            player.goodness += attrChange[5].val;
-        }
+function createStatsEffect(eventId, subsequent, attrChange) {
+    const callBack = function () {
+        player.spirit += attrChange[0];
+        player.gold += attrChange[1];
+        player.power += attrChange[2];
+        player.agility += attrChange[3];
+        player.intelligence += attrChange[4];
+        player.goodness += attrChange[5];
     };
-    return callBack;
+    return new EffectV2(eventId, EffectType.STATS_CHANGE, callBack, subsequent);
 }
-
-let choiceId = null;
-const MAX_VAL = 100;
-const START_LEVEL = 0;
-const EVENT_PER_LEVEL = 8;
-const STAGE_IDS = [91, 92, 93, 94, 95, 96, 97, 98, 99, 100];
-
-let eventsByLevel = {};
-let eventMap = {};
-let currentLevel;
-let currentEvents = [];
-let player;
-let currentMaxPage;
-let currentPage;
-let isEnd;
 
 function loadAllEvents(rawEvents) {
     const events = {};
@@ -505,26 +484,26 @@ function initModels() {
     currentPage = 0;
 }
 
-function updatePlayerStatus(lastEvent) {
+function updatePlayerStatus() {
 
     // pos
-    if (lastEvent !== null) {
-        if (choiceId == 0) {
-            player.spirit += lastEvent.posEffects[0].val;
-            player.gold += lastEvent.posEffects[1].val;
-            player.power += lastEvent.posEffects[2].val;
-            player.agility += lastEvent.posEffects[3].val;
-            player.intelligence += lastEvent.posEffects[4].val;
-            player.goodness += lastEvent.posEffects[5].val;
-        } else {
-            player.spirit += lastEvent.negEffects[0].val;
-            player.gold += lastEvent.negEffects[1].val;
-            player.power += lastEvent.negEffects[2].val;
-            player.agility += lastEvent.negEffects[3].val;
-            player.intelligence += lastEvent.negEffects[4].val;
-            player.goodness += lastEvent.negEffects[5].val;
-        }
-    }
+    // if (lastEvent !== null) {
+    //     if (choiceId === 0) {
+    //         player.spirit += lastEvent.posEffects[0].val;
+    //         player.gold += lastEvent.posEffects[1].val;
+    //         player.power += lastEvent.posEffects[2].val;
+    //         player.agility += lastEvent.posEffects[3].val;
+    //         player.intelligence += lastEvent.posEffects[4].val;
+    //         player.goodness += lastEvent.posEffects[5].val;
+    //     } else {
+    //         player.spirit += lastEvent.negEffects[0].val;
+    //         player.gold += lastEvent.negEffects[1].val;
+    //         player.power += lastEvent.negEffects[2].val;
+    //         player.agility += lastEvent.negEffects[3].val;
+    //         player.intelligence += lastEvent.negEffects[4].val;
+    //         player.goodness += lastEvent.negEffects[5].val;
+    //     }
+    // }
 
     //update fatigue
     // $(".fatigue").text(player.fatigue);
@@ -656,8 +635,21 @@ function getColorByValue(value) {
 
 function updateScene(lastEvent) {
     //update player status
-    updatePlayerStatus(lastEvent);
 
+    console.log("Last event: ");
+    console.log(lastEvent);
+
+    if (lastEvent !== null) {
+        const lastChoice = choiceId === 0 ? lastEvent.choice1 : lastEvent.choice2;
+        const lastEffect = lastChoice.effect;
+
+        console.log("lastEffect.eventId: ", lastEffect.eventId);
+        console.log("lastEffect.callBackParam: ", lastEffect.callBackParam);
+
+        lastEffect.callBack();
+    }
+
+    updatePlayerStatus();
     //If the player dies, game ends
     // player
     checkDead();
@@ -747,8 +739,8 @@ function createEventPageDiv(event) {
                 <img class="pulsate-fwd" src="${event.img}"/>
               </div>
               <p class="to-fade"><font color='#dc143c'>${event.name}: </font>${event.line}</p>
-              <p class="pos-line">${event.posLine}</p>
-              <p class="neg-line">${event.negLine}</p>
+              <p class="pos-line">${event.choice1.line}</p>
+              <p class="neg-line">${event.choice2.line}</p>
             </div>
           </div>`;
     return div;
@@ -4199,6 +4191,7 @@ $(window).ready(function () {
                 console.log("lastEvent: ", lastEvent);
 
                 updateScene(lastEvent);
+
                 $(`.page-num-${currentPage} .to-fade`).addClass('fade-in');
 
             },
