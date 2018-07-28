@@ -212,9 +212,10 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(74,"白骑士","img/1.png","昨夜，美酒入喉，我心欢畅。","今朝，酒冷香落，徒留荒凉。","今朝，酒盏花枝，伊人依旧。","1",EventType.NORMAL,[-1,-1],[-10,0,10,10,10,-10],[-10,0,10,10,10,10],""));
 
     allEvents.push(createStatsChangeEvent(75,"白骑士","img/1.png","幸福感这种东西，会沉在悲哀的河底，隐隐发光，仿佛砂金一般。","不是应该更加珍惜吗？","终究是沉没在悲伤的河底吗？","1",EventType.NORMAL,[-1,-1],[-10,0,10,10,10,-10],[-10,0,10,10,10,10],""));
+   //random test
+    allEvents.push(createMinorRandomEvent(76,"七彩泉","img/1.png","七彩的泉水汩汩的涌现出来","喝一口看看","喝一口看看","1",EventType.RANDOM,[-1,-1]));
 
-
-    // allEvents.push(createEvent(13, "医生", "1.png", "西方的悬崖上传闻有魔龙作恶。", "无论多么危险我都将带头征讨。", "这肯定是无稽之谈。", "5", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, -1], ""));
+     // allEvents.push(createEvent(13, "医生", "1.png", "西方的悬崖上传闻有魔龙作恶。", "无论多么危险我都将带头征讨。", "这肯定是无稽之谈。", "5", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, -1], ""));
     // allEvents.push(createEvent(500, "修女", "1.png", "也有可能有怪物守护。", "勇者无畏，愿意接受挑战。", "太危险了还是算了吧。", "", EventType.NORMAL, [600, 601], [-50, 0, 0, 0, 0, 30], [0, 0, 0, 0, 0, -10], ""));
     // allEvents.push(createEvent(501, "牧师", "1.png", "西方的巨人手中，持有勇者之剑，但却作恶多端。", "我将前往讨伐。", "这种危险的事情我可不去。", "", EventType.NORMAL, [600, 601], [-50, 0, 0, 0, 0, 30], [0, 0, 0, 0, 0, -10], ""));
     //
@@ -422,6 +423,9 @@ function createStatsChangeEvent(id, name, img, line, posLine, negLine, stage, ty
         null);
 }
 
+
+
+
 function createStatsEffect(eventId, subsequent, attrChange) {
     const callBack = function () {
         player.spirit += attrChange[0];
@@ -433,6 +437,7 @@ function createStatsEffect(eventId, subsequent, attrChange) {
     };
     return new EffectV2(eventId, EffectType.STATS_CHANGE, callBack, subsequent);
 }
+
 
 // Utility:比较player和enemy
 // Choice1: 比较 attrToCompare1 例如 attrToCompare1 = ['gold', 'spirit'], 赢了获得winBuff， 输了lossBuff
@@ -467,6 +472,59 @@ function createFightEffect(eventId, subsequent, attrToCompare, winBuff, lossBuff
     };
     return new EffectV2(eventId, EffectType.FIGHT, callBack, subsequent);
 }
+
+//V2 small randome utility
+
+function createMinorRandomEvent(id, name, img, line,posLine,negLine,stage, type,subsequent) {
+    return new EventV2(id, name, img, line, stage, type,
+        new Choice(id, posLine,
+            createMinorRandomEffect(id, subsequent)
+        ),
+        new Choice(id, negLine,
+            createMinorRandomEffect(id, subsequent)
+        ),
+        null);
+}
+//V2 big randome utility
+
+function createMajorRandomEvent(id, name, img, line,posLine,negLine,stage, type,subsequent) {
+    return new EventV2(id, name, img, line, stage, type,
+        new Choice(id, posLine,
+            createMajorRandomEffect(id, subsequent)
+        ),
+        new Choice(id, negLine,
+            createMajorRandomEffect(id, subsequent)
+        ),
+        null);
+}
+
+
+//所有属性minor 随机+ - 5
+function createMinorRandomEffect(eventId, subsequent) {
+    const callBack = function () {
+        player.spirit += - 5 + 10 * Math.random();
+        player.gold += - 5 + 10 * Math.random();
+        player.power += - 5 + 10 * Math.random();
+        player.agility += - 5 + 10 * Math.random();
+        player.intelligence += - 5 + 10 * Math.random();
+        player.goodness += - 5 + 10 * Math.random();
+    };
+    return new EffectV2(eventId, EffectType.RANDOM, callBack, subsequent);
+}
+
+//所有属性major 随机+ - 10
+function createMajorRandomEffect(eventId, subsequent) {
+    const callBack = function () {
+        player.spirit += - 10 + 20 * Math.random();
+        player.gold += - 10 + 20 * Math.random();
+        player.power += - 10 + 20 * Math.random();
+        player.agility += - 10 + 20 * Math.random();
+        player.intelligence += - 10 + 20 * Math.random();
+        player.goodness += - 10 + 20 * Math.random();
+    };
+    return new EffectV2(eventId, EffectType.RANDOM, callBack, subsequent);
+}
+
 
 function loadAllEvents(rawEvents) {
     const events = {};
