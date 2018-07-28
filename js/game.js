@@ -294,8 +294,11 @@ function getRandomArrayElements(arr, count) {
 
 const ATTRS = ['spirit', 'gold', 'power', 'agility', 'intelligence', 'goodness'];
 
+const playerId = "DefaultId";
+
 class Player {
-    constructor(name) {
+    constructor(name, id) {
+        this.id = id;
         this.name = name;
         this.fatigue = MAX_VAL / 5;
         this.spirit = MAX_VAL / 5;
@@ -342,7 +345,7 @@ class Effect {
 }
 
 class EventV2 {
-    constructor(id, name, img, line, startStage, eventType, choice1, choice2, playerId) {
+    constructor(id, name, img, line, startStage, eventType, choice1, choice2, enemy) {
         this.id = id;
         this.name = name;
         this.img = img;
@@ -351,7 +354,7 @@ class EventV2 {
         this.eventType = eventType;
         this.choice1 = choice1;
         this.choice2 = choice2;
-        this.playerId = playerId;
+        this.enemy = enemy;
     }
 }
 
@@ -365,6 +368,7 @@ class Choice {
 
 const EffectType = Object.freeze({
     STATS_CHANGE: "STATS_CHANGE",
+    FIGHT: "FIGHT",
     ADD_BUFF: "ADD_BUFF",
     RANDOM: "RANDOM",
     COMPOSITE: "COMPOSITE" //复合型类型，比如随机 + buff
@@ -404,14 +408,17 @@ const eventV2 = new EventV2(1, 'fakeName', 'fakeImg', 'dummy line', 1, EventType
         ), null),
     null);
 
+
 // function to create a event with both effects are stats change event
-function createStatsChangeEvent(id, name, img, line, posLine, negLine, stage, type, subsequent, leftAttrEffects, rightAttrEffects, playerId) {
+// V1 -> V2 的普通event的utility，用的input还是V1的input
+function createStatsChangeEvent(id, name, img, line, posLine, negLine, stage, type, subsequent, leftAttrEffects, rightAttrEffects) {
     return new EventV2(id, name, img, line, stage, type,
         new Choice(id, posLine,
             createStatsEffect(id, subsequent, leftAttrEffects)
-            , null),
+        ),
         new Choice(id, negLine,
-            createStatsEffect(id, subsequent, rightAttrEffects), null),
+            createStatsEffect(id, subsequent, rightAttrEffects)
+        ),
         null);
 }
 
@@ -425,6 +432,40 @@ function createStatsEffect(eventId, subsequent, attrChange) {
         player.goodness += attrChange[5];
     };
     return new EffectV2(eventId, EffectType.STATS_CHANGE, callBack, subsequent);
+}
+
+// Utility:比较player和enemy
+// Choice1: 比较 attrToCompare1 例如 attrToCompare1 = ['gold', 'spirit'], 赢了获得winBuff， 输了lossBuff
+// Choice2: 比较 attrToCompare2 例如 attrToCompare1 = ['power', 'spirit'], 赢了获得winBuff， 输了lossBuff
+
+// 可以再复杂一点 两个选项的buff不一样。
+
+function createFightEventWithBuff(id, name, img, line, posLine, negLine, stage, type, subsequent, attrToCompare1, attrToCompare2, winBuff, lossBuff, enemy) {
+    return new EventV2(id, name, img, line, stage, type,
+        new Choice(id, posLine,
+            createStatsEffect(id, subsequent, attrToCompare1, winBuff, lossBuff)
+        ),
+        new Choice(id, negLine,
+            createStatsEffect(id, subsequent, attrToCompare2, winBuff, lossBuff)
+        ),
+        enemy);
+}
+
+function createFightEffect(eventId, subsequent, attrToCompare, winBuff, lossBuff) {
+    const callBack = function (enemy) {
+        let playerSum = 0;
+        let enemySum = 0;
+        for (let attrName in attrToCompare) {
+            playerSum += player[attrName];
+            enemySum += enemy[attrName];
+        }
+        if (playerSum > enemySum) {
+            player.buffSet.add(buffToAdd);
+        } else {
+            player.buffSet.add(lossBuff);
+        }
+    };
+    return new EffectV2(eventId, EffectType.FIGHT, callBack, subsequent);
 }
 
 function loadAllEvents(rawEvents) {
@@ -441,7 +482,7 @@ function loadAllEvents(rawEvents) {
 }
 
 function initPlayer(name) {
-    return new Player(name);
+    return new Player(name, playerId);
 }
 
 // TODO: better random
@@ -467,6 +508,7 @@ function getEventsForLevel(level) {
 
 function initModels() {
     player = initPlayer('Knight III');
+
     currentLevel = START_LEVEL;
 
     //add events to map
