@@ -115,15 +115,15 @@ function createEvents() {
 
     const allEvents = [];
     allEvents.push(createStatsChangeEvent(1, "修女", "img/13.png", "冒险家，你能帮我讨伐邪恶的术士嘛？", "义不容辞。", "我还有要事在身.", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
-    allEvents.push(createStatsChangeEvent(2, "修女", "img/13.png", "你愿意帮忙捐助一下教会嘛？", "乐于奉献。", "我手边有点紧.", "1", EventType.NORMAL, [-1, -1], [10, -10, 0, 0, 0, 1], [5, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(2, "修女", "img/13.png", "你愿意帮忙捐助一下教会嘛？", "乐于奉献。", "我手边有点紧.", "1", EventType.NORMAL, [-1, -1], [10, -10, 0, 0, 0, 10], [5, 0, 0, 0, 0, 0], ""));
     allEvents.push(createStatsChangeEvent(3, "修女", "img/13.png", "教会的经书隐藏着智慧。", "能借我阅读一下嘛？", "我还是想休息一下。", "1", EventType.NORMAL, [-1, -1], [0, 0, 10, 10, 10, 0], [10, 0, 0, 0, 0, 0], ""));
     allEvents.push(createStatsChangeEvent(4, "修女", "img/13.png", "我很后悔我之前做过的错事，能否帮我去跟骑士道歉？", "我可以帮助你，愿你能得到解脱。", "如果做错的事情都可以重来，那么经历将毫无意义。", "3", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 20], [-10, 0, 0, 0, 0, -20], ""));
     allEvents.push(createStatsChangeEvent(5, "修女", "img/13.png", "听闻东方有种神奇的草药，我这里有它标示的地图，现在免费赠送给您。", "修女的话似乎可信，值得尝试。", "此去不知归途，还是休息休息吧。", "2", EventType.NORMAL, [-1, -1], [-20, 0, 0, 0, 0, 0], [10, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(6, "修女", "img/13.png", "西边悬崖上有把勇者之剑，快去拿回来吧～", "赶紧去取一下。", "悬崖上真的只有宝剑嘛？", "5", EventType.NORMAL, [600, 500], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, -1], ""));
+    allEvents.push(createStatsChangeEvent(6, "修女", "img/13.png", "西边悬崖上有把勇者之剑，快去拿回来吧～", "赶紧去取一下。", "悬崖上真的只有宝剑嘛？", "5", EventType.NORMAL, [600, 500], [0, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
     allEvents.push(createStatsChangeEvent(7, "牧师", "img/3.png", "年轻的冒险者，来吃些免费的食物吧。", "正有此意。", "不劳者不食.", "1", EventType.NORMAL, [-1, -1], [10, 0, 0, 0, 0, -10], [-10, 0, 0, 0, 0, 10], ""));
     allEvents.push(createStatsChangeEvent(8, "牧师", "img/3.png", "教会附近有一些僵尸，能否帮忙清理。", "要我出手的话可是费用不菲。", "就顺手帮一下吧。", "1", EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, -10], [-10, 0, 0, 0, 0, 10], ""));
     allEvents.push(createStatsChangeEvent(9, "牧师", "img/3.png", "这里有些杂书，免费赠予给你。", "免费送的东西肯定心怀鬼胎。", "来看看里面有没有有用的信息吧。", "1", EventType.NORMAL, [-1, -1], [10, 0, 0, 0, 0, -10], [-10, 0, 10, 10, 10, 0], ""));
-    allEvents.push(createStatsChangeEvent(10, "牧师", "img/3.png", "生前我也曾经迷惘挣扎，现在只能提供一些有用的信息给你。", "具体是什么呢?。", "孤魂野鬼，选择走开。", "5", EventType.NORMAL, [501, -1], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, -1], ""));
+    allEvents.push(createStatsChangeEvent(10, "牧师", "img/3.png", "生前我也曾经迷惘挣扎，现在只能提供一些有用的信息给你。", "具体是什么呢?。", "孤魂野鬼，选择走开。", "5", EventType.NORMAL, [501, -1], [10, 10, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
     allEvents.push(createStatsChangeEvent(66, "医生", "img/1.png", "能否借我些金钱去帮助我的病人？", "我又不是慈善家。", "我只有这些了，代表我的心意。", "1", EventType.NORMAL, [-1, -1], [10, 0, 0, 0, 0, -10], [0, -10, 0, 0, 0, 10], ""));
     //分叉
     allEvents.push(createStatsChangeEvent(11, "医生", "img/1.png", "能否帮我寻找一些草药？", "如果报酬不菲，那自然可以。", "我乐于前往。", "1", EventType.NORMAL, [-1, -1], [0, 10, 0, 0, 0, 10], [-10, 0, 0, 0, 0, 10], ""));
@@ -214,8 +214,16 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(75,"白骑士","img/1.png","幸福感这种东西，会沉在悲哀的河底，隐隐发光，仿佛砂金一般。","不是应该更加珍惜吗？","终究是沉没在悲伤的河底吗？","1",EventType.NORMAL,[-1,-1],[-10,0,10,10,10,-10],[-10,0,10,10,10,10],""));
    //random test
     allEvents.push(createMinorRandomEvent(76,"七彩泉","img/1.png","七彩的泉水汩汩的涌现出来","喝一口看看","喝一口看看","1",EventType.RANDOM,[-1,-1]));
+    allEvents.push(createMajorRandomEvent(76,"不老泉","img/1.png","不老的泉水汩汩的涌现出来","喝一口看看","喝一口看看","1",EventType.RANDOM,[-1,-1]));
+    allEvents.push(createMajorRandomEvent(77,"幸运的钱币","img/1.png","一枚金光闪闪的钱币","抛一下试试运气","抛一下试试运气","1",EventType.RANDOM,[-1,-1]));
+    //比较，善良大于一定并且总属性够高。
+    allEvents.push(createStatsChangeEvent(78,"石中剑","img/10.png","石头上插着一把荆棘缠绕的圣剑。","拔出圣剑，我自为王。","王者的使命过于沉重","1",EventType.NORMAL,[-1,-1],[-10,0,10,10,10,-10],[-10,0,10,10,10,10],""));
 
-     // allEvents.push(createEvent(13, "医生", "1.png", "西方的悬崖上传闻有魔龙作恶。", "无论多么危险我都将带头征讨。", "这肯定是无稽之谈。", "5", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, -1], ""));
+    allEvents.push(createStatsChangeEvent(79,"朗格努斯","img/10.png","枪身血红，似乎滴血一般。","让我来用着魔枪结束乱世。","王者的使命过于沉重","1",EventType.NORMAL,[-1,-1],[-10,0,10,10,10,-10],[-10,0,10,10,10,10],""));
+
+    allEvents.push(createStatsChangeEvent(80,"Laevatein","img/10.png","永远燃烧的火焰之剑。","我能承受火焰之魂。","冒火的剑怎么可能能拿得起来？","1",EventType.NORMAL,[-1,-1],[-10,0,10,10,10,-10],[-10,0,10,10,10,10],""));
+
+    // allEvents.push(createEvent(13, "医生", "1.png", "西方的悬崖上传闻有魔龙作恶。", "无论多么危险我都将带头征讨。", "这肯定是无稽之谈。", "5", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, -1], ""));
     // allEvents.push(createEvent(500, "修女", "1.png", "也有可能有怪物守护。", "勇者无畏，愿意接受挑战。", "太危险了还是算了吧。", "", EventType.NORMAL, [600, 601], [-50, 0, 0, 0, 0, 30], [0, 0, 0, 0, 0, -10], ""));
     // allEvents.push(createEvent(501, "牧师", "1.png", "西方的巨人手中，持有勇者之剑，但却作恶多端。", "我将前往讨伐。", "这种危险的事情我可不去。", "", EventType.NORMAL, [600, 601], [-50, 0, 0, 0, 0, 30], [0, 0, 0, 0, 0, -10], ""));
     //
@@ -413,6 +421,7 @@ const eventV2 = new EventV2(1, 'fakeName', 'fakeImg', 'dummy line', 1, EventType
 // function to create a event with both effects are stats change event
 // V1 -> V2 的普通event的utility，用的input还是V1的input
 function createStatsChangeEvent(id, name, img, line, posLine, negLine, stage, type, subsequent, leftAttrEffects, rightAttrEffects) {
+    console.log(rightAttrEffects);
     return new EventV2(id, name, img, line, stage, type,
         new Choice(id, posLine,
             createStatsEffect(id, subsequent, leftAttrEffects)
