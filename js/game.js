@@ -351,15 +351,16 @@ class Choice {
 }
 
 const EffectType = Object.freeze({
+    NOOP: "NOOP",
     STATS_CHANGE: "STATS_CHANGE",
-    FIGHT: "FIGHT",
+    STATS_COND: "STATS_COND",
     ADD_BUFF: "ADD_BUFF",
     RANDOM: "RANDOM",
     COMPOSITE: "COMPOSITE" //复合型类型，比如随机 + buff
 });
 
 const BUFF = Object.freeze({
-    FAKE: "FAKE" // FAKE BUFF
+    NEXT: "NEXT" // NEXT EVENT
 });
 
 class EffectV2 {
@@ -422,10 +423,129 @@ function createStatsEffect(eventId, subsequent, attrChange) {
 function convertConsecutiveEventJsonToEvents(json) {
     for (let i = 0; i < json.length; i++) {
         const eventJson = json[i];
-        console.log(eventJson);
+        const event = createConsecutiveEvent(eventJson);
+        console.log(event);
     }
 }
 
+// constructor(id, name, img, line, startStage, startAchievement, eventType, choice1, choice2, enemy) {
+// constructor(eventId, line, effect) {
+// constructor(effectId, effectType, callBack, subsequentId) {
+
+function createConsecutiveEvent(eventJson) {
+    return new EventV2(eventJson.id, eventJson.name, eventJson.img, eventJson.startStage, eventJson.startAchievement, EventType.NORMAL, createChoice(eventJson, true), createChoice(eventJson, false), null);
+}
+
+function createChoice(eventJson, isChoice1) {
+    const effectType = isChoice1 ? eventJson.effect1Type : eventJson.effect2Type;
+    if (effectType === "noChnage") {
+        return createNoopChoice(eventJson, isChoice1);
+    } else if (effectType === "buff") {
+        return createBuffChoice(eventJson, isChoice1);
+    } else if (effectType === "statsConditional") {
+        return createStatsConditionalChoice(eventJson, isChoice1);
+    }
+}
+
+function createStatsConditionalChoice(eventJson, isChoice1) {
+    if (isChoice1) {
+        return new Choice(eventJson.id, eventJson.choice1,
+            new EffectV2(eventJson.id, EffectType.STATS_COND, new function () {
+                const conditions = parseListAttr(eventJson.choice1Condition);
+                let nextEventBuff;
+                if (comparePlayerStats(conditions)) {
+                    nextEventBuff = BUFF.NEXT + ":" + eventJson.choice1Subsequent;
+                } else {
+                    nextEventBuff = BUFF.NEXT + ":" + eventJson.choice1Fail;
+                }
+                player.buffSet.add(nextEventBuff);
+            }, eventJson.choice1Subsequent)
+        );
+    } else {
+        return new Choice(eventJson.id, eventJson.choice2,
+            new EffectV2(eventJson.id, EffectType.STATS_COND, new function () {
+                const conditions = parseListAttr(eventJson.choice1Condition);
+                let nextEventBuff;
+                if (comparePlayerStats(conditions)) {
+                    nextEventBuff = BUFF.NEXT + ":" + eventJson.choice2Subsequent;
+                } else {
+                    nextEventBuff = BUFF.NEXT + ":" + eventJson.choice2Fail;
+                }
+                player.buffSet.add(nextEventBuff);
+            }, eventJson.choice2Subsequent)
+        );
+    }
+}
+
+function comparePlayerStats(compareConditions) {
+    const playerAttrs = compareConditions[0];
+    const comparator = compareConditions[1].trim();
+    const value = compareConditions[2];
+    if (playerAttrs === "all") {
+        return ATTRS.every(attr => {
+            return compare(player[attr], comparator, value);
+        });
+    } else {
+        return playerAttrs.every(attr => {
+            return compare(player[attr], comparator, value);
+        });
+    }
+}
+
+function compare(value1, comparator, value2) {
+    if (comparator === "eq") {
+        return value1 === value2;
+    } else if (comparator === "gt") {
+        return value1 > value2;
+    } else if (comparator === "lt") {
+        return value1 < value2;
+    } else if (comparator === "ge") {
+        return value1 >= value2;
+    } else if (comparator === "le") {
+        return value1 <= value2;
+    } else {
+        throw new Error("invalid comparator: " + comparator);
+    }
+}
+
+function createNoopChoice(eventJson, isChoice1) {
+    if (isChoice1) {
+        return new Choice(eventJson.id, eventJson.choice1,
+            new EffectV2(eventJson.id, EffectType.NOOP, new function () {}, eventJson.choice1Subsequent)
+        );
+    } else {
+        return new Choice(eventJson.id, eventJson.choice2,
+            new EffectV2(eventJson.id, EffectType.NOOP, new function () {}, eventJson.choice2Subsequent)
+        );
+    }
+}
+
+function createBuffChoice(eventJson, isChoice1) {
+    if (isChoice1) {
+        return new Choice(eventJson.id, eventJson.choice1,
+            new EffectV2(eventJson.id, EffectType.ADD_BUFF, new function () {
+                const buffAttrs = parseListAttr(eventJson.choice1Buff);
+                for (let i = 0; i < buffAttrs.length; i++) {
+                    player.buffSet.add(buffAttrs[i]);
+                }
+            }, eventJson.choice1Subsequent)
+        );
+    } else {
+        const choice2 = new Choice(eventJson.id, eventJson.choice2,
+            new EffectV2(eventJson.id, EffectType.ADD_BUFF, new function () {
+                const buffAttrs = parseListAttr(eventJson.choice2Buff);
+                for (let i = 0; i < buffAttrs.length; i++) {
+                    player.buffSet.add(buffAttrs[i]);
+                }
+            }, eventJson.choice2Subsequent)
+        );
+    }
+}
+
+function parseListAttr(listAttr) {
+    const listAttrStr = listAttr.replace(/^.+?{/,'{').replace(/\\/g, '').replace(/(")+/g, '\"');
+    return JSON.parse(listAttrStr);
+}
 
 // Utility:比较player和enemy
 // Choice1: 比较 attrToCompare1 例如 attrToCompare1 = ['gold', 'spirit'], 赢了获得winBuff， 输了lossBuff
@@ -458,7 +578,7 @@ function createFightEffect(eventId, subsequent, attrToCompare, winBuff, lossBuff
             player.buffSet.add(lossBuff);
         }
     };
-    return new EffectV2(eventId, EffectType.FIGHT, callBack, subsequent);
+    return new EffectV2(eventId, EffectType.STATS_COND, callBack, subsequent);
 }
 
 //V2 small random utility
@@ -881,6 +1001,8 @@ function addPage(event, turn) {
 }
 
 $(window).ready(function () {
+
+    console.log("Converting ...");
 
     $.getJSON("ConsecutiveEvents.json", function (json) {
         convertConsecutiveEventJsonToEvents(json);
