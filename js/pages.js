@@ -135,6 +135,7 @@
                     touchEnd: $.proxy(turnMethods._touchEnd, this),
                     start: $.proxy(turnMethods._eventStart, this)
                 };
+                data.firstRemoving = true;
 
 
                 // Add event listeners
@@ -682,8 +683,19 @@
 
                 } else if (page === 'l') {
 
-                    while (data.totalPages !== data.page + 1) {
-                        this.turn('removePage', data.totalPages - 1);
+                    console.log("Total:", data.totalPages);
+                    console.log("Current:", data.page);
+                    let pg;
+                    if (data.totalPages - data.page === 3) {
+                        pg = data.page + 2;
+                    } else {
+                        pg = data.page + 1;
+                    }
+                    console.log("pg:", pg);
+
+
+                    while (data.totalPages !== pg) {
+                        this.turn('removePage', data.totalPages - 2);
                     }
 
                 } else {
@@ -696,7 +708,7 @@
                         // Stop animations
                         this.turn('stop');
 
-                        console.log("removing: ", page);
+                        console.log("removing:", page);
 
                         // Remove `page`
                         turnMethods._removePageFromDOM.call(this, page);
@@ -2879,18 +2891,12 @@
                                 if (point.corner === 'tr') {
                                     $(`.page-num-${currentPage} .neg-line`).removeClass('show');
                                     $(`.page-num-${currentPage} .pos-line`).addClass('show');
-                                    // $('.notification-top').removeClass('show');
-                                    // $('.notification-bot').addClass('show');
-
-
 
                                     choiceId = 0;
                                     console.log("choiceId: " + choiceId);
                                 } else if (point.corner === 'br') {
                                     $(`.page-num-${currentPage} .pos-line`).removeClass('show');
                                     $(`.page-num-${currentPage} .neg-line`).addClass('show');
-                                    // $('.notification-bot').removeClass('show');
-                                    // $('.notification-top').addClass('show');
 
                                     console.log("choiceId: " + choiceId);
                                     choiceId = 1;
