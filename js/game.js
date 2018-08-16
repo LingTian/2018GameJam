@@ -404,10 +404,10 @@ function createStatsChangeEvent(id, name, img, line, posLine, negLine, stage, ty
     console.log(rightAttrEffects);
     return new EventV2(id, name, img, line, stage, null, type,
         new Choice(id, posLine,
-            createStatsEffect(id, subsequent, leftAttrEffects)
+            createStatsEffect(id, leftAttrEffects)
         ),
         new Choice(id, negLine,
-            createStatsEffect(id, subsequent, rightAttrEffects)
+            createStatsEffect(id, rightAttrEffects)
         ),
         null);
 }
@@ -701,8 +701,10 @@ function getNextEvent() {
     }
     allPossibleEvents = allPossibleEvents.filter(event =>
         isEmpty(event.startAchievement) || player.achievements.has(event.startAchievement));
+    allPossibleEvents = allPossibleEvents.filter((event) => event.eventType === EventType.NORMAL);
     allPossibleEvents = allPossibleEvents.filter(event => !eventsPlayedThisState.has(event.eventId));
-    return allPossibleEvents[Math.floor(Math.random() * allPossibleEvents.length)];
+    const randomEvent = allPossibleEvents[Math.floor(Math.random() * allPossibleEvents.length)];
+    return randomEvent;
 }
 
 function initModels() {
@@ -907,6 +909,7 @@ function updateScene(lastEvent) {
 
     addAndRemovePage(nextEvent);
 
+    currentEvent = nextEvent;
     // need to load next level in advance because the last page cannot be flip
     // if (currentEvents.length <= 1 && currentLevel < STAGE_IDS.length) {
     //     const nextLevel = currentLevel + 1;
