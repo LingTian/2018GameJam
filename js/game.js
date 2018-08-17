@@ -3,7 +3,7 @@
 let choiceId = null;
 const MAX_VAL = 100;
 const START_LEVEL = 1;
-const EVENT_PER_LEVEL = 1;
+const EVENT_PER_LEVEL = 8;
 const STAGE_IDS = [91, 92, 93, 94, 95, 96, 97, 98, 99, 100];
 
 let eventsByLevel = {};
@@ -14,6 +14,7 @@ let currentEvent;
 let player;
 let currentMaxPage;
 let currentPage;
+let numEventCurLevel;
 let isEnd;
 
 let eventsPlayedThisState = new Set();
@@ -313,13 +314,13 @@ class Player {
     constructor(name, id) {
         this.id = id;
         this.name = name;
-        this.fatigue = MAX_VAL / 5;
-        this.spirit = MAX_VAL / 5;
-        this.gold = MAX_VAL / 5;
-        this.power = MAX_VAL / 5;
-        this.agility = MAX_VAL / 5;
-        this.intelligence = MAX_VAL / 5;
-        this.goodness = MAX_VAL / 2;
+        this.fatigue = MAX_VAL;
+        this.spirit = MAX_VAL;
+        this.gold = MAX_VAL;
+        this.power = MAX_VAL;
+        this.agility = MAX_VAL;
+        this.intelligence = MAX_VAL;
+        this.goodness = MAX_VAL;
         this.buffSet = new Set();
         this.achievements = new Set();
     }
@@ -425,15 +426,18 @@ function createStatsEffect(eventId, attrChange) {
 }
 
 function convertConsecutiveEventJsonToEvents(json) {
+    const consecEvents = [];
     for (let i = 0; i < json.length; i++) {
         const eventJson = json[i];
         const event = createConsecutiveEvent(eventJson);
-        console.log(event);
+        consecEvents.push(event);
     }
+    return consecEvents;
 }
 
+//TODO: add the start stage for all events
 function createConsecutiveEvent(eventJson) {
-    return new EventV2(eventJson.id, eventJson.name, eventJson.img, eventJson.startStage, eventJson.startAchievement, EventType.NORMAL, createChoice(eventJson, true), createChoice(eventJson, false), null);
+    return new EventV2(eventJson.id, eventJson.name, eventJson.img, eventJson.text, 3, eventJson.startAchievement, EventType.NORMAL, createChoice(eventJson, true), createChoice(eventJson, false), null);
 }
 
 function createChoice(eventJson, isChoice1) {
@@ -550,6 +554,7 @@ function createBuffChoice(eventJson, isChoice1) {
 
 function addNextEventBuff(nextEventId) {
     if (!isEmpty(nextEventId)) {
+        console.log("addNextEventBuff called");
         const nextEventBuff = BUFF.NEXT + ":" + nextEventId;
         player.buffSet.add(nextEventBuff);
     }
@@ -662,6 +667,7 @@ function loadAllEvents(rawEvents) {
         if (!(level in events)) {
             events[level] = [];
         }
+        console.log(`Pushed event ${event.id} to level ${level}`);
         events[level].push(event);
     }
     return events;
@@ -688,43 +694,54 @@ function getEventsForLevel(level) {
 
     allPossibleEvents = allPossibleEvents.filter((event) => event.eventType === EventType.NORMAL);
     console.log(`Got ${allPossibleEvents.length} valid events events.`);
-    return getRandomArrayElements(allPossibleEvents, EVENT_PER_LEVEL);
+    return getRandomArrayElements(allPossibleEvents, 1);
 }
 
 function getNextEvent() {
-    let allPossibleEvents = [];
-    for (let curLevel = 1; curLevel <= currentLevel; curLevel++) {
-        if (curLevel in eventsByLevel) {
-            console.log(`Adding ${eventsByLevel[curLevel].length} events of level ${curLevel} `);
-            allPossibleEvents = allPossibleEvents.concat(eventsByLevel[curLevel]);
+    if (numEventCurLevel < EVENT_PER_LEVEL) {
+        let allPossibleEvents = [];
+        for (let curLevel = 1; curLevel <= currentLevel; curLevel++) {
+            if (curLevel in eventsByLevel) {
+                console.log(`Adding ${eventsByLevel[curLevel].length} events of level ${curLevel} `);
+                allPossibleEvents = allPossibleEvents.concat(eventsByLevel[curLevel]);
+            }
         }
+        allPossibleEvents = allPossibleEvents.filter(event =>
+            isEmpty(event.startAchievement) || player.achievements.has(event.startAchievement));
+        allPossibleEvents = allPossibleEvents.filter((event) => event.eventType === EventType.NORMAL);
+        allPossibleEvents = allPossibleEvents.filter(event => !eventsPlayedThisState.has(event.eventId));
+        const randomEvent = allPossibleEvents[Math.floor(Math.random() * allPossibleEvents.length)];
+        return randomEvent;
+    } else {
+        currentLevel++;
+        return eventMap[STAGE_IDS[currentLevel]];
     }
-    allPossibleEvents = allPossibleEvents.filter(event =>
-        isEmpty(event.startAchievement) || player.achievements.has(event.startAchievement));
-    allPossibleEvents = allPossibleEvents.filter((event) => event.eventType === EventType.NORMAL);
-    allPossibleEvents = allPossibleEvents.filter(event => !eventsPlayedThisState.has(event.eventId));
-    const randomEvent = allPossibleEvents[Math.floor(Math.random() * allPossibleEvents.length)];
-    return randomEvent;
 }
 
 function initModels() {
-    player = initPlayer('Knight III');
+    return $.getJSON("ConsecutiveEvents.json").then(
+        function (json) {
+            player = initPlayer('Knight III');
+            currentLevel = START_LEVEL;
 
-    currentLevel = START_LEVEL;
+            let allEvents = convertConsecutiveEventJsonToEvents(json);
+            console.log("Consecutive events length: " + allEvents.length);
+            allEvents = allEvents.concat(createEvents());
+            for (let i = 0; i < allEvents.length; i++) {
+                eventMap[allEvents[i].id] = allEvents[i];
+            }
 
-    //add events to map
-    const allEvents = createEvents();
-    for (let i = 0; i < allEvents.length; i++) {
-        eventMap[allEvents[i].id] = allEvents[i];
-    }
+            console.log("All events length: " + allEvents.length);
 
-    eventsByLevel = loadAllEvents(allEvents);
+            eventsByLevel = loadAllEvents(allEvents);
 
-    currentEvents.push(eventMap[STAGE_IDS[currentLevel]]);
-    currentEvents = currentEvents.concat(getEventsForLevel(currentLevel + 1));
+            currentEvents.push(eventMap[STAGE_IDS[currentLevel]]);
+            currentEvents = currentEvents.concat(getEventsForLevel(currentLevel + 1));
 
-    currentMaxPage = 0;
-    currentPage = 0;
+            currentMaxPage = 0;
+            currentPage = 0;
+            return true;
+        });
 }
 
 function updatePlayerStatus() {
@@ -877,8 +894,11 @@ function getColorByValue(value) {
 
 function postProcessBuff() {
     let nextEventId = null;
+    console.log("player.buffSet length: " + player.buffSet.length);
     for (const buff in player.buffSet) {
+        console.log("Buff: " + buff);
         if (buff.startsWith(BUFF.NEXT)) {
+            console.log("BUFF.NEXT: " + buff);
             nextEventId = buff.split(":")[1];
         }
         player.buffSet.delete(buff);
@@ -910,6 +930,13 @@ function updateScene(lastEvent) {
     addAndRemovePage(nextEvent);
 
     currentEvent = nextEvent;
+    console.log("currentEvent: " + JSON.stringify(currentEvent));
+    if (currentEvent.eventType === 'stage') {
+        numEventCurLevel = 0;
+    } else {
+        numEventCurLevel++;
+    }
+
     // need to load next level in advance because the last page cannot be flip
     // if (currentEvents.length <= 1 && currentLevel < STAGE_IDS.length) {
     //     const nextLevel = currentLevel + 1;
@@ -4414,65 +4441,58 @@ function addDummyPage(turn) {
 
 })(jQuery);
 
-
 $(window).ready(function () {
 
-    console.log("Converting ...");
+    initModels().then(function () {
+        //init pages
+        currentEvent = eventMap[STAGE_IDS[0]];
+        addPage(currentEvent, false);
+        addDummyPage(false);
+        // addDummyPage(false);
 
-    $.getJSON("ConsecutiveEvents.json", function (json) {
-        convertConsecutiveEventJsonToEvents(json);
-    });
-
-    initModels();
-
-    //init pages
-    currentEvent = eventMap[STAGE_IDS[0]];
-    addPage(currentEvent, false);
-    addDummyPage(false);
-    // addDummyPage(false);
-
-    let width = 800;
-    let height = 575;
-    if (isMobile()) {
-        width = 600;
-        height = 431;
-    }
-
-    $('.button1').click(function () {
-        updateScene(currentEvent);
-    });
-
-    $('.pages').turn({
-        duration: 1500,
-        width: width,
-        height: height,
-        // acceleration: true,
-        //  display: 'single',
-        autoCenter: true,
-        turnCorners: "bl, br",
-        elevation: 300,
-        when: {
-            turned: function (e, page) {
-                // let lastEvent = null;
-                // if (currentPage > 1 && currentEvents.length > 0) {
-                //     lastEvent = currentEvents.shift();
-                // }
-                //
-                // if (lastEvent !== null && lastEvent.type === 'stage') {
-                //     currentLevel++;
-                // }
-                //
-                // console.log("lastEvent: ", lastEvent);
-                console.log("currentMaxPage:", currentMaxPage);
-                currentPage = currentMaxPage-1;
-                $(`.page-num-${currentPage} .to-fade`).addClass('fade-in');
-            },
-            flip: function (e, page) {
-                console.log("flipping ...");
-                $(`.page-num-${currentPage} .pos-line`).removeClass('show');
-                $(`.page-num-${currentPage} .neg-line`).removeClass('show');
-                updateScene(currentEvent);
-            }
+        let width = 800;
+        let height = 575;
+        if (isMobile()) {
+            width = 600;
+            height = 431;
         }
+
+        $('.button1').click(function () {
+            updateScene(currentEvent);
+        });
+
+        $('.pages').turn({
+            duration: 1500,
+            width: width,
+            height: height,
+            // acceleration: true,
+            //  display: 'single',
+            autoCenter: true,
+            turnCorners: "bl, br",
+            elevation: 300,
+            when: {
+                turned: function (e, page) {
+                    // let lastEvent = null;
+                    // if (currentPage > 1 && currentEvents.length > 0) {
+                    //     lastEvent = currentEvents.shift();
+                    // }
+                    //
+                    // if (lastEvent !== null && lastEvent.type === 'stage') {
+                    //     currentLevel++;
+                    // }
+                    //
+                    // console.log("lastEvent: ", lastEvent);
+                    console.log("currentMaxPage:", currentMaxPage);
+                    currentPage = currentMaxPage-1;
+                    $(`.page-num-${currentPage} .to-fade`).addClass('fade-in');
+                },
+                flip: function (e, page) {
+                    console.log("flipping ...");
+                    $(`.page-num-${currentPage} .pos-line`).removeClass('show');
+                    $(`.page-num-${currentPage} .neg-line`).removeClass('show');
+                    updateScene(currentEvent);
+                }
+            }
+        });
     });
 });
