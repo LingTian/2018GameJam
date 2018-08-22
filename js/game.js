@@ -437,24 +437,30 @@ function convertConsecutiveEventJsonToEvents(json) {
 
 //TODO: add the start stage for all events
 function createConsecutiveEvent(eventJson) {
-    return new EventV2(eventJson.id, eventJson.name, eventJson.img, eventJson.text, 3, eventJson.startAchievement, EventType.NORMAL, createChoice(eventJson, true), createChoice(eventJson, false), null);
+    const startStage = eventJson.startStage === "" ? null : eventJson.startStage
+    return new EventV2(eventJson.id, eventJson.name, eventJson.img, eventJson.text, startStage, eventJson.startAchievement, EventType.NORMAL, createChoice(eventJson, true), createChoice(eventJson, false), null);
 }
 
 function createChoice(eventJson, isChoice1) {
     const effectType = isChoice1 ? eventJson.effect1Type : eventJson.effect2Type;
-    if (effectType === "noChnage") {
+    if (effectType === "noChange") {
         return createNoopChoice(eventJson, isChoice1);
     } else if (effectType === "buff") {
         return createBuffChoice(eventJson, isChoice1);
     } else if (effectType === "statsConditional") {
         return createStatsConditionalChoice(eventJson, isChoice1);
+    } else if (effectType === "death") {
+        return createBuffChoice(eventJson, isChoice1);
+    } else {
+        console.error("Cannot create choice for");
+        console.error(eventJson);
     }
 }
 
 function createStatsConditionalChoice(eventJson, isChoice1) {
     if (isChoice1) {
         return new Choice(eventJson.id, eventJson.choice1,
-            new EffectV2(eventJson.id, EffectType.STATS_COND, new function () {
+            new EffectV2(eventJson.id, EffectType.STATS_COND, function () {
                 const conditions = parseListAttr(eventJson.choice1Condition);
                 let nextEventBuff;
                 if (comparePlayerStats(conditions)) {
@@ -467,7 +473,7 @@ function createStatsConditionalChoice(eventJson, isChoice1) {
         );
     } else {
         return new Choice(eventJson.id, eventJson.choice2,
-            new EffectV2(eventJson.id, EffectType.STATS_COND, new function () {
+            new EffectV2(eventJson.id, EffectType.STATS_COND, function () {
                 const conditions = parseListAttr(eventJson.choice1Condition);
                 let nextEventBuff;
                 if (comparePlayerStats(conditions)) {
@@ -515,13 +521,15 @@ function compare(value1, comparator, value2) {
 function createNoopChoice(eventJson, isChoice1) {
     if (isChoice1) {
         return new Choice(eventJson.id, eventJson.choice1,
-            new EffectV2(eventJson.id, EffectType.NOOP, new function () {
+            new EffectV2(eventJson.id, EffectType.NOOP, function () {
+                console.error(eventJson.choice1Subsequent);
                 addNextEventBuff(eventJson.choice1Subsequent);
             })
         );
     } else {
         return new Choice(eventJson.id, eventJson.choice2,
-            new EffectV2(eventJson.id, EffectType.NOOP, new function () {
+            new EffectV2(eventJson.id, EffectType.NOOP, function () {
+                console.error(eventJson.choice2Subsequent);
                 addNextEventBuff(eventJson.choice2Subsequent);
             })
         );
@@ -531,21 +539,23 @@ function createNoopChoice(eventJson, isChoice1) {
 function createBuffChoice(eventJson, isChoice1) {
     if (isChoice1) {
         return new Choice(eventJson.id, eventJson.choice1,
-            new EffectV2(eventJson.id, EffectType.ADD_BUFF, new function () {
+            new EffectV2(eventJson.id, EffectType.ADD_BUFF, function () {
                 const buffAttrs = parseListAttr(eventJson.choice1Buff);
                 for (let i = 0; i < buffAttrs.length; i++) {
                     player.buffSet.add(buffAttrs[i]);
                 }
+                console.error(eventJson.choice1Subsequent);
                 addNextEventBuff(eventJson.choice1Subsequent);
             })
         );
     } else {
         return new Choice(eventJson.id, eventJson.choice2,
-            new EffectV2(eventJson.id, EffectType.ADD_BUFF, new function () {
+            new EffectV2(eventJson.id, EffectType.ADD_BUFF, function () {
                 const buffAttrs = parseListAttr(eventJson.choice2Buff);
                 for (let i = 0; i < buffAttrs.length; i++) {
                     player.buffSet.add(buffAttrs[i]);
                 }
+                console.error(eventJson.choice1Subsequent);
                 addNextEventBuff(eventJson.choice2Subsequent);
             })
         );
@@ -553,10 +563,12 @@ function createBuffChoice(eventJson, isChoice1) {
 }
 
 function addNextEventBuff(nextEventId) {
+    console.error("nextEventId: " + nextEventId);
     if (!isEmpty(nextEventId)) {
-        console.log("addNextEventBuff called");
         const nextEventBuff = BUFF.NEXT + ":" + nextEventId;
+        console.error("adding... " + nextEventBuff);
         player.buffSet.add(nextEventBuff);
+        console.error(player.buffSet);
     }
 }
 
@@ -663,11 +675,15 @@ function loadAllEvents(rawEvents) {
     const events = {};
     for (let i = 0; i < rawEvents.length; i++) {
         const event = rawEvents[i];
+        if (event.startStage === null) {
+            continue;
+        }
         const level = event.startStage;
         if (!(level in events)) {
             events[level] = [];
         }
         console.log(`Pushed event ${event.id} to level ${level}`);
+        console.log(event);
         events[level].push(event);
     }
     return events;
@@ -894,8 +910,10 @@ function getColorByValue(value) {
 
 function postProcessBuff() {
     let nextEventId = null;
-    console.log("player.buffSet length: " + player.buffSet.length);
-    for (const buff in player.buffSet) {
+    console.log("player.buffSet: ");
+    console.log(player.buffSet);
+    var values = player.buffSet.values();
+    player.buffSet.forEach(buff => {
         console.log("Buff: " + buff);
         if (buff.startsWith(BUFF.NEXT)) {
             console.log("BUFF.NEXT: " + buff);
@@ -903,7 +921,8 @@ function postProcessBuff() {
         }
         player.buffSet.delete(buff);
         player.achievements.add(buff);
-    }
+    });
+
     return nextEventId;
 }
 
@@ -916,11 +935,16 @@ function updateScene(lastEvent) {
     } else if (lastEvent !== null) {
         const lastChoice = choiceId === 0 ? lastEvent.choice1 : lastEvent.choice2;
         const lastEffect = lastChoice.effect;
+        console.warn("lastEffect: ");
+        console.warn(lastEffect);
+        console.warn("callBack: ");
+        console.warn(lastEffect.callBack);
+        console.warn(typeof lastEffect.callBack);
         lastEffect.callBack();
     }
 
     updatePlayerStatus();
-    //If the player dies, game ends
+    // If the player dies, game ends
     // player
     checkDead();
 
@@ -930,7 +954,8 @@ function updateScene(lastEvent) {
     addAndRemovePage(nextEvent);
 
     currentEvent = nextEvent;
-    console.log("currentEvent: " + JSON.stringify(currentEvent));
+    console.log("currentEvent: ");
+    console.log(currentEvent);
     if (currentEvent.eventType === 'stage') {
         numEventCurLevel = 0;
     } else {
