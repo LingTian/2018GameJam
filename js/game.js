@@ -724,6 +724,10 @@ function getNextEvent() {
         }
         allPossibleEvents = allPossibleEvents.filter(event =>
             isEmpty(event.startAchievement) || player.achievements.has(event.startAchievement));
+
+        console.warn("player.achievements:");
+        console.warn(player.achievements);
+
         allPossibleEvents = allPossibleEvents.filter((event) => event.eventType === EventType.NORMAL);
         allPossibleEvents = allPossibleEvents.filter(event => !eventsPlayedThisState.has(event.eventId));
         const randomEvent = allPossibleEvents[Math.floor(Math.random() * allPossibleEvents.length)];
