@@ -232,7 +232,8 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(82, "亚当", "img/1.png", "年轻的时候以为那只是段感情，后来才知道，那其实是一生。", "心中有所爱之人亦是一种幸福。", "如果重来一次你会后悔吗？", "1", EventType.NORMAL, [-1, -1], [10, 0, 10, 10, 10, 0], [10, 0, 0, 0, 0, 10], ""));
     allEvents.push(createStatsChangeEvent(83, "亚当", "img/1.png", "疯子身上一把刀，鬼神也得让一步。", "举头三尺神明在。", "文明的结果是滑稽。", "1", EventType.NORMAL, [-1, -1], [10, 0, 0, 0, 0, 0], [10, 0, 0, 0, 0, -10], ""));
     allEvents.push(createStatsChangeEvent(84, "亚当", "img/1.png", "总之，因为活着所以一定要欺世盗名。", "迷途的灵魂，愿你得到安息。", "恶有恶报。", "1", EventType.NORMAL, [-1, -1], [-20, 0, 0, 0, 0, 10], [-10, 0, 0, 0, 0, 10], ""));
-    allEvents.push(createStatsChangeEvent(84, "亚当", "img/1.png", "优于别人，并不高贵，真正的高贵应该是优于过去的自己。", "似乎很有道理。", "物竞天择。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, 0], [-10, 10, 10, 10, 10, -10], ""));
+    allEvents.push(createStatsChangeEvent(85, "亚当", "img/1.png", "优于别人，并不高贵，真正的高贵应该是优于过去的自己。", "似乎很有道理。", "物竞天择。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, 0], [-10, 10, 10, 10, 10, -10], ""));
+    allEvents.push(createStatsChangeEvent(86, "亚当", "img/1.png", "现在不是去想缺少什么的时候，该想一想凭现有的东西你能做什么。", "唯有砥砺前行。", "战略性撤退也是种方案。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, 0], [-10, -10, 0, 0, 0, 0], ""));
 
 
     // allEvents.push(createEvent(13, "医生", "1.png", "西方的悬崖上传闻有魔龙作恶。", "无论多么危险我都将带头征讨。", "这肯定是无稽之谈。", "5", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, -1], ""));
