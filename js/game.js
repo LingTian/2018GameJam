@@ -228,6 +228,12 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(79, "朗格努斯", "img/10.png", "枪身血红，似乎滴血一般。", "让我来用着魔枪结束乱世。", "王者的使命过于沉重", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10], ""));
 
     allEvents.push(createStatsChangeEvent(80, "Laevatein", "img/10.png", "永远燃烧的火焰之剑。", "我能承受火焰之魂。", "冒火的剑怎么可能能拿得起来？", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10], ""));
+    allEvents.push(createStatsChangeEvent(81, "亚当", "img/1.png", "伊甸园中有棵禁止享用的果树，叫分辨善恶树，是上帝为考验人的信心而设置的。", "如果是夏娃给的苹果，我应该也会吃。", "不可以吃，也不能摸，免得你们死。", "1", EventType.NORMAL, [-1, -1], [10, 0, 0, 0, 10, 0], [10, 0, 0, 0, 0, 5], ""));
+    allEvents.push(createStatsChangeEvent(82, "亚当", "img/1.png", "年轻的时候以为那只是段感情，后来才知道，那其实是一生。", "心中有所爱之人亦是一种幸福。", "如果重来一次你会后悔吗？", "1", EventType.NORMAL, [-1, -1], [10, 0, 10, 10, 10, 0], [10, 0, 0, 0, 0, 10], ""));
+    allEvents.push(createStatsChangeEvent(83, "亚当", "img/1.png", "疯子身上一把刀，鬼神也得让一步。", "举头三尺神明在。", "文明的结果是滑稽。", "1", EventType.NORMAL, [-1, -1], [10, 0, 0, 0, 0, 0], [10, 0, 0, 0, 0, -10], ""));
+    allEvents.push(createStatsChangeEvent(84, "亚当", "img/1.png", "总之，因为活着所以一定要欺世盗名。", "迷途的灵魂，愿你得到安息。", "恶有恶报。", "1", EventType.NORMAL, [-1, -1], [-20, 0, 0, 0, 0, 10], [-10, 0, 0, 0, 0, 10], ""));
+    allEvents.push(createStatsChangeEvent(84, "亚当", "img/1.png", "优于别人，并不高贵，真正的高贵应该是优于过去的自己。", "似乎很有道理。", "物竞天择。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, 0], [-10, 10, 10, 10, 10, -10], ""));
+
 
     // allEvents.push(createEvent(13, "医生", "1.png", "西方的悬崖上传闻有魔龙作恶。", "无论多么危险我都将带头征讨。", "这肯定是无稽之谈。", "5", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, -1], ""));
     // allEvents.push(createEvent(500, "修女", "1.png", "也有可能有怪物守护。", "勇者无畏，愿意接受挑战。", "太危险了还是算了吧。", "", EventType.NORMAL, [600, 601], [-50, 0, 0, 0, 0, 30], [0, 0, 0, 0, 0, -10], ""));
