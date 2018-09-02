@@ -713,6 +713,19 @@ function getEventsForLevel(level) {
     return getRandomArrayElements(allPossibleEvents, 1);
 }
 
+function getCompleteEvents() {
+    const completeEvents = new Set();
+    player.achievements.forEach(
+        achievement => {
+            if (achievement.startsWith("COM")) {
+                const eventId = achievement.substring(4);
+                completeEvents.add(eventId);
+            }
+        }
+    )
+    return completeEvents;
+}
+
 function getNextEvent() {
     if (numEventCurLevel < EVENT_PER_LEVEL) {
         let allPossibleEvents = [];
@@ -725,11 +738,21 @@ function getNextEvent() {
         allPossibleEvents = allPossibleEvents.filter(event =>
             isEmpty(event.startAchievement) || player.achievements.has(event.startAchievement));
 
-        console.warn("player.achievements:");
-        console.warn(player.achievements);
-
-        allPossibleEvents = allPossibleEvents.filter((event) => event.eventType === EventType.NORMAL);
+        allPossibleEvents = allPossibleEvents.filter(event => event.eventType === EventType.NORMAL);
         allPossibleEvents = allPossibleEvents.filter(event => !eventsPlayedThisState.has(event.eventId));
+
+        const completeEvents = getCompleteEvents();
+        console.error("completeEvents:");
+        console.error(completeEvents);
+
+        allPossibleEvents = allPossibleEvents.filter(event => !completeEvents.has(event.id));
+
+        //for debug
+        if (currentLevel >= 3) {
+            console.warn(allPossibleEvents[0]);
+            allPossibleEvents = allPossibleEvents.filter(event => typeof event.id === 'string' && event.id.includes("-"));
+        }
+
         const randomEvent = allPossibleEvents[Math.floor(Math.random() * allPossibleEvents.length)];
         return randomEvent;
     } else {
