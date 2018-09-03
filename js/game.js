@@ -16,6 +16,7 @@ let currentMaxPage;
 let currentPage;
 let numEventCurLevel;
 let isEnd;
+let endBuff;
 
 let eventsPlayedThisState = new Set();
 
@@ -373,7 +374,8 @@ const EffectType = Object.freeze({
 });
 
 const BUFF = Object.freeze({
-    NEXT: "NEXT" // NEXT EVENT
+    NEXT: "NEXT", // NEXT EVENT
+    DEATH: "DEATH"
 });
 
 class EffectV2 {
@@ -952,11 +954,14 @@ function postProcessBuff() {
         if (buff.startsWith(BUFF.NEXT)) {
             console.log("BUFF.NEXT: " + buff);
             nextEventId = buff.split(":")[1];
+        } else if (buff.startsWith(BUFF.DEATH)) {
+            console.log("BUFF.NEXT: " + buff);
+            endBuff = buff;
+            isEnd = true;
         }
         player.buffSet.delete(buff);
         player.achievements.add(buff);
     });
-
     return nextEventId;
 }
 
@@ -980,9 +985,9 @@ function updateScene(lastEvent) {
     updatePlayerStatus();
     // If the player dies, game ends
     // player
-    checkDead();
-
     let nextEventId = postProcessBuff();
+    checkDead(nextEventId);
+
     let nextEvent = nextEventId === null ? getNextEvent() : eventMap[nextEventId];
 
     addAndRemovePage(nextEvent);
@@ -1013,12 +1018,15 @@ function updateScene(lastEvent) {
 
 }
 
-function checkDead() {
-    if (player.gold <= 0 || player.spirit <= 0) {
-        isEnd = true;
-    } else {
-        isEnd = false;
+function checkDead(nextEventId) {
+
+    if (isEnd) {
+        //special end
+        addDeadPage(eventMap[nextEventId]);
+        return;
     }
+
+    isEnd = player.gold <= 0 || player.spirit <= 0;
     if (isEnd) {
         if (player.goodness > 80 && player.goodness < 100) {
             addDeadPage(eventMap[801]);
