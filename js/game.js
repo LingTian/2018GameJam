@@ -586,7 +586,7 @@ function isEmpty(str) {
 }
 
 function parseListAttr(listAttr) {
-    const listAttrStr = listAttr.replace(/^.+?{/,'{').replace(/\\/g, '').replace(/(")+/g, '\"');
+    const listAttrStr = listAttr.replace(/^.+?{/, '{').replace(/\\/g, '').replace(/(")+/g, '\"');
     return JSON.parse(listAttrStr);
 }
 
@@ -736,6 +736,9 @@ function getCompleteEvents() {
 }
 
 function getNextEvent() {
+    console.error("numEventCurLevel: " + numEventCurLevel);
+    console.error("EVENT_PER_LEVEL: " + EVENT_PER_LEVEL);
+
     if (numEventCurLevel < EVENT_PER_LEVEL) {
         let allPossibleEvents = [];
         for (let curLevel = 1; curLevel <= currentLevel; curLevel++) {
@@ -765,8 +768,9 @@ function getNextEvent() {
         const randomEvent = allPossibleEvents[Math.floor(Math.random() * allPossibleEvents.length)];
         return randomEvent;
     } else {
+        console.error("getNextEvent currentLevel++")
         currentLevel++;
-        return eventMap[STAGE_IDS[currentLevel]];
+        return eventMap[STAGE_IDS[currentLevel - 1]];
     }
 }
 
@@ -775,6 +779,7 @@ function initModels() {
         function (json) {
             player = initPlayer('Knight III');
             currentLevel = START_LEVEL;
+            numEventCurLevel = 0;
 
             let allEvents = convertConsecutiveEventJsonToEvents(json);
             console.log("Consecutive events length: " + allEvents.length);
@@ -972,9 +977,11 @@ function postProcessBuff() {
 function updateScene(lastEvent) {
     //update player status
 
-    if (lastEvent.type === "stage") {
+    console.error("updateScene: ");
+    console.error(lastEvent);
+
+    if (lastEvent.eventType === "stage") {
         eventsPlayedThisState.clear();
-        currentLevel++;
     } else if (lastEvent !== null) {
         const lastChoice = choiceId === 0 ? lastEvent.choice1 : lastEvent.choice2;
         const lastEffect = lastChoice.effect;
@@ -1111,6 +1118,12 @@ function createEventPageAndTurn(eventPage) {
 }
 
 function addDeadPage(event) {
+    const achievementsStrList = [];
+    const achievements = player.achievements.forEach(
+        ach => {
+            achievementsStrList.push(ach.substring(ach.lastIndexOf(':') + 1));
+        }
+    )
     $('.pages').turn('disable', true);
     $(`.page-num-${currentPage}`).html(`<div class="pages-content">
             <div class="pages-background"></div>
@@ -1120,6 +1133,7 @@ function addDeadPage(event) {
               </div>
               <h1>${event.line}</h1>
               <h1><font color="#dc143c">"Goodness: "+${player.goodness}</font></h1>
+              <h1><font color="#dc143c">"Achievements: "+${achievements.join(' ')}</font></h1>
             </div>
           </div>`).addClass('puff-in-center');
     //upload data to Nebulas networks
@@ -2811,11 +2825,11 @@ function showTitle(title) {
                         data.pageWrap[page].css({
                             display: (pos.pageV[page] || fixed) ? '' : 'none',
                             zIndex:
-                            (data.pageObjs[page].hasClass('hard') ?
-                                    pos.partZ[page]
-                                    :
-                                    pos.pageZ[page]
-                            ) || (fixed ? -1 : 0)
+                                (data.pageObjs[page].hasClass('hard') ?
+                                        pos.partZ[page]
+                                        :
+                                        pos.pageZ[page]
+                                ) || (fixed ? -1 : 0)
                         });
 
                         if ((p = data.pages[page])) {
@@ -4325,12 +4339,12 @@ function showTitle(title) {
 
             obj.css({
                 'background-image':
-                '-webkit-gradient(linear, ' +
-                p0.x + '% ' +
-                p0.y + '%,' +
-                p1.x + '% ' +
-                p1.y + '%, ' +
-                cols.join(',') + ' )'
+                    '-webkit-gradient(linear, ' +
+                    p0.x + '% ' +
+                    p0.y + '%,' +
+                    p1.x + '% ' +
+                    p1.y + '%, ' +
+                    cols.join(',') + ' )'
             });
         } else {
 
@@ -4524,7 +4538,7 @@ function showTitle(title) {
 
 $(window).ready(function () {
 
-    $(".button").click(function(){
+    $(".button").click(function () {
         console.error("Clicked...");
     });
 
@@ -4568,7 +4582,7 @@ $(window).ready(function () {
                     //
                     // console.log("lastEvent: ", lastEvent);
                     console.log("currentMaxPage:", currentMaxPage);
-                    currentPage = currentMaxPage-1;
+                    currentPage = currentMaxPage - 1;
                     $(`.page-num-${currentPage} .to-fade`).addClass('fade-in');
                 },
                 flip: function (e, page) {
