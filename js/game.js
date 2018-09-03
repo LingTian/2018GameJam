@@ -1,5 +1,4 @@
 // All game singletons
-
 let choiceId = null;
 const MAX_VAL = 100;
 const START_LEVEL = 1;
@@ -375,7 +374,8 @@ const EffectType = Object.freeze({
 
 const BUFF = Object.freeze({
     NEXT: "NEXT", // NEXT EVENT
-    DEATH: "DEATH"
+    DEATH: "DEATH",
+    TITLE: "TITLE"
 });
 
 class EffectV2 {
@@ -955,9 +955,13 @@ function postProcessBuff() {
             console.log("BUFF.NEXT: " + buff);
             nextEventId = buff.split(":")[1];
         } else if (buff.startsWith(BUFF.DEATH)) {
-            console.log("BUFF.NEXT: " + buff);
+            console.log("BUFF.DEATH: " + buff);
             endBuff = buff;
             isEnd = true;
+        } else if (buff.startsWith(BUFF.TITLE)) {
+            console.log("BUFF.TITLE: " + TITLE);
+            const title = buff.substring(BUFF.TITLE.length + 1);
+            showTitle(title);
         }
         player.buffSet.delete(buff);
         player.achievements.add(buff);
@@ -1161,6 +1165,16 @@ function addDummyPage(turn) {
     if (turn) {
         $('.pages').turn('addPage', div);
     }
+}
+
+function showTitle(title) {
+    iziToast.show({
+        theme: 'light',
+        title: '获得称号',
+        message: title,
+        position: 'topCenter',
+        color: 'green'
+    });
 }
 
 (function ($) {
@@ -4510,6 +4524,10 @@ function addDummyPage(turn) {
 
 $(window).ready(function () {
 
+    $(".button").click(function(){
+        console.error("Clicked...");
+    });
+
     initModels().then(function () {
         //init pages
         currentEvent = eventMap[STAGE_IDS[0]];
@@ -4524,9 +4542,9 @@ $(window).ready(function () {
             height = 431;
         }
 
-        $('.button1').click(function () {
-            updateScene(currentEvent);
-        });
+        // $('.button1').click(function () {
+        //     updateScene(currentEvent);
+        // });
 
         $('.pages').turn({
             duration: 1500,
