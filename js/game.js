@@ -1,10 +1,10 @@
 // All game singletons
-let choiceId = null;
 const MAX_VAL = 100;
 const START_LEVEL = 1;
 const EVENT_PER_LEVEL = 8;
 const STAGE_IDS = [91, 92, 93, 94, 95, 96, 97, 98, 99, 100];
 
+let choiceId = null;
 let eventsByLevel = {};
 let eventMap = {};
 let currentLevel;
@@ -13,7 +13,6 @@ let currentEvent;
 let player;
 let currentMaxPage;
 let currentPage;
-let numEventCurLevel;
 let isEnd;
 let endBuff;
 
@@ -227,7 +226,7 @@ function createEvents() {
 
     allEvents.push(createStatsChangeEvent(79, "朗格努斯", "img/10.png", "枪身血红，似乎滴血一般。", "让我来用着魔枪结束乱世。", "王者的使命过于沉重", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10], ""));
 
-    allEvents.push(createStatsChangeEvent(80, "Laevatein", "img/10.png", "永远燃烧的火焰之剑。", "我能承受火焰之魂。", "冒火的剑怎么可能能拿得起来？", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10], ""));
+    allEvents.push(createStatsChangeEvent(80, "雷沃汀", "img/10.png", "永远燃烧的火焰之剑。", "我能承受火焰之魂。", "冒火的剑怎么可能能拿得起来？", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10], ""));
     allEvents.push(createStatsChangeEvent(81, "亚当", "img/1.png", "伊甸园中有棵禁止享用的果树，叫分辨善恶树，是上帝为考验人的信心而设置的。", "如果是夏娃给的苹果，我应该也会吃。", "不可以吃，也不能摸，免得你们死。", "1", EventType.NORMAL, [-1, -1], [10, 0, 0, 0, 10, 0], [10, 0, 0, 0, 0, 5], ""));
     allEvents.push(createStatsChangeEvent(82, "亚当", "img/1.png", "年轻的时候以为那只是段感情，后来才知道，那其实是一生。", "心中有所爱之人亦是一种幸福。", "如果重来一次你会后悔吗？", "1", EventType.NORMAL, [-1, -1], [10, 0, 10, 10, 10, 0], [10, 0, 0, 0, 0, 10], ""));
     allEvents.push(createStatsChangeEvent(83, "亚当", "img/1.png", "疯子身上一把刀，鬼神也得让一步。", "举头三尺神明在。", "文明的结果是滑稽。", "1", EventType.NORMAL, [-1, -1], [10, 0, 0, 0, 0, 0], [10, 0, 0, 0, 0, -10], ""));
@@ -375,7 +374,8 @@ const EffectType = Object.freeze({
 const BUFF = Object.freeze({
     NEXT: "NEXT", // NEXT EVENT
     DEATH: "DEATH",
-    TITLE: "TITLE"
+    TITLE: "TITLE",
+    COMPLETE: "COM"
 });
 
 class EffectV2 {
@@ -446,8 +446,12 @@ function convertConsecutiveEventJsonToEvents(json) {
 
 //TODO: add the start stage for all events
 function createConsecutiveEvent(eventJson) {
-    const startStage = eventJson.startStage === "" ? null : eventJson.startStage
-    return new EventV2(eventJson.id, eventJson.name, eventJson.img, eventJson.text, startStage, eventJson.startAchievement, EventType.NORMAL, createChoice(eventJson, true), createChoice(eventJson, false), null);
+    const startStage = eventJson.startStage === "" ? null : eventJson.startStage;
+    const startAchievement = eventJson.startAchievement === ""
+        ? ""
+        : parseListAttr(eventJson.startAchievement)[0];
+    console.error(startAchievement);
+    return new EventV2(eventJson.id, eventJson.name, eventJson.img, eventJson.text, startStage, startAchievement, EventType.NORMAL, createChoice(eventJson, true), createChoice(eventJson, false), null);
 }
 
 function createChoice(eventJson, isChoice1) {
@@ -512,6 +516,9 @@ function comparePlayerStats(compareConditions) {
 }
 
 function compare(value1, comparator, value2) {
+    console.warn(value1);
+    console.warn(comparator);
+    console.warn(value2);
     if (comparator === "eq") {
         return value1 === value2;
     } else if (comparator === "gt") {
@@ -735,11 +742,18 @@ function getCompleteEvents() {
     return completeEvents;
 }
 
+// function getNextEvent() {
+//     return eventMap["牧师4-1"];
+// }
+
 function getNextEvent() {
-    console.error("numEventCurLevel: " + numEventCurLevel);
+    console.error("numEventCurLevel: " + eventsPlayedThisState.size);
     console.error("EVENT_PER_LEVEL: " + EVENT_PER_LEVEL);
 
-    if (numEventCurLevel < EVENT_PER_LEVEL) {
+    console.warn("player.achievements:");
+    console.warn(player.achievements);
+
+    if (eventsPlayedThisState.size < EVENT_PER_LEVEL) {
         let allPossibleEvents = [];
         for (let curLevel = 1; curLevel <= currentLevel; curLevel++) {
             if (curLevel in eventsByLevel) {
@@ -749,6 +763,11 @@ function getNextEvent() {
         }
         allPossibleEvents = allPossibleEvents.filter(event =>
             isEmpty(event.startAchievement) || player.achievements.has(event.startAchievement));
+
+        // filter current event.
+        if (currentEvent != null) {
+            allPossibleEvents = allPossibleEvents.filter(event => event.id !== currentEvent.id);
+        }
 
         allPossibleEvents = allPossibleEvents.filter(event => event.eventType === EventType.NORMAL);
         allPossibleEvents = allPossibleEvents.filter(event => !eventsPlayedThisState.has(event.eventId));
@@ -765,6 +784,9 @@ function getNextEvent() {
             allPossibleEvents = allPossibleEvents.filter(event => typeof event.id === 'string' && event.id.includes("-"));
         }
 
+        console.error("allPossibleEvents:");
+        allPossibleEvents.forEach(event => console.warn(event));
+
         const randomEvent = allPossibleEvents[Math.floor(Math.random() * allPossibleEvents.length)];
         return randomEvent;
     } else {
@@ -779,7 +801,6 @@ function initModels() {
         function (json) {
             player = initPlayer('Knight III');
             currentLevel = START_LEVEL;
-            numEventCurLevel = 0;
 
             let allEvents = convertConsecutiveEventJsonToEvents(json);
             console.log("Consecutive events length: " + allEvents.length);
@@ -940,9 +961,9 @@ function updatePlayerStatus() {
 }
 
 function getColorByValue(value) {
-    if (value < 20) {
+    if (value < 50) {
         return "red";
-    } else if (value < 60) {
+    } else if (value < 100) {
         return "#2b6aff";
     } else {
         return "black";
@@ -964,12 +985,16 @@ function postProcessBuff() {
             endBuff = buff;
             isEnd = true;
         } else if (buff.startsWith(BUFF.TITLE)) {
-            console.log("BUFF.TITLE: " + TITLE);
+            console.log("BUFF.TITLE: " + buff);
             const title = buff.substring(BUFF.TITLE.length + 1);
+            player.achievements.add(buff);
             showTitle(title);
+        } else if (buff.startsWith(BUFF.COMPLETE)) {
+            console.log("BUFF.COMPLETE: " + buff);
+            player.achievements.add(buff);
+            // showTitle(title);
         }
         player.buffSet.delete(buff);
-        player.achievements.add(buff);
     });
     return nextEventId;
 }
@@ -1006,10 +1031,8 @@ function updateScene(lastEvent) {
     currentEvent = nextEvent;
     console.log("currentEvent: ");
     console.log(currentEvent);
-    if (currentEvent.eventType === 'stage') {
-        numEventCurLevel = 0;
-    } else {
-        numEventCurLevel++;
+    if (currentEvent.eventType !== 'stage') {
+        eventsPlayedThisState.add(currentEvent.id);
     }
 
     // need to load next level in advance because the last page cannot be flip
@@ -1119,7 +1142,7 @@ function createEventPageAndTurn(eventPage) {
 
 function addDeadPage(event) {
     const achievementsStrList = [];
-    const achievements = player.achievements.forEach(
+    const achievements = player.achievements.filter(ach.startsWith(BUFF.TITLE)).forEach(
         ach => {
             achievementsStrList.push(ach.substring(ach.lastIndexOf(':') + 1));
         }
@@ -4583,7 +4606,7 @@ $(window).ready(function () {
                     // console.log("lastEvent: ", lastEvent);
                     console.log("currentMaxPage:", currentMaxPage);
                     currentPage = currentMaxPage - 1;
-                    $(`.page-num-${currentPage} .to-fade`).addClass('fade-in');
+                    // $(`.page-num-${currentPage} .to-fade`).addClass('fade-in');
                 },
                 flip: function (e, page) {
                     console.log("flipping ...");
