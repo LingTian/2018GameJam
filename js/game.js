@@ -779,10 +779,10 @@ function getNextEvent() {
         allPossibleEvents = allPossibleEvents.filter(event => !completeEvents.has(event.id));
 
         //for debug
-        if (currentLevel >= 3) {
-            console.warn(allPossibleEvents[0]);
-            allPossibleEvents = allPossibleEvents.filter(event => typeof event.id === 'string' && event.id.includes("-"));
-        }
+        // if (currentLevel >= 3) {
+        //     console.warn(allPossibleEvents[0]);
+        //     allPossibleEvents = allPossibleEvents.filter(event => typeof event.id === 'string' && event.id.includes("-"));
+        // }
 
         console.error("allPossibleEvents:");
         allPossibleEvents.forEach(event => console.warn(event));
