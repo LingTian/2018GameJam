@@ -1022,60 +1022,51 @@ function updateScene(lastEvent) {
     // If the player dies, game ends
     // player
     let nextEventId = postProcessBuff();
-    checkDead(nextEventId);
+    const deadEvent = checkDead(nextEventId);
+    // const deadEvent = eventMap[801];
+    if (deadEvent != null) {
+        addDeadPage(deadEvent);
+        //upload data to Nebulas networks
+        uploadData();
+    } else {
+        let nextEvent = nextEventId === null ? getNextEvent() : eventMap[nextEventId];
 
-    let nextEvent = nextEventId === null ? getNextEvent() : eventMap[nextEventId];
+        addAndRemovePage(nextEvent);
 
-    addAndRemovePage(nextEvent);
-
-    currentEvent = nextEvent;
-    console.log("currentEvent: ");
-    console.log(currentEvent);
-    if (currentEvent.eventType !== 'stage') {
-        eventsPlayedThisState.add(currentEvent.id);
+        currentEvent = nextEvent;
+        console.log("currentEvent: ");
+        console.log(currentEvent);
+        if (currentEvent.eventType !== 'stage') {
+            eventsPlayedThisState.add(currentEvent.id);
+        }
     }
-
-    // need to load next level in advance because the last page cannot be flip
-    // if (currentEvents.length <= 1 && currentLevel < STAGE_IDS.length) {
-    //     const nextLevel = currentLevel + 1;
-    //     let newEvents = [];
-    //     newEvents.push(eventMap[STAGE_IDS[nextLevel - 1]]);
-    //     newEvents = newEvents.concat(getEventsForLevel(nextLevel));
-    //     addPages(newEvents, true);
-    //     console.log("Adding page");
-    //     currentEvents = currentEvents.concat(newEvents);
-    // }
-
-    //update stage info
-
-    //update events
-
 }
 
 function checkDead(nextEventId) {
 
     if (isEnd) {
         //special end
-        addDeadPage(eventMap[nextEventId]);
-        return;
+        return eventMap[nextEventId];
     }
 
     isEnd = player.gold <= 0 || player.spirit <= 0;
     if (isEnd) {
         if (player.goodness > 80 && player.goodness < 100) {
-            addDeadPage(eventMap[801]);
+            return eventMap[801];
         } else if (player.goodness > 99) {
-            addDeadPage(eventMap[803]);
+            return eventMap[803];
         } else if (player.goodness < 20 && player.goodness > 0) {
-            addDeadPage(eventMap[802]);
+            return eventMap[802];
         } else if (player.goodness < 1) {
-            addDeadPage(eventMap[804]);
+            return eventMap[804];
         } else if (currentPage > 50) {
-            addDeadPage(eventMap[800]);
+            return eventMap[800];
         } else {
-            addDeadPage(eventMap[600]);
+            return eventMap[600];
         }
     }
+
+    return null;
 }
 
 function createPage(event) {
@@ -1142,25 +1133,27 @@ function createEventPageAndTurn(eventPage) {
 
 function addDeadPage(event) {
     const achievementsStrList = [];
-    const achievements = player.achievements.filter(ach.startsWith(BUFF.TITLE)).forEach(
+    Array.from(player.achievements).filter(ach => ach.startsWith(BUFF.TITLE)).forEach(
         ach => {
             achievementsStrList.push(ach.substring(ach.lastIndexOf(':') + 1));
         }
-    )
+    );
+    let achievement = achievementsStrList.join(' ');
+    if (achievement === '') achievement = '一无所获';
+    console.error("achievements");
+    console.error(achievementsStrList);
     $('.pages').turn('disable', true);
-    $(`.page-num-${currentPage}`).html(`<div class="pages-content">
+    $(`.page-num-${currentMaxPage}`).html(`<div class="pages-content">
             <div class="pages-background"></div>
             <div class="content-inner">
               <div class="img-container">
                 <img src="${event.img}"/>
               </div>
-              <h1>${event.line}</h1>
-              <h1><font color="#dc143c">"Goodness: "+${player.goodness}</font></h1>
-              <h1><font color="#dc143c">"Achievements: "+${achievements.join(' ')}</font></h1>
+              <h2>${event.line}</h2>
+              <h3><font color="#dc143c">善恶度: ${player.goodness}</font></h3>
+              <h3><font color="#dc143c">获得成就: ${achievement}</font></h3>
             </div>
           </div>`).addClass('puff-in-center');
-    //upload data to Nebulas networks
-    uploadData();
 }
 
 function addAndRemovePage(event) {
@@ -1172,10 +1165,6 @@ function addAndRemovePage(event) {
     $('.pages').turn('addPage', div);
     addDummyPage(true);
     $('.pages').turn('removePage', 'l');
-}
-
-function removePage(idx) {
-    $('.pages').turn('removePage', idx);
 }
 
 function addPage(event, turn) {
