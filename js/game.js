@@ -62,6 +62,11 @@ const CHARA_IMGS = {
     "黑骑士": "img/chara/darkknight.png",
     "白骑士": "img/chara/whiteknight.png",
     "蒙面的旅人": "img/chara/traveler.png",
+    "密探": "img/chara/agent.png",
+    "商人": "img/chara/merchant.png",
+    "巫妖": "img/chara/lich.png",
+    "盗贼": "img/chara/thief.png",
+    "法师": "img/chara/mage.png"
 };
 
 function convertToImmutableGenesisCharacter() {
@@ -129,7 +134,7 @@ function createEvents() {
     loadfooter.push("Avoid godless chatter.");
 
     const allEvents = [];
-    allEvents.push(createStatsChangeEvent(1, "修女", CHARA_IMGS["修女"], "冒险家，你能帮我讨伐邪恶的术士嘛？", "义不容辞。", "我还有要事在身.", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
+    allEvents.push(createStatsChangeEvent(1, "修女", "img/1.png", "冒险家，你能帮我讨伐邪恶的术士嘛？", "义不容辞。", "我还有要事在身.", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
     allEvents.push(createStatsChangeEvent(2, "修女", CHARA_IMGS["修女"], "你愿意帮忙捐助一下教会嘛？", "乐于奉献。", "我手边有点紧.", "1", EventType.NORMAL, [-1, -1], [10, -10, 0, 0, 0, 10], [5, 0, 0, 0, 0, 0], ""));
     allEvents.push(createStatsChangeEvent(3, "修女", CHARA_IMGS["修女"], "教会的经书隐藏着智慧。", "能借我阅读一下嘛？", "我还是想休息一下。", "1", EventType.NORMAL, [-1, -1], [0, 0, 10, 10, 10, 0], [10, 0, 0, 0, 0, 0], ""));
     allEvents.push(createStatsChangeEvent(4, "修女", CHARA_IMGS["修女"], "我很后悔我之前做过的错事，能否帮我去跟骑士道歉？", "我可以帮助你，愿你能得到解脱。", "如果做错的事情都可以重来，那么经历将毫无意义。", "3", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 20], [-10, 0, 0, 0, 0, -20], ""));
@@ -163,25 +168,25 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(24, "蒙面的旅人", CHARA_IMGS["蒙面的旅人"], "朋友，你见到过大海吗？", "大海是什么。", "我并不想去做无谓的冒险。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
     allEvents.push(createStatsChangeEvent(25, "蒙面的旅人", CHARA_IMGS["蒙面的旅人"], "人生的轨迹纵横交错，就是世界上最美的一幅图。", "交错的命运是为了什么呢？", "我对你没有任何所求。", "3", EventType.NORMAL, [620, 606], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
 
-    allEvents.push(createStatsChangeEvent(26, "商人", "img/1.png", "我这里正需要人手，要不要来打零工换些金钱。", "我真有此意。", "没什么时间。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(27, "商人", "img/1.png", "（打盹）", "摸摸看他身手有啥？", "还是不打扰他了。", "1", EventType.NORMAL, [-1, -1], [0, 10, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10], ""));
+    allEvents.push(createStatsChangeEvent(26, "商人", CHARA_IMGS["商人"], "我这里正需要人手，要不要来打零工换些金钱。", "我真有此意。", "没什么时间。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(27, "商人", CHARA_IMGS["商人"], "（打盹）", "摸摸看他身手有啥？", "还是不打扰他了。", "1", EventType.NORMAL, [-1, -1], [0, 10, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10], ""));
 
-    allEvents.push(createStatsChangeEvent(28, "巫妖", "img/11.png", "亡灵国度是容不得活人的。", "人类世界就容得下活人吗？", "这不过是亡灵虚假的谎言。", "1", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10], ""));
-    allEvents.push(createStatsChangeEvent(29, "巫妖", "img/11.png", "年份即智慧，什么阴谋、背叛、欺骗没有见识过。", "我想向您请教魔法的知识", "但是这不是你背叛的借口。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 10, 0], [0, 0, 0, 0, 0, 10], ""));
-    allEvents.push(createStatsChangeEvent(30, "巫妖", "img/11.png", "会去尊重崇尚献出生命的人，都是与你无关紧要的人。真正在乎你的人，只希望你好好的活着。", "为了守护所爱之人，有些牺牲是必须的 ", "我会保护好自己。", "1", EventType.NORMAL, [-1, -1], [10, 0, 10, 10, 10, 10], [10, 0, 10, 10, 10, -10], ""));
+    allEvents.push(createStatsChangeEvent(28, "巫妖", CHARA_IMGS["巫妖"], "亡灵国度是容不得活人的。", "人类世界就容得下活人吗？", "这不过是亡灵虚假的谎言。", "1", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10], ""));
+    allEvents.push(createStatsChangeEvent(29, "巫妖", CHARA_IMGS["巫妖"], "年份即智慧，什么阴谋、背叛、欺骗没有见识过。", "我想向您请教魔法的知识", "但是这不是你背叛的借口。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 10, 0], [0, 0, 0, 0, 0, 10], ""));
+    allEvents.push(createStatsChangeEvent(30, "巫妖", CHARA_IMGS["巫妖"], "会去尊重崇尚献出生命的人，都是与你无关紧要的人。真正在乎你的人，只希望你好好的活着。", "为了守护所爱之人，有些牺牲是必须的 ", "我会保护好自己。", "1", EventType.NORMAL, [-1, -1], [10, 0, 10, 10, 10, 10], [10, 0, 10, 10, 10, -10], ""));
 
-    allEvents.push(createStatsChangeEvent(31, "盗贼", "img/12.png", "要不要跟我学学身手。", "我正好想变的更加灵活。", "偷窃的本事还是算了。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 10, 0, 0], [0, 0, 0, 0, 0, 10], ""));
-    allEvents.push(createStatsChangeEvent(29, "盗贼", "img/12.png", "跟我一起去历练吧。", "刚好出去历练一下", "成为一个盗贼并没有很有趣。", "1", EventType.NORMAL, [-1, -1], [10, 10, 10, 10, 10, 0], [0, 0, 0, 0, 0, 10], ""));
-    allEvents.push(createStatsChangeEvent(30, "法师", "img/3.png", "要么安于现状，要么改变现状，改变的总是要付出。", "我愿意跟你修炼。", "要钱还是算了吧。", "1", EventType.NORMAL, [-1, -1], [-10, -10, 0, 0, 20, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(31, "法师", "img/3.png", "听说过法师塔吗？", "我想进入学习。", "我会保护好自己。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 30, 0, 0], [0, 0, 0, 0, 0, -10], ""));
-    allEvents.push(createStatsChangeEvent(32, "法师", "img/3.png", "知识才是一个魔法师最虔诚的信仰。", "知识也是我的信仰。", "我并不信仰知识。", "1", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 10, 10], [0, 0, 0, 0, -10, -10], ""));
+    allEvents.push(createStatsChangeEvent(31, "盗贼", CHARA_IMGS["盗贼"], "要不要跟我学学身手。", "我正好想变的更加灵活。", "偷窃的本事还是算了。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 10, 0, 0], [0, 0, 0, 0, 0, 10], ""));
+    allEvents.push(createStatsChangeEvent(29, "盗贼", CHARA_IMGS["盗贼"], "跟我一起去历练吧。", "刚好出去历练一下", "成为一个盗贼并没有很有趣。", "1", EventType.NORMAL, [-1, -1], [10, 10, 10, 10, 10, 0], [0, 0, 0, 0, 0, 10], ""));
+    allEvents.push(createStatsChangeEvent(30, "法师", CHARA_IMGS["法师"], "要么安于现状，要么改变现状，改变的总是要付出。", "我愿意跟你修炼。", "要钱还是算了吧。", "1", EventType.NORMAL, [-1, -1], [-10, -10, 0, 0, 20, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(31, "法师", CHARA_IMGS["法师"], "听说过法师塔吗？", "我想进入学习。", "我会保护好自己。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 30, 0, 0], [0, 0, 0, 0, 0, -10], ""));
+    allEvents.push(createStatsChangeEvent(32, "法师", CHARA_IMGS["法师"], "知识才是一个魔法师最虔诚的信仰。", "知识也是我的信仰。", "我并不信仰知识。", "1", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 10, 10], [0, 0, 0, 0, -10, -10], ""));
     allEvents.push(createStatsChangeEvent(33, "野鬼", "img/1.png", "失去的，就是失去的，时间什么都不会冲淡，只会让自己对过去的事情变得麻木。", "还是不要打扰这个孤独的灵魂。", "鬼魂似乎想要传达什么。", "1", EventType.NORMAL, [-1, -1], [10, 0, 0, 0, 0, 0], [10, 0, 0, 0, 0, 10], ""));
     allEvents.push(createStatsChangeEvent(34, "猎人", "img/5.png", "跟我一起去打猎吧。", "去练练身手也不错。", "确实想打猎换点钱。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 10, 0, 0], [-10, 10, 0, 0, 0, 0], ""));
 
     //new
-    allEvents.push(createStatsChangeEvent(35, "密探", "img/7.png", "想要钱嘛，告诉我点消息？", "告诉他人的秘密。", "此等不义之举不能参与。", "1", EventType.NORMAL, [-1, -1], [0, 10, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10], ""));
-    allEvents.push(createStatsChangeEvent(36, "牧师", "img/3.png", "这座教堂里有一泉从天国流淌下来的圣水，传说被洗涤的人会更加的好运。", "请洗涤我。", "我从不相信传说。", "1", EventType.NORMAL, [-1, -1], [10, 0, 10, 10, 10, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(37, "牧师", "img/3.png", "城外有一批战争的难民我们应该去救援他们吗？", "我会保护他们。", "我们不必去。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
+    allEvents.push(createStatsChangeEvent(35, "密探", CHARA_IMGS["密探"], "想要钱嘛，告诉我点消息？", "告诉他人的秘密。", "此等不义之举不能参与。", "1", EventType.NORMAL, [-1, -1], [0, 10, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10], ""));
+    allEvents.push(createStatsChangeEvent(36, "牧师", CHARA_IMGS["牧师"], "这座教堂里有一泉从天国流淌下来的圣水，传说被洗涤的人会更加的好运。", "请洗涤我。", "我从不相信传说。", "1", EventType.NORMAL, [-1, -1], [10, 0, 10, 10, 10, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(37, "牧师", CHARA_IMGS["牧师"], "城外有一批战争的难民我们应该去救援他们吗？", "我会保护他们。", "我们不必去。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
     allEvents.push(createStatsChangeEvent(38, "士兵", "img/7.png", "我是一名现役的军官，是否需要我传授你一些武艺？？", "我想听听。", "我没有多余的金币。", "1", EventType.NORMAL, [-1, -1], [-10, -10, 10, 10, 0, 1], [0, 0, 0, 0, 0, 0], ""));
     allEvents.push(createStatsChangeEvent(39, "白骑士", CHARA_IMGS["白骑士"], "荣誉的背后，是千百倍的心酸。", "荣耀，与你同在。", "有人考虑过骑士的感受吗。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, 10], [-10, 0, 10, 10, 10, -10], ""));
     allEvents.push(createStatsChangeEvent(40, "白骑士", CHARA_IMGS["白骑士"], "世上总有一些人值得用一生去守护。", "我也有想要守护的人。", "我先要保护我自己。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, 10], [-10, 0, 0, 0, 0, -10], ""));
@@ -189,8 +194,8 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(42, "黑骑士", CHARA_IMGS["黑骑士"], "伟大的代价就是责任。", "我想听听。", "没空理会。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 0, -10], [0, 0, 0, 0, 0, 10], ""));
 
     allEvents.push(createStatsChangeEvent(43, "猎人", "img/5.png", "需要跟我学习猎人技巧吗。", "听起来不错。", "要钱就算了。", "1", EventType.NORMAL, [-1, -1], [-10, -10, 0, 0, 10, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(44, "商人", "img/3.png", "我这里有两个上古的圣物，你选一个吧。", "腐朽的巨剑。", "泛黄的魔法书。", "1", EventType.NORMAL, [-1, -1], [0, 0, 10, 0, 0, 0], [0, 0, 0, 0, 10, 0], ""));
-    allEvents.push(createStatsChangeEvent(45, "法师", "img/3.png", "我这里有两个法器暂时不用，送你一个吧", "发光的魔法球。", "充满魔力的法杖。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 10, 0], [-10, 0, 0, 0, 20, 0], ""));
+    allEvents.push(createStatsChangeEvent(44, "商人", CHARA_IMGS["商人"], "我这里有两个上古的圣物，你选一个吧。", "腐朽的巨剑。", "泛黄的魔法书。", "1", EventType.NORMAL, [-1, -1], [0, 0, 10, 0, 0, 0], [0, 0, 0, 0, 10, 0], ""));
+    allEvents.push(createStatsChangeEvent(45, "法师", CHARA_IMGS["法师"], "我这里有两个法器暂时不用，送你一个吧", "发光的魔法球。", "充满魔力的法杖。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 10, 0], [-10, 0, 0, 0, 20, 0], ""));
     allEvents.push(createStatsChangeEvent(46, "酒馆老板", "img/2.png", "需要休息吗？", "正有此意。", "手边没钱。", "1", EventType.NORMAL, [-1, -1], [30, -30, 0, 0, 0, 0], [-5, 0, 0, 0, 0, 0], ""));
     allEvents.push(createStatsChangeEvent(47, "酒馆老板", "img/2.png", "来吃顿好的吧。", "正有此意。", "手边没钱。", "1", EventType.NORMAL, [-1, -1], [20, -20, 0, 0, 0, 0], [-5, 0, 0, 0, 0, 0], ""));
     allEvents.push(createStatsChangeEvent(48, "酒馆老板", "img/2.png", "要不要来喝一杯。", "正有此意。", "手边没钱。", "1", EventType.NORMAL, [-1, -1], [-10, -10, 0, 0, 0, 0], [-5, 0, 0, 0, 0, 0], ""));
@@ -209,12 +214,12 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(60, "蒙面的旅人", CHARA_IMGS["蒙面的旅人"], "是否要跟我学习下法术？", "我正好想跟您学习？", "并不是很感兴趣？", "1", EventType.NORMAL, [-1, -1], [-10, -10, 0, 0, 10, 0], [0, 0, 0, 0, 0, 0], ""));
     allEvents.push(createStatsChangeEvent(61, "蒙面的旅人", CHARA_IMGS["蒙面的旅人"], "是否要跟我学习下战斗技巧？", "我正好想跟您学习？", "并不是很感兴趣？", "1", EventType.NORMAL, [-1, -1], [-10, -10, 10, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
     allEvents.push(createStatsChangeEvent(62, "夜枭", "img/116.png", "不知从哪一天开始，我喜欢上了黑夜。", "黑夜给了你力量吗？", "为何？", "1", EventType.NORMAL, [-1, -1], [0, 0, 10, 10, 10, -10], [0, 0, -10, -10, -10, 10], ""));
-    allEvents.push(createStatsChangeEvent(63, "巫妖", "img/11.png", "转瞬拜年，诸事无常。", "巫妖不会懂得生命的意义", "我也想获得长生", "1", EventType.NORMAL, [-1, -1], [0, 0, 10, 10, 10, 10], [0, 0, 10, 10, 10, -10], ""));
+    allEvents.push(createStatsChangeEvent(63, "巫妖", CHARA_IMGS["巫妖"], "转瞬拜年，诸事无常。", "巫妖不会懂得生命的意义", "我也想获得长生", "1", EventType.NORMAL, [-1, -1], [0, 0, 10, 10, 10, 10], [0, 0, 10, 10, 10, -10], ""));
     allEvents.push(createStatsChangeEvent(64, "黑骑士", CHARA_IMGS["黑骑士"], "我将会为公主的幸福之路献上我的尸骸。", "骑士最终的结局就是被公主杀死。", "你需要更理智的看待爱情。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, -10], [-10, 0, 0, 0, 0, 10], ""));
-    allEvents.push(createStatsChangeEvent(65, "密探", "img/7.png", "能帮我去偷个消息吗？。", "如果有钱的话。", "这种事情我可不干。", "1", EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10], ""));
+    allEvents.push(createStatsChangeEvent(65, "密探", CHARA_IMGS["密探"], "能帮我去偷个消息吗？。", "如果有钱的话。", "这种事情我可不干。", "1", EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10], ""));
     allEvents.push(createStatsChangeEvent(66, "夜枭", "img/116.png", "不知从哪一天开始，我喜欢上了黑夜。", "黑夜给了你力量吗？", "为何？", "1", EventType.NORMAL, [-1, -1], [0, 0, 10, 10, 10, -10], [0, 0, -10, -10, -10, 10], ""));
 
-    allEvents.push(createStatsChangeEvent(67, "巫妖", "img/11.png", " 就是因为自己非常怕死，所以才会对别人的死亡流下眼泪。", "巫妖也会流眼泪？️", "邪恶的巫妖从不流眼泪。", "1", EventType.NORMAL, [-1, -1], [10, 0, 10, 10, 10, -10], [10, 0, 10, 10, 10, 10], ""));
+    allEvents.push(createStatsChangeEvent(67, "巫妖", CHARA_IMGS["巫妖"], " 就是因为自己非常怕死，所以才会对别人的死亡流下眼泪。", "巫妖也会流眼泪？️", "邪恶的巫妖从不流眼泪。", "1", EventType.NORMAL, [-1, -1], [10, 0, 10, 10, 10, -10], [10, 0, 10, 10, 10, 10], ""));
     allEvents.push(createStatsChangeEvent(68, "黑骑士", CHARA_IMGS["黑骑士"], "若人生只如初见 倾一世也必定恪然执守。", "人生没有重来的机会。", "你是后悔你的选择吗？", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 0, 10], [-10, 0, 10, 10, 0, -10], ""));
 
 
@@ -752,59 +757,59 @@ function getCompleteEvents() {
     return completeEvents;
 }
 
-// function getNextEvent() {
-//     return eventMap["牧师4-1"];
-// }
-
 function getNextEvent() {
-    console.error("numEventCurLevel: " + eventsPlayedThisState.size);
-    console.error("EVENT_PER_LEVEL: " + EVENT_PER_LEVEL);
-
-    console.warn("player.achievements:");
-    console.warn(player.achievements);
-
-    if (eventsPlayedThisState.size < EVENT_PER_LEVEL) {
-        let allPossibleEvents = [];
-        for (let curLevel = 1; curLevel <= currentLevel; curLevel++) {
-            if (curLevel in eventsByLevel) {
-                console.log(`Adding ${eventsByLevel[curLevel].length} events of level ${curLevel} `);
-                allPossibleEvents = allPossibleEvents.concat(eventsByLevel[curLevel]);
-            }
-        }
-        allPossibleEvents = allPossibleEvents.filter(event =>
-            isEmpty(event.startAchievement) || player.achievements.has(event.startAchievement));
-
-        // filter current event.
-        if (currentEvent != null) {
-            allPossibleEvents = allPossibleEvents.filter(event => event.id !== currentEvent.id);
-        }
-
-        allPossibleEvents = allPossibleEvents.filter(event => event.eventType === EventType.NORMAL);
-        allPossibleEvents = allPossibleEvents.filter(event => !eventsPlayedThisState.has(event.eventId));
-
-        const completeEvents = getCompleteEvents();
-        console.error("completeEvents:");
-        console.error(completeEvents);
-
-        allPossibleEvents = allPossibleEvents.filter(event => !completeEvents.has(event.id));
-
-        //for debug
-        // if (currentLevel >= 3) {
-        //     console.warn(allPossibleEvents[0]);
-        //     allPossibleEvents = allPossibleEvents.filter(event => typeof event.id === 'string' && event.id.includes("-"));
-        // }
-
-        console.error("allPossibleEvents:");
-        allPossibleEvents.forEach(event => console.warn(event));
-
-        const randomEvent = allPossibleEvents[Math.floor(Math.random() * allPossibleEvents.length)];
-        return randomEvent;
-    } else {
-        console.error("getNextEvent currentLevel++")
-        currentLevel++;
-        return eventMap[STAGE_IDS[currentLevel - 1]];
-    }
+    return eventMap[1];
 }
+
+// function getNextEvent() {
+//     console.error("numEventCurLevel: " + eventsPlayedThisState.size);
+//     console.error("EVENT_PER_LEVEL: " + EVENT_PER_LEVEL);
+//
+//     console.warn("player.achievements:");
+//     console.warn(player.achievements);
+//
+//     if (eventsPlayedThisState.size < EVENT_PER_LEVEL) {
+//         let allPossibleEvents = [];
+//         for (let curLevel = 1; curLevel <= currentLevel; curLevel++) {
+//             if (curLevel in eventsByLevel) {
+//                 console.log(`Adding ${eventsByLevel[curLevel].length} events of level ${curLevel} `);
+//                 allPossibleEvents = allPossibleEvents.concat(eventsByLevel[curLevel]);
+//             }
+//         }
+//         allPossibleEvents = allPossibleEvents.filter(event =>
+//             isEmpty(event.startAchievement) || player.achievements.has(event.startAchievement));
+//
+//         // filter current event.
+//         if (currentEvent != null) {
+//             allPossibleEvents = allPossibleEvents.filter(event => event.id !== currentEvent.id);
+//         }
+//
+//         allPossibleEvents = allPossibleEvents.filter(event => event.eventType === EventType.NORMAL);
+//         allPossibleEvents = allPossibleEvents.filter(event => !eventsPlayedThisState.has(event.eventId));
+//
+//         const completeEvents = getCompleteEvents();
+//         console.error("completeEvents:");
+//         console.error(completeEvents);
+//
+//         allPossibleEvents = allPossibleEvents.filter(event => !completeEvents.has(event.id));
+//
+//         //for debug
+//         // if (currentLevel >= 3) {
+//         //     console.warn(allPossibleEvents[0]);
+//         //     allPossibleEvents = allPossibleEvents.filter(event => typeof event.id === 'string' && event.id.includes("-"));
+//         // }
+//
+//         console.error("allPossibleEvents:");
+//         allPossibleEvents.forEach(event => console.warn(event));
+//
+//         const randomEvent = allPossibleEvents[Math.floor(Math.random() * allPossibleEvents.length)];
+//         return randomEvent;
+//     } else {
+//         console.error("getNextEvent currentLevel++")
+//         currentLevel++;
+//         return eventMap[STAGE_IDS[currentLevel - 1]];
+//     }
+// }
 
 function initModels() {
     return $.getJSON("ConsecutiveEvents.json").then(
