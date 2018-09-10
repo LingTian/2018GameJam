@@ -66,7 +66,9 @@ const CHARA_IMGS = {
     "商人": "img/chara/merchant.png",
     "巫妖": "img/chara/lich.png",
     "盗贼": "img/chara/thief.png",
-    "法师": "img/chara/mage.png"
+    "法师": "img/chara/mage.png",
+    "夜枭": "img/chara/owl.png",
+    "亚当": "img/chara/adam.png"
 };
 
 function convertToImmutableGenesisCharacter() {
