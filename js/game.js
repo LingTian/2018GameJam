@@ -71,7 +71,8 @@ const CHARA_IMGS = {
     "亚当": "img/chara/adam.png",
     "酒馆老板": "img/chara/innowner.png",
     "猎人": "img/chara/hunter.png",
-    "邪恶的王": "img/chara/evalking.png"
+    "邪恶的王": "img/chara/evalking.png",
+    "野鬼": "img/chara/ghost.png"
 };
 
 function convertToImmutableGenesisCharacter() {
@@ -139,7 +140,7 @@ function createEvents() {
     loadfooter.push("Avoid godless chatter.");
 
     const allEvents = [];
-    allEvents.push(createStatsChangeEvent(1, "修女", "img/1.png", "冒险家，你能帮我讨伐邪恶的术士嘛？", "义不容辞。", "我还有要事在身.", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
+    allEvents.push(createStatsChangeEvent(1, "修女", "img/111.png", "冒险家，你能帮我讨伐邪恶的术士嘛？", "义不容辞。", "我还有要事在身.", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
     allEvents.push(createStatsChangeEvent(2, "修女", CHARA_IMGS["修女"], "你愿意帮忙捐助一下教会嘛？", "乐于奉献。", "我手边有点紧.", "1", EventType.NORMAL, [-1, -1], [10, -10, 0, 0, 0, 10], [5, 0, 0, 0, 0, 0], ""));
     allEvents.push(createStatsChangeEvent(3, "修女", CHARA_IMGS["修女"], "教会的经书隐藏着智慧。", "能借我阅读一下嘛？", "我还是想休息一下。", "1", EventType.NORMAL, [-1, -1], [0, 0, 10, 10, 10, 0], [10, 0, 0, 0, 0, 0], ""));
     allEvents.push(createStatsChangeEvent(4, "修女", CHARA_IMGS["修女"], "我很后悔我之前做过的错事，能否帮我去跟骑士道歉？", "我可以帮助你，愿你能得到解脱。", "如果做错的事情都可以重来，那么经历将毫无意义。", "3", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 20], [-10, 0, 0, 0, 0, -20], ""));
@@ -185,7 +186,7 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(30, "法师", CHARA_IMGS["法师"], "要么安于现状，要么改变现状，改变的总是要付出。", "我愿意跟你修炼。", "要钱还是算了吧。", "1", EventType.NORMAL, [-1, -1], [-10, -10, 0, 0, 20, 0], [0, 0, 0, 0, 0, 0], ""));
     allEvents.push(createStatsChangeEvent(31, "法师", CHARA_IMGS["法师"], "听说过法师塔吗？", "我想进入学习。", "我会保护好自己。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 30, 0, 0], [0, 0, 0, 0, 0, -10], ""));
     allEvents.push(createStatsChangeEvent(32, "法师", CHARA_IMGS["法师"], "知识才是一个魔法师最虔诚的信仰。", "知识也是我的信仰。", "我并不信仰知识。", "1", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 10, 10], [0, 0, 0, 0, -10, -10], ""));
-    allEvents.push(createStatsChangeEvent(33, "野鬼", "img/1.png", "失去的，就是失去的，时间什么都不会冲淡，只会让自己对过去的事情变得麻木。", "还是不要打扰这个孤独的灵魂。", "鬼魂似乎想要传达什么。", "1", EventType.NORMAL, [-1, -1], [10, 0, 0, 0, 0, 0], [10, 0, 0, 0, 0, 10], ""));
+    allEvents.push(createStatsChangeEvent(33, "野鬼", CHARA_IMGS["野鬼"], "失去的，就是失去的，时间什么都不会冲淡，只会让自己对过去的事情变得麻木。", "还是不要打扰这个孤独的灵魂。", "鬼魂似乎想要传达什么。", "1", EventType.NORMAL, [-1, -1], [10, 0, 0, 0, 0, 0], [10, 0, 0, 0, 0, 10], ""));
     allEvents.push(createStatsChangeEvent(34, "猎人", CHARA_IMGS["猎人"], "跟我一起去打猎吧。", "去练练身手也不错。", "确实想打猎换点钱。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 10, 0, 0], [-10, 10, 0, 0, 0, 0], ""));
 
     //new
@@ -218,11 +219,11 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(59, "地狱犬", "img/8.png", "狗爱他们的朋友,咬他们的敌人,和人不同。", "看招吧恶魔", "似乎也有道理", "1", EventType.NORMAL, [-1, -1], [-20, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
     allEvents.push(createStatsChangeEvent(60, "蒙面的旅人", CHARA_IMGS["蒙面的旅人"], "是否要跟我学习下法术？", "我正好想跟您学习？", "并不是很感兴趣？", "1", EventType.NORMAL, [-1, -1], [-10, -10, 0, 0, 10, 0], [0, 0, 0, 0, 0, 0], ""));
     allEvents.push(createStatsChangeEvent(61, "蒙面的旅人", CHARA_IMGS["蒙面的旅人"], "是否要跟我学习下战斗技巧？", "我正好想跟您学习？", "并不是很感兴趣？", "1", EventType.NORMAL, [-1, -1], [-10, -10, 10, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(62, "夜枭", "img/116.png", "不知从哪一天开始，我喜欢上了黑夜。", "黑夜给了你力量吗？", "为何？", "1", EventType.NORMAL, [-1, -1], [0, 0, 10, 10, 10, -10], [0, 0, -10, -10, -10, 10], ""));
+    allEvents.push(createStatsChangeEvent(62, "夜枭", CHARA_IMGS["夜枭"], "不知从哪一天开始，我喜欢上了黑夜。", "黑夜给了你力量吗？", "为何？", "1", EventType.NORMAL, [-1, -1], [0, 0, 10, 10, 10, -10], [0, 0, -10, -10, -10, 10], ""));
     allEvents.push(createStatsChangeEvent(63, "巫妖", CHARA_IMGS["巫妖"], "转瞬拜年，诸事无常。", "巫妖不会懂得生命的意义", "我也想获得长生", "1", EventType.NORMAL, [-1, -1], [0, 0, 10, 10, 10, 10], [0, 0, 10, 10, 10, -10], ""));
     allEvents.push(createStatsChangeEvent(64, "黑骑士", CHARA_IMGS["黑骑士"], "我将会为公主的幸福之路献上我的尸骸。", "骑士最终的结局就是被公主杀死。", "你需要更理智的看待爱情。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, -10], [-10, 0, 0, 0, 0, 10], ""));
     allEvents.push(createStatsChangeEvent(65, "密探", CHARA_IMGS["密探"], "能帮我去偷个消息吗？。", "如果有钱的话。", "这种事情我可不干。", "1", EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10], ""));
-    allEvents.push(createStatsChangeEvent(66, "夜枭", "img/116.png", "不知从哪一天开始，我喜欢上了黑夜。", "黑夜给了你力量吗？", "为何？", "1", EventType.NORMAL, [-1, -1], [0, 0, 10, 10, 10, -10], [0, 0, -10, -10, -10, 10], ""));
+    allEvents.push(createStatsChangeEvent(66, "夜枭", CHARA_IMGS["夜枭"], "不知从哪一天开始，我喜欢上了黑夜。", "黑夜给了你力量吗？", "为何？", "1", EventType.NORMAL, [-1, -1], [0, 0, 10, 10, 10, -10], [0, 0, -10, -10, -10, 10], ""));
 
     allEvents.push(createStatsChangeEvent(67, "巫妖", CHARA_IMGS["巫妖"], " 就是因为自己非常怕死，所以才会对别人的死亡流下眼泪。", "巫妖也会流眼泪？️", "邪恶的巫妖从不流眼泪。", "1", EventType.NORMAL, [-1, -1], [10, 0, 10, 10, 10, -10], [10, 0, 10, 10, 10, 10], ""));
     allEvents.push(createStatsChangeEvent(68, "黑骑士", CHARA_IMGS["黑骑士"], "若人生只如初见 倾一世也必定恪然执守。", "人生没有重来的机会。", "你是后悔你的选择吗？", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 0, 10], [-10, 0, 10, 10, 0, -10], ""));
