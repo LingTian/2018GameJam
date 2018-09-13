@@ -70,6 +70,7 @@ const CHARA_IMGS = {
     "法师": "img/chara/mage.png",
     "夜枭": "img/chara/owl.png",
     "酒馆老板": "img/chara/innowner.png",
+    "钱币": "img/chara/luckcoin.png",
     "矮人": "img/chara/dwarf.png",
     "猎人": "img/chara/hunter.png",
     "士兵": "img/chara/soldier.png",
@@ -84,6 +85,7 @@ const CHARA_IMGS = {
     "沼泽": "img/stage/swamp.png",
     "冰原": "img/stage/iceland-1.png",
     "岩浆": "img/stage/volcano.png",
+
 };
 
 function convertToImmutableGenesisCharacter() {
@@ -252,7 +254,8 @@ function createEvents() {
     //random test
     allEvents.push(createMinorRandomEvent(76, "七彩泉", "img/1.png", "七彩的泉水汩汩的涌现出来", "喝一口看看", "喝一口看看", "1", EventType.RANDOM, [-1, -1]));
     allEvents.push(createMajorRandomEvent(76, "不老泉", "img/1.png", "不老的泉水汩汩的涌现出来", "喝一口看看", "喝一口看看", "1", EventType.RANDOM, [-1, -1]));
-    allEvents.push(createMajorRandomEvent(77, "幸运的钱币", "img/1.png", "一枚金光闪闪的钱币", "抛一下试试运气", "抛一下试试运气", "1", EventType.RANDOM, [-1, -1]));
+    allEvents.push(createMajorRandomEvent(77, "幸运的金币", CHARA_IMGS["钱币"], "一枚金光闪闪的钱币", "抛一下试试运气", "抛一下试试运气", "1", EventType.RANDOM, [-1, -1]));
+
     //比较，善良大于一定并且总属性够高。
     allEvents.push(createStatsChangeEvent(78, "石中剑", "img/10.png", "石头上插着一把荆棘缠绕的圣剑。", "拔出圣剑，我自为王。", "王者的使命过于沉重", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10], ""));
 
@@ -266,12 +269,29 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(85, "亚当", CHARA_IMGS["亚当"], "优于别人，并不高贵，真正的高贵应该是优于过去的自己。", "似乎很有道理。", "物竞天择。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, 0], [-10, 10, 10, 10, 10, -10], ""));
     allEvents.push(createStatsChangeEvent(86, "亚当", CHARA_IMGS["亚当"], "现在不是去想缺少什么的时候，该想一想凭现有的东西你能做什么。", "唯有砥砺前行。", "战略性撤退也是种方案。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, 0], [-10, -10, 0, 0, 0, 0], ""));
 
+    allEvents.push(createStatsChangeEvent(87, "闪闪的金币", CHARA_IMGS["钱币"], "地上有一枚闪闪发光金币。", "不关我的事。", "捡起来看看", "1", EventType.NORMAL, [-1, -1], [5, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0], ""));
+    allEvents.push(createMajorRandomEvent(88, "不幸的金币", CHARA_IMGS["钱币"], "一枚金光闪闪的钱币", "抛一下试试运气", "抛一下试试运气", "1", EventType.RANDOM, [-1, -1]));
+    allEvents.push(createStatsChangeEvent(89, "闪闪的金币", CHARA_IMGS["钱币"], "地上有一堆闪闪发光金币。", "不关我的事。", "捡起来看看", "1", EventType.NORMAL, [-1, -1], [5, 0, 0, 0, 0, 0], [0, 10, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(90, "诅咒的金币", CHARA_IMGS["钱币"], "地上有一枚闪闪发光金币。", "不关我的事。", "捡起来看看", "1", EventType.NORMAL, [-1, -1], [5, 0, 0, 0, 0, 0], [-20, 20, -5, -5, -5, -5], ""));
+
+    allEvents.push(createMajorRandomEvent(91, "地狱犬", "img/8.png", "汪汪汪", "？？？", "！！！", "1", EventType.RANDOM, [-1, -1]));
+    allEvents.push(createMajorRandomEvent(92, "地狱犬", "img/8.png", "汪汪", "？？？", "！！！", "1", EventType.RANDOM, [-1, -1]));
+    allEvents.push(createMajorRandomEvent(93, "地狱犬", "img/8.png", "汪", "？？？", "！！！", "1", EventType.RANDOM, [-1, -1]));
+
+    allEvents.push(createMajorRandomEvent(93, "夜枭", CHARA_IMGS["夜枭"], "咕咕咕", "？？？", "！！！", "1", EventType.RANDOM, [-1, -1]));
+    allEvents.push(createMajorRandomEvent(94, "夜枭", CHARA_IMGS["夜枭"], "咕咕", "？？？", "！！！", "1", EventType.RANDOM, [-1, -1]));
+    allEvents.push(createMajorRandomEvent(95, "夜枭", CHARA_IMGS["夜枭"], "咕", "？？？", "！！！", "1", EventType.RANDOM, [-1, -1]));
+
+    allEvents.push(createMajorRandomEvent(96, "修女", CHARA_IMGS["修女"], "不要相信白骑士的话。", "白骑士看上去是个好人。", "白骑士看上去不像个好人", "1", EventType.RANDOM, [-1, -1]));
+
 
     // allEvents.push(createEvent(13, "医生", "1.png", "西方的悬崖上传闻有魔龙作恶。", "无论多么危险我都将带头征讨。", "这肯定是无稽之谈。", "5", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, -1], ""));
     // allEvents.push(createEvent(500, "修女", "1.png", "也有可能有怪物守护。", "勇者无畏，愿意接受挑战。", "太危险了还是算了吧。", "", EventType.NORMAL, [600, 601], [-50, 0, 0, 0, 0, 30], [0, 0, 0, 0, 0, -10], ""));
     // allEvents.push(createEvent(501, "牧师", "1.png", "西方的巨人手中，持有勇者之剑，但却作恶多端。", "我将前往讨伐。", "这种危险的事情我可不去。", "", EventType.NORMAL, [600, 601], [-50, 0, 0, 0, 0, 30], [0, 0, 0, 0, 0, -10], ""));
     //
     allEvents.push(createStatsChangeEvent(502, "邪恶的王", CHARA_IMGS["邪恶的王"], "你身上的味道我很讨厌。", "岂能放过你。", "岂能放过你。", "1", EventType.NORMAL, [-1, -1], [-50, 0, 0, 0, 0, 20], [-50, 0, 0, 0, 0, 20], ""));
+    allEvents.push(createStatsChangeEvent(503, "邪恶的王", CHARA_IMGS["善良的王"], "你身上的味道我很讨厌。", "岂能放过你。", "岂能放过你。", "1", EventType.NORMAL, [-1, -1], [-50, 0, 0, 0, 0, 20], [-50, 0, 0, 0, 0, 20], ""));
+
     // allEvents.push(createEvent(503, "善良的王", "1.png", "你难道不觉得可悲吗？", "愚昧者不自知。", "愚昧者不自知。", "1", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, -1], ""));
 
 
