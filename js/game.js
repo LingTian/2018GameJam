@@ -75,6 +75,7 @@ const CHARA_IMGS = {
     "猎人": "img/chara/hunter.png",
     "士兵": "img/chara/soldier.png",
     "邪恶的王": "img/chara/evalking.png",
+    "善良的王": "img/chara/goodking.png",
     "野鬼": "img/chara/ghost.png",
     "村落": "img/stage/village.png",
     "城镇": "img/stage/town.png",
@@ -289,6 +290,9 @@ function createEvents() {
     // allEvents.push(createEvent(500, "修女", "1.png", "也有可能有怪物守护。", "勇者无畏，愿意接受挑战。", "太危险了还是算了吧。", "", EventType.NORMAL, [600, 601], [-50, 0, 0, 0, 0, 30], [0, 0, 0, 0, 0, -10], ""));
     // allEvents.push(createEvent(501, "牧师", "1.png", "西方的巨人手中，持有勇者之剑，但却作恶多端。", "我将前往讨伐。", "这种危险的事情我可不去。", "", EventType.NORMAL, [600, 601], [-50, 0, 0, 0, 0, 30], [0, 0, 0, 0, 0, -10], ""));
     //
+    allEvents.push(createStatsChangeEvent(500, "邪恶的王", CHARA_IMGS["邪恶的王"], "你看上去过于羸弱，不堪一击，今天就放你一马。", "你们boss都这个套路吗？", "...", "1", EventType.NORMAL, [-1, -1], [-50, 0, 0, 0, 0, 20], [-10, 0, 0, 0, 0, 20], ""));
+    allEvents.push(createStatsChangeEvent(500, "邪恶的王", CHARA_IMGS["善良的王"], "你看上去过于羸弱，不堪一击，今天就放你一马。", "你们boss都这个套路吗？", "...", "1", EventType.NORMAL, [-1, -1], [-50, 0, 0, 0, 0, 20], [-10, 0, 0, 0, 0, 20], ""));
+
     allEvents.push(createStatsChangeEvent(502, "邪恶的王", CHARA_IMGS["邪恶的王"], "你身上的味道我很讨厌。", "岂能放过你。", "岂能放过你。", "1", EventType.NORMAL, [-1, -1], [-50, 0, 0, 0, 0, 20], [-50, 0, 0, 0, 0, 20], ""));
     allEvents.push(createStatsChangeEvent(503, "邪恶的王", CHARA_IMGS["善良的王"], "你身上的味道我很讨厌。", "岂能放过你。", "岂能放过你。", "1", EventType.NORMAL, [-1, -1], [-50, 0, 0, 0, 0, 20], [-50, 0, 0, 0, 0, 20], ""));
 
