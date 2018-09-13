@@ -150,7 +150,7 @@ function createEvents() {
     loadfooter.push("Avoid godless chatter.");
 
     const allEvents = [];
-    allEvents.push(createStatsChangeEvent(1, "修女", "img/111.png", "冒险家，你能帮我讨伐邪恶的术士嘛？", "义不容辞。", "我还有要事在身.", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
+    allEvents.push(createStatsChangeEvent(1, "修女", CHARA_IMGS["修女"], "冒险家，你能帮我讨伐邪恶的术士嘛？", "义不容辞。", "我还有要事在身.", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
     allEvents.push(createStatsChangeEvent(2, "修女", CHARA_IMGS["修女"], "你愿意帮忙捐助一下教会嘛？", "乐于奉献。", "我手边有点紧.", "1", EventType.NORMAL, [-1, -1], [10, -10, 0, 0, 0, 10], [5, 0, 0, 0, 0, 0], ""));
     allEvents.push(createStatsChangeEvent(3, "修女", CHARA_IMGS["修女"], "教会的经书隐藏着智慧。", "能借我阅读一下嘛？", "我还是想休息一下。", "1", EventType.NORMAL, [-1, -1], [0, 0, 10, 10, 10, 0], [10, 0, 0, 0, 0, 0], ""));
     allEvents.push(createStatsChangeEvent(4, "修女", CHARA_IMGS["修女"], "我很后悔我之前做过的错事，能否帮我去跟骑士道歉？", "我可以帮助你，愿你能得到解脱。", "如果做错的事情都可以重来，那么经历将毫无意义。", "3", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 20], [-10, 0, 0, 0, 0, -20], ""));
@@ -773,59 +773,59 @@ function getCompleteEvents() {
     return completeEvents;
 }
 
-function getNextEvent() {
-    return eventMap[1];
-}
-
 // function getNextEvent() {
-//     console.error("numEventCurLevel: " + eventsPlayedThisState.size);
-//     console.error("EVENT_PER_LEVEL: " + EVENT_PER_LEVEL);
-//
-//     console.warn("player.achievements:");
-//     console.warn(player.achievements);
-//
-//     if (eventsPlayedThisState.size < EVENT_PER_LEVEL) {
-//         let allPossibleEvents = [];
-//         for (let curLevel = 1; curLevel <= currentLevel; curLevel++) {
-//             if (curLevel in eventsByLevel) {
-//                 console.log(`Adding ${eventsByLevel[curLevel].length} events of level ${curLevel} `);
-//                 allPossibleEvents = allPossibleEvents.concat(eventsByLevel[curLevel]);
-//             }
-//         }
-//         allPossibleEvents = allPossibleEvents.filter(event =>
-//             isEmpty(event.startAchievement) || player.achievements.has(event.startAchievement));
-//
-//         // filter current event.
-//         if (currentEvent != null) {
-//             allPossibleEvents = allPossibleEvents.filter(event => event.id !== currentEvent.id);
-//         }
-//
-//         allPossibleEvents = allPossibleEvents.filter(event => event.eventType === EventType.NORMAL);
-//         allPossibleEvents = allPossibleEvents.filter(event => !eventsPlayedThisState.has(event.eventId));
-//
-//         const completeEvents = getCompleteEvents();
-//         console.error("completeEvents:");
-//         console.error(completeEvents);
-//
-//         allPossibleEvents = allPossibleEvents.filter(event => !completeEvents.has(event.id));
-//
-//         //for debug
-//         // if (currentLevel >= 3) {
-//         //     console.warn(allPossibleEvents[0]);
-//         //     allPossibleEvents = allPossibleEvents.filter(event => typeof event.id === 'string' && event.id.includes("-"));
-//         // }
-//
-//         console.error("allPossibleEvents:");
-//         allPossibleEvents.forEach(event => console.warn(event));
-//
-//         const randomEvent = allPossibleEvents[Math.floor(Math.random() * allPossibleEvents.length)];
-//         return randomEvent;
-//     } else {
-//         console.error("getNextEvent currentLevel++")
-//         currentLevel++;
-//         return eventMap[STAGE_IDS[currentLevel - 1]];
-//     }
+//     return eventMap[1];
 // }
+
+function getNextEvent() {
+    console.error("numEventCurLevel: " + eventsPlayedThisState.size);
+    console.error("EVENT_PER_LEVEL: " + EVENT_PER_LEVEL);
+
+    console.warn("player.achievements:");
+    console.warn(player.achievements);
+
+    if (eventsPlayedThisState.size < EVENT_PER_LEVEL) {
+        let allPossibleEvents = [];
+        for (let curLevel = 1; curLevel <= currentLevel; curLevel++) {
+            if (curLevel in eventsByLevel) {
+                console.log(`Adding ${eventsByLevel[curLevel].length} events of level ${curLevel} `);
+                allPossibleEvents = allPossibleEvents.concat(eventsByLevel[curLevel]);
+            }
+        }
+        allPossibleEvents = allPossibleEvents.filter(event =>
+            isEmpty(event.startAchievement) || player.achievements.has(event.startAchievement));
+
+        // filter current event.
+        if (currentEvent != null) {
+            allPossibleEvents = allPossibleEvents.filter(event => event.id !== currentEvent.id);
+        }
+
+        allPossibleEvents = allPossibleEvents.filter(event => event.eventType === EventType.NORMAL);
+        allPossibleEvents = allPossibleEvents.filter(event => !eventsPlayedThisState.has(event.eventId));
+
+        const completeEvents = getCompleteEvents();
+        console.error("completeEvents:");
+        console.error(completeEvents);
+
+        allPossibleEvents = allPossibleEvents.filter(event => !completeEvents.has(event.id));
+
+        //for debug
+        // if (currentLevel >= 3) {
+        //     console.warn(allPossibleEvents[0]);
+        //     allPossibleEvents = allPossibleEvents.filter(event => typeof event.id === 'string' && event.id.includes("-"));
+        // }
+
+        console.error("allPossibleEvents:");
+        allPossibleEvents.forEach(event => console.warn(event));
+
+        const randomEvent = allPossibleEvents[Math.floor(Math.random() * allPossibleEvents.length)];
+        return randomEvent;
+    } else {
+        console.error("getNextEvent currentLevel++")
+        currentLevel++;
+        return eventMap[STAGE_IDS[currentLevel - 1]];
+    }
+}
 
 function initModels() {
     return $.getJSON("ConsecutiveEvents.json").then(
