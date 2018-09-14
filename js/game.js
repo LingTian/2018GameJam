@@ -299,48 +299,52 @@ function createEvents() {
     // allEvents.push(createEvent(503, "善良的王", "1.png", "你难道不觉得可悲吗？", "愚昧者不自知。", "愚昧者不自知。", "1", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, -1], ""));
 
 
-    allEvents.push(createStatsChangeEvent(91, "村落", CHARA_IMGS["村落"], "从黑夜中醒来，晨起的星光璀璨，照亮了远方的小村。", "", "", "1", "stage", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(92, "城镇", CHARA_IMGS["城镇"], "行走了许久，也没有丝毫感到饥饿，前方似乎有个更大的城镇。", "", "", "1", "stage", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(93, "城堡", CHARA_IMGS["城堡"], "高耸的城堡是贵族的象征。", "", "", "1", "stage", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(94, "洞窟", CHARA_IMGS["洞窟"], "洞口矗立一个巨大的峻岩，犹如阴曹的判官。", "", "", "1", "stage", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(95, "森林", CHARA_IMGS["森林"], "幽静的密林深处，连鸟儿也很少飞来。", "", "", "1", "stage", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(96, "悬崖", CHARA_IMGS["悬崖"], "巍峨的云峰上，峭壁生辉，而我的脚步愈发轻快。", "", "", "1", "stage", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(97, "沼泽", CHARA_IMGS["沼泽"], "泥泞不堪,满目疮痍。我的脚蹼却丝毫不受沼泽的拖累。", "", "", "1", "stage", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(98, "冰原", CHARA_IMGS["冰原"], "茕茕孑立，踽踽而行。", "", "", "1", "stage", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(99, "岩浆", CHARA_IMGS["岩浆"], "末日般的场景，与一个挣扎的灵魂。", "", "", "1", "stage", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(91, "村落", CHARA_IMGS["村落"], "从黑夜中醒来，晨起的星光璀璨，照亮了远方的小村。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(92, "城镇", CHARA_IMGS["城镇"], "行走了许久，也没有丝毫感到饥饿，前方似乎有个更大的城镇。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(93, "城堡", CHARA_IMGS["城堡"], "高耸的城堡是贵族的象征。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(94, "洞窟", CHARA_IMGS["洞窟"], "洞口矗立一个巨大的峻岩，犹如阴曹的判官。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(95, "森林", CHARA_IMGS["森林"], "幽静的密林深处，连鸟儿也很少飞来。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(96, "悬崖", CHARA_IMGS["悬崖"], "巍峨的云峰上，峭壁生辉，而我的脚步愈发轻快。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(97, "沼泽", CHARA_IMGS["沼泽"], "泥泞不堪,满目疮痍。我的脚蹼却丝毫不受沼泽的拖累。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(98, "冰原", CHARA_IMGS["冰原"], "茕茕孑立，踽踽而行。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(99, "岩浆", CHARA_IMGS["岩浆"], "末日般的场景，与一个挣扎的灵魂。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
 
     //0结束 -1 随机 其他数字是链接
-    allEvents.push(createStatsChangeEvent(601, "称号", "1.png", "法海无边", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(602, "称号", "1.png", "时光飞逝", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(603, "称号", "1.png", "时光荏苒", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(604, "称号", "1.png", "战争艺术", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(605, "称号", "1.png", "海上传奇", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(606, "称号", "1.png", "别无所求", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(607, "称号", "1.png", "屠杀殆尽", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(608, "称号", "1.png", "恃强凌弱", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(609, "称号", "1.png", "巨龙传说", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(610, "称号", "1.png", "傲气冲天", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(611, "称号", "1.png", "英雄气短", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(612, "称号", "1.png", "任人宰割", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(613, "称号", "1.png", "勇者之路", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(614, "称号", "1.png", "殊死一搏", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(615, "称号", "1.png", "英雄本色", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(616, "称号", "1.png", "胜利逃亡", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(617, "称号", "1.png", "妙手空空", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(618, "称号", "1.png", "凤凰涅槃", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(619, "称号", "1.png", "巨人杀手", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(620, "称号", "1.png", "命运星空", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(621, "称号", "1.png", "战士之魂", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(622, "称号", "1.png", "九头蛇之死", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(623, "称号", "1.png", "舍生取法", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(624, "称号", "1.png", "恐怖巨兽", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(601, "称号", "1.png", "法海无边", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(602, "称号", "1.png", "时光飞逝", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(603, "称号", "1.png", "时光荏苒", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(604, "称号", "1.png", "战争艺术", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(605, "称号", "1.png", "海上传奇", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(606, "称号", "1.png", "别无所求", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(607, "称号", "1.png", "屠杀殆尽", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(608, "称号", "1.png", "恃强凌弱", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(609, "称号", "1.png", "巨龙传说", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(610, "称号", "1.png", "傲气冲天", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(611, "称号", "1.png", "英雄气短", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(612, "称号", "1.png", "任人宰割", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(613, "称号", "1.png", "勇者之路", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(614, "称号", "1.png", "殊死一搏", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(615, "称号", "1.png", "英雄本色", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(616, "称号", "1.png", "胜利逃亡", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(617, "称号", "1.png", "妙手空空", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(618, "称号", "1.png", "凤凰涅槃", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(619, "称号", "1.png", "巨人杀手", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(620, "称号", "1.png", "命运星空", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(621, "称号", "1.png", "战士之魂", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(622, "称号", "1.png", "九头蛇之死", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(623, "称号", "1.png", "舍生取法", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(624, "称号", "1.png", "恐怖巨兽", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
 
-    allEvents.push(createStatsChangeEvent(600, "称号", "img/102.png", "孤魂野鬼", "Pass", "Pass.", "", "title", [0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(800, "称号", "img/10.png", "卷土重来", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(801, "称号", "1.png", "咫尺天堂", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(802, "称号", "1.png", "咫尺地狱", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(803, "称号", "1.png", "一念天堂", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(804, "称号", "1.png", "一念地狱", "Pass。", "Pass.", "1", "title", [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(600, "称号", "img/102.png", "孤魂野鬼", "Pass", "Pass.", "", EventType.TITLE, [0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(800, "称号", "img/10.png", "卷土重来", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(801, "称号", "1.png", "咫尺天堂", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(802, "称号", "1.png", "咫尺地狱", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(803, "称号", "1.png", "一念天堂", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(804, "称号", "1.png", "一念地狱", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+
+    //ending transition
+    allEvents.push(createStatsChangeEvent("end-1", "天空。。。", "img/stage/yomi.jpg", "走了很久，也没有再遇到人，头上则是一片湛蓝的天空", "", "", "1", EventType.ENDING, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent("end-2", "天空的下方。。。", "img/stage/yomi1.jpg", "天空下方，是。。。？！", "", "", "1", EventType.ENDING, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
 
     return allEvents;
 }
@@ -392,7 +396,8 @@ const EventType = Object.freeze({
     NORMAL: "NORMAL",
     STAGE: "STAGE",
     TITLE: "TITLE",
-    SUBSEQUENT: "SUBSEQUENT"
+    SUBSEQUENT: "SUBSEQUENT",
+    ENDING: "ENDING",
 });
 
 class EventV2 {
@@ -462,7 +467,6 @@ const eventV2 = new EventV2(1, 'fakeName', 'fakeImg', 'dummy line', 1, EventType
             }
         )),
     null);
-
 
 // function to create a event with both effects are stats change event
 // V1 -> V2 的普通event的utility，用的input还是V1的input
@@ -798,59 +802,69 @@ function getCompleteEvents() {
     return completeEvents;
 }
 
-// function getNextEvent() {
-//     return eventMap[1];
-// }
-
 function getNextEvent() {
-    console.error("numEventCurLevel: " + eventsPlayedThisState.size);
-    console.error("EVENT_PER_LEVEL: " + EVENT_PER_LEVEL);
-
-    console.warn("player.achievements:");
-    console.warn(player.achievements);
-
-    if (eventsPlayedThisState.size < EVENT_PER_LEVEL) {
-        let allPossibleEvents = [];
-        for (let curLevel = 1; curLevel <= currentLevel; curLevel++) {
-            if (curLevel in eventsByLevel) {
-                console.log(`Adding ${eventsByLevel[curLevel].length} events of level ${curLevel} `);
-                allPossibleEvents = allPossibleEvents.concat(eventsByLevel[curLevel]);
-            }
-        }
-        allPossibleEvents = allPossibleEvents.filter(event =>
-            isEmpty(event.startAchievement) || player.achievements.has(event.startAchievement));
-
-        // filter current event.
-        if (currentEvent != null) {
-            allPossibleEvents = allPossibleEvents.filter(event => event.id !== currentEvent.id);
-        }
-
-        allPossibleEvents = allPossibleEvents.filter(event => event.eventType === EventType.NORMAL);
-        allPossibleEvents = allPossibleEvents.filter(event => !eventsPlayedThisState.has(event.eventId));
-
-        const completeEvents = getCompleteEvents();
-        console.error("completeEvents:");
-        console.error(completeEvents);
-
-        allPossibleEvents = allPossibleEvents.filter(event => !completeEvents.has(event.id));
-
-        //for debug
-        // if (currentLevel >= 3) {
-        //     console.warn(allPossibleEvents[0]);
-        //     allPossibleEvents = allPossibleEvents.filter(event => typeof event.id === 'string' && event.id.includes("-"));
-        // }
-
-        console.error("allPossibleEvents:");
-        allPossibleEvents.forEach(event => console.warn(event));
-
-        const randomEvent = allPossibleEvents[Math.floor(Math.random() * allPossibleEvents.length)];
-        return randomEvent;
+    if (currentEvent.id == "end-1") {
+        return eventMap["end-2"];
+    } else if (currentEvent.id == "end-2") {
+        return eventMap["end-3"];
+    } else if (currentEvent.id == "end-3") {
+        return eventMap["end-4"];
+    } else if (currentEvent.id == "end-4") {
+        return eventMap["end-5"];
     } else {
-        console.error("getNextEvent currentLevel++")
-        currentLevel++;
-        return eventMap[STAGE_IDS[currentLevel - 1]];
+        return eventMap["end-1"];
     }
 }
+
+// function getNextEvent() {
+//     console.error("numEventCurLevel: " + eventsPlayedThisState.size);
+//     console.error("EVENT_PER_LEVEL: " + EVENT_PER_LEVEL);
+//
+//     console.warn("player.achievements:");
+//     console.warn(player.achievements);
+//
+//     if (eventsPlayedThisState.size < EVENT_PER_LEVEL) {
+//         let allPossibleEvents = [];
+//         for (let curLevel = 1; curLevel <= currentLevel; curLevel++) {
+//             if (curLevel in eventsByLevel) {
+//                 console.log(`Adding ${eventsByLevel[curLevel].length} events of level ${curLevel} `);
+//                 allPossibleEvents = allPossibleEvents.concat(eventsByLevel[curLevel]);
+//             }
+//         }
+//         allPossibleEvents = allPossibleEvents.filter(event =>
+//             isEmpty(event.startAchievement) || player.achievements.has(event.startAchievement));
+//
+//         // filter current event.
+//         if (currentEvent != null) {
+//             allPossibleEvents = allPossibleEvents.filter(event => event.id !== currentEvent.id);
+//         }
+//
+//         allPossibleEvents = allPossibleEvents.filter(event => event.eventType === EventType.NORMAL);
+//         allPossibleEvents = allPossibleEvents.filter(event => !eventsPlayedThisState.has(event.eventId));
+//
+//         const completeEvents = getCompleteEvents();
+//         console.error("completeEvents:");
+//         console.error(completeEvents);
+//
+//         allPossibleEvents = allPossibleEvents.filter(event => !completeEvents.has(event.id));
+//
+//         //for debug
+//         // if (currentLevel >= 3) {
+//         //     console.warn(allPossibleEvents[0]);
+//         //     allPossibleEvents = allPossibleEvents.filter(event => typeof event.id === 'string' && event.id.includes("-"));
+//         // }
+//
+//         console.error("allPossibleEvents:");
+//         allPossibleEvents.forEach(event => console.warn(event));
+//
+//         const randomEvent = allPossibleEvents[Math.floor(Math.random() * allPossibleEvents.length)];
+//         return randomEvent;
+//     } else {
+//         console.error("getNextEvent currentLevel++")
+//         currentLevel++;
+//         return eventMap[STAGE_IDS[currentLevel - 1]];
+//     }
+// }
 
 function initModels() {
     return $.getJSON("ConsecutiveEvents.json").then(
@@ -1061,7 +1075,7 @@ function updateScene(lastEvent) {
     console.error("updateScene: ");
     console.error(lastEvent);
 
-    if (lastEvent.eventType === "stage") {
+    if (lastEvent.eventType === EventType.STAGE) {
         eventsPlayedThisState.clear();
     } else if (lastEvent !== null) {
         const lastChoice = choiceId === 0 ? lastEvent.choice1 : lastEvent.choice2;
@@ -1092,7 +1106,7 @@ function updateScene(lastEvent) {
         currentEvent = nextEvent;
         console.log("currentEvent: ");
         console.log(currentEvent);
-        if (currentEvent.eventType !== 'stage') {
+        if (currentEvent.eventType !== EventType.STAGE) {
             eventsPlayedThisState.add(currentEvent.id);
         }
     }
@@ -1129,12 +1143,15 @@ function createPage(event) {
     if (event.eventType === EventType.NORMAL) {
         console.log("Creating normal event");
         return createEventPageDiv(event);
-    } else if (event.eventType === 'stage') {
+    } else if (event.eventType === EventType.STAGE) {
         console.log("Creating stage event");
         return createStagePageDiv(event);
-    } else if (event.eventType === 'title') {
+    } else if (event.eventType === EventType.TITLE) {
         console.log("Creating title event");
         return createStagePageDiv(event);
+    } else if (event.eventType === EventType.ENDING) {
+        console.log("Creating ending event");
+        return createEndingTransitionPageDiv(event);
     }
 }
 
@@ -1151,6 +1168,25 @@ function createStagePageDiv(event) {
               </div>
               <h1>Stage ${currentLevel}</h1>
               <p class="to-fade">${event.name}</p>
+              <p class="to-fade">${event.line}</p>
+            </div>
+          </div>`;
+    return div;
+}
+
+function createEndingTransitionPageDiv(event) {
+    const imageDivStr = event.id === "end-1" ? `<img class="slide-top" src="${event.img}"/>` : `<img class="scale-up-center" src="${event.img}"/>`;
+    const div = document.createElement('div');
+    currentMaxPage++;
+    div.className = `page-num-${currentMaxPage}`;
+    div.innerHTML =
+        `<div class="pages-content">
+            <div class="pages-background"></div>
+            <div class="content-inner">
+              <div class="img-container">
+                ${imageDivStr}
+              </div>
+              <p class="to-fade"><font color='#dc143c'>${event.name}</font></p>
               <p class="to-fade">${event.line}</p>
             </div>
           </div>`;
@@ -4644,7 +4680,7 @@ $(window).ready(function () {
                     //     lastEvent = currentEvents.shift();
                     // }
                     //
-                    // if (lastEvent !== null && lastEvent.type === 'stage') {
+                    // if (lastEvent !== null && lastEvent.type === EventType.STAGE) {
                     //     currentLevel++;
                     // }
                     //
