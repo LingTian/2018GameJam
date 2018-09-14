@@ -286,6 +286,25 @@ function createEvents() {
     allEvents.push(createMajorRandomEvent(96, "修女", CHARA_IMGS["修女"], "不要相信白骑士的话。", "白骑士看上去是个好人。", "白骑士看上去不像个好人", "1", EventType.RANDOM, [-1, -1]));
 
 
+    allEvents.push(createStatsChangeEvent(97, "七彩泉", "img/1.png", "七彩的泉水汩汩的涌现出来。", "运一些回村子里卖钱。", "装一些泉水自己人喝。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, -10], [10, 0, 0, 0, 0, 10], ""));
+    allEvents.push(createMajorRandomEvent(98, "七彩泉", CHARA_IMGS["夜枭"], "七彩的泉水里似乎透着可疑的绿光", "喝一口看看", "喝一口看看", "1", EventType.RANDOM, [-1, -1]));
+    allEvents.push(createMajorRandomEvent(99, "不老泉", CHARA_IMGS["夜枭"], "不老泉水里似乎透着可疑的绿光", "喝一口看看", "喝一口看看", "1", EventType.RANDOM, [-1, -1]));
+
+    allEvents.push(createStatsChangeEvent(100, "尘封的长枪", "img/10.png", "一个街边的小贩似乎在贩卖着一把长枪。", "这个长枪一看就不是什么值钱的武器。", "看上去是个宝贝，买来看看。", "1", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 0], [10, -10, 10, 10, 10, 10], ""));
+    allEvents.push(createStatsChangeEvent(101, "尘封的长剑", "img/10.png", "一个街边的小贩似乎在贩卖着一把长剑。", "这个长剑一看就不是什么值钱的武器。", "看上去是个宝贝，买来看看。", "1", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 0], [0, -10, 0, 0, 0, 0], ""));
+    allEvents.push(createMajorRandomEvent(102, "蒙面的旅人", CHARA_IMGS["蒙面的旅人"], "长路漫漫，是选择前进还是后退呢？", "朝前走吧。", "走回头路也不错。", "1", EventType.RANDOM, [-1, -1]));
+
+    allEvents.push(createStatsChangeEvent(103, "法师", CHARA_IMGS["法师"], "想要金钱，还是想要智慧呢？", "金钱。", "智慧。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, 0], [-10, 0, 0, 0, 10, 0], ""));
+    allEvents.push(createStatsChangeEvent(104, "士兵", CHARA_IMGS["士兵"], "能否帮我买把长剑？", "懒得做", "帮他买一下把。", "1", EventType.NORMAL, [-1, -1], [5, 0, 0, 0, 0, -10], [0, -10, 10, 0, 0, 10], ""));
+    allEvents.push(createStatsChangeEvent(105, "盗贼", CHARA_IMGS["盗贼"], "能否帮我买个靴子？", "懒得做", "帮他买一下把。", "1", EventType.NORMAL, [-1, -1], [5, 0, 0, 0, 0, -10], [0, -10, 0, 10, 0, 10], ""));
+    allEvents.push(createStatsChangeEvent(106, "法师", CHARA_IMGS["法师"], "我的法杖掉了，帮我去买一个吧？", "懒得做。", "帮他买一下把。", "1", EventType.NORMAL, [-1, -1], [5, 0, 0, 0, 0, 0], [-10, 0, 0, 0, 10, 10], ""));
+    allEvents.push(createStatsChangeEvent(107, "密探", CHARA_IMGS["密探"], "我这里有大量的金币，如果告诉我情报那这些钱都是你的？。", "我对这桩买卖并不感兴趣。", "知无不答。", "1", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 20], [0, 50, 0, 0, 0, -50], ""));
+    allEvents.push(createStatsChangeEvent(108, "密探", CHARA_IMGS["密探"], "我这里有上好的兵器，如果告诉我情报那它就归你了？。", "我对这桩买卖并不感兴趣。", "知无不答。", "1", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 20], [0, 0, 10, 10, 10, -50], ""));
+    allEvents.push(createMajorRandomEvent(109, "蒙面的旅人", CHARA_IMGS["蒙面的旅人"], "凡人无法见两王？", "神神道道。", "神神道道。", "1", EventType.RANDOM, [-1, -1]));
+    allEvents.push(createMajorRandomEvent(110, "夜枭", CHARA_IMGS["夜枭"], "我们似乎见过很多次", "？？？", "！！！", "1", EventType.RANDOM, [-1, -1]));
+    allEvents.push(createMajorRandomEvent(111, "地狱犬", "img/8.png", "我们似乎见过很多次", "？？？", "！！！", "1", EventType.RANDOM, [-1, -1]));
+    allEvents.push(createStatsChangeEvent(112, "牧师", CHARA_IMGS["牧师"], "医生似乎有着什么阴谋？", "怎么可能？", "我相信你的话。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [10, -10, 0, 0, 0, 0], ""));
+
     // allEvents.push(createEvent(13, "医生", "1.png", "西方的悬崖上传闻有魔龙作恶。", "无论多么危险我都将带头征讨。", "这肯定是无稽之谈。", "5", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, -1], ""));
     // allEvents.push(createEvent(500, "修女", "1.png", "也有可能有怪物守护。", "勇者无畏，愿意接受挑战。", "太危险了还是算了吧。", "", EventType.NORMAL, [600, 601], [-50, 0, 0, 0, 0, 30], [0, 0, 0, 0, 0, -10], ""));
     // allEvents.push(createEvent(501, "牧师", "1.png", "西方的巨人手中，持有勇者之剑，但却作恶多端。", "我将前往讨伐。", "这种危险的事情我可不去。", "", EventType.NORMAL, [600, 601], [-50, 0, 0, 0, 0, 30], [0, 0, 0, 0, 0, -10], ""));
@@ -295,8 +314,6 @@ function createEvents() {
 
     allEvents.push(createStatsChangeEvent(502, "邪恶的王", CHARA_IMGS["邪恶的王"], "你身上的味道我很讨厌。", "岂能放过你。", "岂能放过你。", "1", EventType.NORMAL, [-1, -1], [-50, 0, 0, 0, 0, 20], [-50, 0, 0, 0, 0, 20], ""));
     allEvents.push(createStatsChangeEvent(503, "邪恶的王", CHARA_IMGS["善良的王"], "你身上的味道我很讨厌。", "岂能放过你。", "岂能放过你。", "1", EventType.NORMAL, [-1, -1], [-50, 0, 0, 0, 0, 20], [-50, 0, 0, 0, 0, 20], ""));
-
-    // allEvents.push(createEvent(503, "善良的王", "1.png", "你难道不觉得可悲吗？", "愚昧者不自知。", "愚昧者不自知。", "1", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, -1], ""));
 
 
     allEvents.push(createStatsChangeEvent(91, "村落", CHARA_IMGS["村落"], "从黑夜中醒来，晨起的星光璀璨，照亮了远方的小村。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
