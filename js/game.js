@@ -287,8 +287,8 @@ function createEvents() {
 
 
     allEvents.push(createStatsChangeEvent(97, "七彩泉", "img/1.png", "七彩的泉水汩汩的涌现出来。", "运一些回村子里卖钱。", "装一些泉水自己人喝。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, -10], [10, 0, 0, 0, 0, 10], ""));
-    allEvents.push(createMajorRandomEvent(98, "七彩泉", CHARA_IMGS["夜枭"], "七彩的泉水里似乎透着可疑的绿光", "喝一口看看", "喝一口看看", "1", EventType.RANDOM, [-1, -1]));
-    allEvents.push(createMajorRandomEvent(99, "不老泉", CHARA_IMGS["夜枭"], "不老泉水里似乎透着可疑的绿光", "喝一口看看", "喝一口看看", "1", EventType.RANDOM, [-1, -1]));
+    allEvents.push(createMajorRandomEvent(98, "七彩泉", CHARA_IMGS["七彩泉"], "七彩的泉水里似乎透着可疑的绿光", "喝一口看看", "喝一口看看", "1", EventType.RANDOM, [-1, -1]));
+    allEvents.push(createMajorRandomEvent(99, "不老泉", CHARA_IMGS["不老泉"], "不老泉水里似乎透着可疑的绿光", "喝一口看看", "喝一口看看", "1", EventType.RANDOM, [-1, -1]));
 
     allEvents.push(createStatsChangeEvent(100, "尘封的长枪", "img/10.png", "一个街边的小贩似乎在贩卖着一把长枪。", "这个长枪一看就不是什么值钱的武器。", "看上去是个宝贝，买来看看。", "1", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 0], [10, -10, 10, 10, 10, 10], ""));
     allEvents.push(createStatsChangeEvent(101, "尘封的长剑", "img/10.png", "一个街边的小贩似乎在贩卖着一把长剑。", "这个长剑一看就不是什么值钱的武器。", "看上去是个宝贝，买来看看。", "1", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 0], [0, -10, 0, 0, 0, 0], ""));
@@ -304,6 +304,13 @@ function createEvents() {
     allEvents.push(createMajorRandomEvent(110, "夜枭", CHARA_IMGS["夜枭"], "我们似乎见过很多次", "？？？", "！！！", "1", EventType.RANDOM, [-1, -1]));
     allEvents.push(createMajorRandomEvent(111, "地狱犬", "img/8.png", "我们似乎见过很多次", "？？？", "！！！", "1", EventType.RANDOM, [-1, -1]));
     allEvents.push(createStatsChangeEvent(112, "牧师", CHARA_IMGS["牧师"], "医生似乎有着什么阴谋？", "怎么可能？", "我相信你的话。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [10, -10, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(113, "白骑士", CHARA_IMGS["白骑士"], "巫妖看似智慧，实则都是谎言。", "怎么可能？", "我相信你的话。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [10, -10, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(114, "盗贼", CHARA_IMGS["盗贼"], "据说地狱犬也会说话。", "是这样的，我见过。", "这怎么可能。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, 10], [-10, -10, 0, 0, 0, 0], ""));
+    allEvents.push(createMajorRandomEvent(115, "夜枭", CHARA_IMGS["夜枭"], "左边看似平坦，实乃艰途。右边有我我看不清的迷雾。", "hmm，从左边走把。", "hmm，从右边走吧。", "1", EventType.RANDOM, [-1, -1]));
+    allEvents.push(createMajorRandomEvent(116, "猎人", CHARA_IMGS["猎人"], "年轻的冒险家，前方旅途艰险，是否需要后退一下？", "似乎言之有理。", "岂能轻易退缩。", "1", EventType.RANDOM, [-1, -1]));
+    allEvents.push(createStatsChangeEvent(117, "商人", CHARA_IMGS["商人"], "年轻的冒险家，能否帮我运输一批货物？", "正好手头有点紧。", "还不如休息一下。", "1", EventType.NORMAL, [-1, -1], [-20, 20, 10, 0, 0, 0], [10, 0, 0, 0, 10, 0], ""));
+    allEvents.push(createMajorRandomEvent(118, "野鬼", CHARA_IMGS["野鬼"], "前方是条死路，回去吧冒险家？", "我才不信你的鬼话连篇。", "适当的退猴也是智慧的表现。", "1", EventType.RANDOM, [-1, -1]));
+
 
     // allEvents.push(createEvent(13, "医生", "1.png", "西方的悬崖上传闻有魔龙作恶。", "无论多么危险我都将带头征讨。", "这肯定是无稽之谈。", "5", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, -1], ""));
     // allEvents.push(createEvent(500, "修女", "1.png", "也有可能有怪物守护。", "勇者无畏，愿意接受挑战。", "太危险了还是算了吧。", "", EventType.NORMAL, [600, 601], [-50, 0, 0, 0, 0, 30], [0, 0, 0, 0, 0, -10], ""));
