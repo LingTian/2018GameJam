@@ -371,6 +371,8 @@ function createEvents() {
     //ending transition
     allEvents.push(createStatsChangeEvent("end-1", "天空。。。", "img/stage/yomi.jpg", "走了很久，也没有再遇到人，头上则是一片湛蓝的天空", "", "", "1", EventType.ENDING, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
     allEvents.push(createStatsChangeEvent("end-2", "天空的下方。。。", "img/stage/yomi1.jpg", "天空下方，是。。。？！", "", "", "1", EventType.ENDING, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent("end-3", "白光。。。", "img/stage/yomi1.jpg", "白光，闪过。。。？！", "", "", "1", EventType.ENDING, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent("end-4", "梦的终结。。", "img/stage/empty_image.png", "仿佛做了一个悠长而又意犹未尽的梦", "", "", "1", EventType.ENDING, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
 
     return allEvents;
 }
@@ -1201,7 +1203,17 @@ function createStagePageDiv(event) {
 }
 
 function createEndingTransitionPageDiv(event) {
-    const imageDivStr = event.id === "end-1" ? `<img class="slide-top" src="${event.img}"/>` : `<img class="scale-up-center" src="${event.img}"/>`;
+
+    let imageDivStr;
+    if (event.id === "end-1") {
+        imageDivStr = `<img class="slide-top" src="${event.img}"/>`;
+    } else if (event.id === "end-2") {
+        imageDivStr = `<img class="scale-up-center" src="${event.img}"/>`;
+    } else if (event.id === "end-3"){
+        imageDivStr = `<img class="blink-1" src="${event.img}"/>`;
+    } else {
+        imageDivStr = `<img src="${event.img}"/>`;
+    }
     const div = document.createElement('div');
     currentMaxPage++;
     div.className = `page-num-${currentMaxPage}`;
