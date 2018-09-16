@@ -77,6 +77,10 @@ const CHARA_IMGS = {
     "士兵": "img/chara/soldier.png",
     "邪恶的王": "img/chara/evalking.png",
     "善良的王": "img/chara/goodking.png",
+    "朗格努斯": "img/chara/spear.png",
+    "雷沃汀": "img/chara/firesword.png",
+    "士兵": "img/chara/solider.png",
+    "石中剑": "img/chara/stonesword.png",
     "野鬼": "img/chara/ghost.png",
     "村落": "img/stage/village.png",
     "城镇": "img/stage/town.png",
@@ -254,16 +258,16 @@ function createEvents() {
 
     allEvents.push(createStatsChangeEvent(75, "白骑士", CHARA_IMGS["白骑士"], "幸福感这种东西，会沉在悲哀的河底，隐隐发光，仿佛砂金一般。", "不是应该更加珍惜吗？", "终究是沉没在悲伤的河底吗？", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10], ""));
     //random test
-    allEvents.push(createMinorRandomEvent(76, "七彩泉", "img/1.png", "七彩的泉水汩汩的涌现出来", "喝一口看看", "喝一口看看", "1", EventType.RANDOM, [-1, -1]));
-    allEvents.push(createMajorRandomEvent(76, "不老泉", "img/1.png", "不老的泉水汩汩的涌现出来", "喝一口看看", "喝一口看看", "1", EventType.RANDOM, [-1, -1]));
+    allEvents.push(createMinorRandomEvent(76, "七彩泉", CHARA_IMGS["七彩泉"], "七彩的泉水汩汩的涌现出来", "喝一口看看", "喝一口看看", "1", EventType.RANDOM, [-1, -1]));
+    allEvents.push(createMajorRandomEvent(76, "不老泉", CHARA_IMGS["不老泉"], "不老的泉水汩汩的涌现出来", "喝一口看看", "喝一口看看", "1", EventType.RANDOM, [-1, -1]));
     allEvents.push(createMajorRandomEvent(77, "幸运的金币", CHARA_IMGS["钱币"], "一枚金光闪闪的钱币", "抛一下试试运气", "抛一下试试运气", "1", EventType.RANDOM, [-1, -1]));
 
     //比较，善良大于一定并且总属性够高。
-    allEvents.push(createStatsChangeEvent(78, "石中剑", "img/10.png", "石头上插着一把荆棘缠绕的圣剑。", "拔出圣剑，我自为王。", "王者的使命过于沉重", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10], ""));
+    allEvents.push(createStatsChangeEvent(78, CHARA_IMGS["石中剑"], "img/10.png", "石头上插着一把荆棘缠绕的圣剑。", "拔出圣剑，我自为王。", "王者的使命过于沉重", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10], ""));
 
-    allEvents.push(createStatsChangeEvent(79, "朗格努斯", "img/10.png", "枪身血红，似乎滴血一般。", "让我来用着魔枪结束乱世。", "王者的使命过于沉重", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10], ""));
+    allEvents.push(createStatsChangeEvent(79, CHARA_IMGS["朗格努斯"], "img/10.png", "枪身血红，似乎滴血一般。", "让我来用着魔枪结束乱世。", "王者的使命过于沉重", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10], ""));
 
-    allEvents.push(createStatsChangeEvent(80, "雷沃汀", "img/10.png", "永远燃烧的火焰之剑。", "我能承受火焰之魂。", "冒火的剑怎么可能能拿得起来？", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10], ""));
+    allEvents.push(createStatsChangeEvent(80, "雷沃汀", CHARA_IMGS["雷沃汀"], "永远燃烧的火焰之剑。", "我能承受火焰之魂。", "冒火的剑怎么可能能拿得起来？", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10], ""));
     allEvents.push(createStatsChangeEvent(81, "亚当", CHARA_IMGS["亚当"], "伊甸园中有棵禁止享用的果树，叫分辨善恶树，是上帝为考验人的信心而设置的。", "如果是夏娃给的苹果，我应该也会吃。", "不可以吃，也不能摸，免得你们死。", "1", EventType.NORMAL, [-1, -1], [10, 0, 0, 0, 10, 0], [10, 0, 0, 0, 0, 5], ""));
     allEvents.push(createStatsChangeEvent(82, "亚当", CHARA_IMGS["亚当"], "年轻的时候以为那只是段感情，后来才知道，那其实是一生。", "心中有所爱之人亦是一种幸福。", "如果重来一次你会后悔吗？", "1", EventType.NORMAL, [-1, -1], [10, 0, 10, 10, 10, 0], [10, 0, 0, 0, 0, 10], ""));
     allEvents.push(createStatsChangeEvent(83, "亚当", CHARA_IMGS["亚当"], "疯子身上一把刀，鬼神也得让一步。", "举头三尺神明在。", "文明的结果是滑稽。", "1", EventType.NORMAL, [-1, -1], [10, 0, 0, 0, 0, 0], [10, 0, 0, 0, 0, -10], ""));
@@ -287,12 +291,12 @@ function createEvents() {
     allEvents.push(createMajorRandomEvent(96, "修女", CHARA_IMGS["修女"], "不要相信白骑士的话。", "白骑士看上去是个好人。", "白骑士看上去不像个好人", "1", EventType.RANDOM, [-1, -1]));
 
 
-    allEvents.push(createStatsChangeEvent(97, "七彩泉", "img/1.png", "七彩的泉水汩汩的涌现出来。", "运一些回村子里卖钱。", "装一些泉水自己人喝。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, -10], [10, 0, 0, 0, 0, 10], ""));
+    allEvents.push(createStatsChangeEvent(97, "七彩泉", CHARA_IMGS["七彩泉"], "七彩的泉水汩汩的涌现出来。", "运一些回村子里卖钱。", "装一些泉水自己人喝。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, -10], [10, 0, 0, 0, 0, 10], ""));
     allEvents.push(createMajorRandomEvent(98, "七彩泉", CHARA_IMGS["七彩泉"], "七彩的泉水里似乎透着可疑的绿光", "喝一口看看", "喝一口看看", "1", EventType.RANDOM, [-1, -1]));
     allEvents.push(createMajorRandomEvent(99, "不老泉", CHARA_IMGS["不老泉"], "不老泉水里似乎透着可疑的绿光", "喝一口看看", "喝一口看看", "1", EventType.RANDOM, [-1, -1]));
 
-    allEvents.push(createStatsChangeEvent(100, "尘封的长枪", "img/10.png", "一个街边的小贩似乎在贩卖着一把长枪。", "这个长枪一看就不是什么值钱的武器。", "看上去是个宝贝，买来看看。", "1", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 0], [10, -10, 10, 10, 10, 10], ""));
-    allEvents.push(createStatsChangeEvent(101, "尘封的长剑", "img/10.png", "一个街边的小贩似乎在贩卖着一把长剑。", "这个长剑一看就不是什么值钱的武器。", "看上去是个宝贝，买来看看。", "1", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 0], [0, -10, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent(100, "尘封的长枪", CHARA_IMGS["朗格努斯"], "一个街边的小贩似乎在贩卖着一把长枪。", "这个长枪一看就不是什么值钱的武器。", "看上去是个宝贝，买来看看。", "1", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 0], [10, -10, 10, 10, 10, 10], ""));
+    allEvents.push(createStatsChangeEvent(101, "尘封的长剑", CHARA_IMGS["雷沃汀"], "一个街边的小贩似乎在贩卖着一把长剑。", "这个长剑一看就不是什么值钱的武器。", "看上去是个宝贝，买来看看。", "1", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 0], [0, -10, 0, 0, 0, 0], ""));
     allEvents.push(createMajorRandomEvent(102, "蒙面的旅人", CHARA_IMGS["蒙面的旅人"], "长路漫漫，是选择前进还是后退呢？", "朝前走吧。", "走回头路也不错。", "1", EventType.RANDOM, [-1, -1]));
 
     allEvents.push(createStatsChangeEvent(103, "法师", CHARA_IMGS["法师"], "想要金钱，还是想要智慧呢？", "金钱。", "智慧。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, 0], [-10, 0, 0, 0, 10, 0], ""));
