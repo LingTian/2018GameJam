@@ -2,12 +2,13 @@
 const MAX_VAL = 100;
 const START_LEVEL = 1;
 const EVENT_PER_LEVEL = 8;
-const STAGE_IDS = [91, 92, 93, 94, 95, 96, 97, 98, 99, 100];
+const STAGE_IDS = ["stage-1", "stage-2", "stage-3", "stage-4", "stage-5", "stage-6", "stage-7", "stage-8", "stage-9"];
 
 let choiceId = null;
 let eventsByLevel = {};
 let eventMap = {};
 let currentLevel;
+let reincarnation;
 let currentEvents = [];
 let currentEvent;
 let player;
@@ -325,15 +326,15 @@ function createEvents() {
 
     // TO DO
     // stage id 冲突 91-99 重复
-    allEvents.push(createStatsChangeEvent(91, "村落", CHARA_IMGS["村落"], "从黑夜中醒来，晨起的星光璀璨，照亮了远方的小村。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(92, "城镇", CHARA_IMGS["城镇"], "行走了许久，也没有丝毫感到饥饿，前方似乎有个更大的城镇。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(93, "城堡", CHARA_IMGS["城堡"], "高耸的城堡是贵族的象征。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(94, "洞窟", CHARA_IMGS["洞窟"], "洞口矗立一个巨大的峻岩，犹如阴曹的判官。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(95, "森林", CHARA_IMGS["森林"], "幽静的密林深处，连鸟儿也很少飞来。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(96, "悬崖", CHARA_IMGS["悬崖"], "巍峨的云峰上，峭壁生辉，而我的脚步愈发轻快。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(97, "沼泽", CHARA_IMGS["沼泽"], "泥泞不堪,满目疮痍。我的脚蹼却丝毫不受沼泽的拖累。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(98, "冰原", CHARA_IMGS["冰原"], "茕茕孑立，踽踽而行。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(99, "岩浆", CHARA_IMGS["岩浆"], "末日般的场景，与一个挣扎的灵魂。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent("stage-1", "村落", CHARA_IMGS["村落"], "从黑夜中醒来，晨起的星光璀璨，照亮了远方的小村。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent("stage-2", "城镇", CHARA_IMGS["城镇"], "行走了许久，也没有丝毫感到饥饿，前方似乎有个更大的城镇。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent("stage-3", "城堡", CHARA_IMGS["城堡"], "高耸的城堡是贵族的象征。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent("stage-4", "洞窟", CHARA_IMGS["洞窟"], "洞口矗立一个巨大的峻岩，犹如阴曹的判官。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent("stage-5", "森林", CHARA_IMGS["森林"], "幽静的密林深处，连鸟儿也很少飞来。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent("stage-6", "悬崖", CHARA_IMGS["悬崖"], "巍峨的云峰上，峭壁生辉，而我的脚步愈发轻快。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent("stage-7", "沼泽", CHARA_IMGS["沼泽"], "泥泞不堪,满目疮痍。我的脚蹼却丝毫不受沼泽的拖累。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent("stage-8", "冰原", CHARA_IMGS["冰原"], "茕茕孑立，踽踽而行。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent("stage-9", "岩浆", CHARA_IMGS["岩浆"], "末日般的场景，与一个挣扎的灵魂。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
 
     //0结束 -1 随机 其他数字是链接
     allEvents.push(createStatsChangeEvent(601, "称号", "1.png", "法海无边", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
@@ -830,7 +831,7 @@ function getCompleteEvents() {
     return completeEvents;
 }
 
-function getNextEvent() {
+function getNextTransitionEvent() {
     if (currentEvent.id == "end-1") {
         return eventMap["end-2"];
     } else if (currentEvent.id == "end-2") {
@@ -838,66 +839,78 @@ function getNextEvent() {
     } else if (currentEvent.id == "end-3") {
         return eventMap["end-4"];
     } else if (currentEvent.id == "end-4") {
-        return eventMap["end-5"];
+        return null;
     } else {
         return eventMap["end-1"];
     }
 }
 
-// function getNextEvent() {
-//     console.error("numEventCurLevel: " + eventsPlayedThisState.size);
-//     console.error("EVENT_PER_LEVEL: " + EVENT_PER_LEVEL);
-//
-//     console.warn("player.achievements:");
-//     console.warn(player.achievements);
-//
-//     if (eventsPlayedThisState.size < EVENT_PER_LEVEL) {
-//         let allPossibleEvents = [];
-//         for (let curLevel = 1; curLevel <= currentLevel; curLevel++) {
-//             if (curLevel in eventsByLevel) {
-//                 console.log(`Adding ${eventsByLevel[curLevel].length} events of level ${curLevel} `);
-//                 allPossibleEvents = allPossibleEvents.concat(eventsByLevel[curLevel]);
-//             }
-//         }
-//         allPossibleEvents = allPossibleEvents.filter(event =>
-//             isEmpty(event.startAchievement) || player.achievements.has(event.startAchievement));
-//
-//         // filter current event.
-//         if (currentEvent != null) {
-//             allPossibleEvents = allPossibleEvents.filter(event => event.id !== currentEvent.id);
-//         }
-//
-//         allPossibleEvents = allPossibleEvents.filter(event => event.eventType === EventType.NORMAL);
-//         allPossibleEvents = allPossibleEvents.filter(event => !eventsPlayedThisState.has(event.eventId));
-//
-//         const completeEvents = getCompleteEvents();
-//         console.error("completeEvents:");
-//         console.error(completeEvents);
-//
-//         allPossibleEvents = allPossibleEvents.filter(event => !completeEvents.has(event.id));
-//
-//         //for debug
-//         // if (currentLevel >= 3) {
-//         //     console.warn(allPossibleEvents[0]);
-//         //     allPossibleEvents = allPossibleEvents.filter(event => typeof event.id === 'string' && event.id.includes("-"));
-//         // }
-//
-//         console.error("allPossibleEvents:");
-//         allPossibleEvents.forEach(event => console.warn(event));
-//
-//         const randomEvent = allPossibleEvents[Math.floor(Math.random() * allPossibleEvents.length)];
-//         return randomEvent;
-//     } else {
-//         console.error("getNextEvent currentLevel++")
-//         currentLevel++;
-//         return eventMap[STAGE_IDS[currentLevel - 1]];
-//     }
-// }
+function getNextEvent() {
+    console.error("numEventCurLevel: " + eventsPlayedThisState.size);
+    console.error("EVENT_PER_LEVEL: " + EVENT_PER_LEVEL);
+
+    console.warn("player.achievements:");
+    console.warn(player.achievements);
+
+    if (eventsPlayedThisState.size < EVENT_PER_LEVEL) {
+        let allPossibleEvents = [];
+        for (let curLevel = 1; curLevel <= currentLevel; curLevel++) {
+            if (curLevel in eventsByLevel) {
+                console.log(`Adding ${eventsByLevel[curLevel].length} events of level ${curLevel} `);
+                allPossibleEvents = allPossibleEvents.concat(eventsByLevel[curLevel]);
+            }
+        }
+        allPossibleEvents = allPossibleEvents.filter(event =>
+            isEmpty(event.startAchievement) || player.achievements.has(event.startAchievement));
+
+        // filter current event.
+        if (currentEvent != null) {
+            allPossibleEvents = allPossibleEvents.filter(event => event.id !== currentEvent.id);
+        }
+
+        allPossibleEvents = allPossibleEvents.filter(event => event.eventType === EventType.NORMAL);
+        allPossibleEvents = allPossibleEvents.filter(event => !eventsPlayedThisState.has(event.eventId));
+
+        const completeEvents = getCompleteEvents();
+        console.error("completeEvents:");
+        console.error(completeEvents);
+
+        allPossibleEvents = allPossibleEvents.filter(event => !completeEvents.has(event.id));
+
+        //for debug
+        // if (currentLevel >= 3) {
+        //     console.warn(allPossibleEvents[0]);
+        //     allPossibleEvents = allPossibleEvents.filter(event => typeof event.id === 'string' && event.id.includes("-"));
+        // }
+
+        console.error("allPossibleEvents:");
+        allPossibleEvents.forEach(event => console.warn(event));
+
+        return allPossibleEvents[Math.floor(Math.random() * allPossibleEvents.length)];
+    } else {
+        console.error("getNextEvent currentLevel++");
+        if (currentLevel === 9) {
+            const endingEvent = getNextTransitionEvent();
+            if (endingEvent === null) {
+                //Do the reset
+                currentLevel = 0;
+
+                //increase the reincarnation;
+                reincarnation++;
+            } else {
+                return endingEvent;
+            }
+        }
+        currentLevel++;
+        return eventMap[STAGE_IDS[currentLevel - 1]]
+    }
+}
 
 function initModels() {
     return $.getJSON("ConsecutiveEvents.json").then(
         function (json) {
             player = initPlayer('Knight III');
+            reincarnation = 1;
             currentLevel = START_LEVEL;
 
             let allEvents = convertConsecutiveEventJsonToEvents(json);
@@ -1127,6 +1140,9 @@ function updateScene(lastEvent) {
         //upload data to Nebulas networks
         uploadData();
     } else {
+
+        const winEvent = checkWin();
+
         let nextEvent = nextEventId === null ? getNextEvent() : eventMap[nextEventId];
 
         addAndRemovePage(nextEvent);
@@ -1165,6 +1181,11 @@ function checkDead(nextEventId) {
     }
 
     return null;
+}
+
+//TODO: win condition to be filled.
+function checkWin() {
+
 }
 
 function createPage(event) {
