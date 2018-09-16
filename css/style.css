@@ -503,3 +503,65 @@ p {
         opacity: 0;
     }
 }
+
+.rubber-stamp {
+    font-family: 'Pangolin', serif;
+    font-size: 20px;
+    line-height: 60px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: red;
+    border: 3px solid red;
+    float: left;
+    padding: 3px;
+    border-radius: 50%;
+    opacity: 0;
+    /*opacity: 0.8;*/
+    -webkit-transform: rotate(-10deg);
+    -o-transform: rotate(-10deg);
+    -moz-transform: rotate(-10deg);
+    -ms-transform: rotate(-10deg);
+    position: relative;
+    top:32%;
+    margin: 10px;
+}
+.rubber-stamp::after {
+    position: absolute;
+    content: " ";
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+    top: -10px;
+    left: -10px;
+    padding: 3px;
+    background: url(https://raw.github.com/domenicosolazzo/css3/master/img/noise.png) repeat;
+}
+
+.rubber-stamp-inner {
+    border: 1px solid red;
+    border-radius: 50%;
+    padding: 8px;
+}
+
+.rubber-line-top {
+    margin-top:10px;
+    background:none;
+    border-top:1px solid red;
+}
+
+.rubber-line-bottom {
+    margin-top:-20px;
+    margin-bottom:10px;
+    background:none;
+    border-top:1px solid red;
+    margin-left:5%;
+    width:90%;
+}
+
+.offset-text-top {
+    margin-top:-20px;
+}
+
+.achievements {
+    display: inline-block;
+}

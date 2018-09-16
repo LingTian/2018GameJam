@@ -1194,7 +1194,8 @@ function createPage(event) {
         return createEventPageDiv(event);
     } else if (event.eventType === EventType.STAGE) {
         console.log("Creating stage event");
-        return createStagePageDiv(event);
+        // return createStagePageDiv(event);
+        return createResultPageDiv();
     } else if (event.eventType === EventType.TITLE) {
         console.log("Creating title event");
         return createStagePageDiv(event);
@@ -1230,7 +1231,7 @@ function createEndingTransitionPageDiv(event) {
         imageDivStr = `<img class="slide-top" src="${event.img}"/>`;
     } else if (event.id === "end-2") {
         imageDivStr = `<img class="scale-up-center" src="${event.img}"/>`;
-    } else if (event.id === "end-3"){
+    } else if (event.id === "end-3") {
         imageDivStr = `<img class="blink-1" src="${event.img}"/>`;
     } else {
         imageDivStr = `<img src="${event.img}"/>`;
@@ -1267,7 +1268,7 @@ function createEventPageDiv(event) {
               <p class="pos-line">${event.choice1.line}</p>
               <p class="neg-line">${event.choice2.line}</p>
             </div>
-          </div>`;
+        </div>`;
     return div;
 }
 
@@ -1305,6 +1306,45 @@ function addDeadPage(event) {
               <h3><font color="#dc143c">获得成就: ${achievement}</font></h3>
             </div>
           </div>`).addClass('puff-in-center');
+}
+
+function createResultPageDiv() {
+    const div = document.createElement('div');
+    currentMaxPage++;
+    div.className = `page-num-${currentMaxPage}`;
+    div.innerHTML =
+        `<div class="pages-content">
+        <div class="pages-background"></div>
+        <div class="content-inner">
+              <h1>${player.name} 的旅途</h1>
+              <h3>轮回次数：<span class="reincarnation">1</span></h3>
+              <h3>经历事件：<span class="num-events">100</span></h3>
+              <h3>获得称号：</h3>
+              <div class="achievements">
+                <div class="rubber-stamp" id="achievement1">
+                  <div class="rubber-stamp-inner">
+                    <div class="rubber-line-top"></div>
+                      <div class="offset-text-top">
+                        4字称号1
+                      </span>  
+                      <div class="rubber-line-bottom"></div>
+                      </div>
+                  </div>
+                </div>
+                <div class="rubber-stamp" id="achievement2">
+                  <div class="rubber-stamp-inner">
+                    <div class="rubber-line-top"></div>
+                      <div class="offset-text-top">
+                        4字称号2
+                      </span>  
+                      <div class="rubber-line-bottom"></div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>`;
+    return div;
 }
 
 function addAndRemovePage(event) {
@@ -1352,6 +1392,21 @@ function showTitle(title) {
         position: 'topCenter',
         color: 'green'
     });
+}
+
+function animateElems() {
+    // define element variables
+    const a1 = $('#achievement1');
+    const a2 = $('#achievement2');
+
+    // define animation sequence
+    const sequence = [
+        { e: a1, p: { opacity: 0.8}, o: { duration: 600, easing: "swing" } },
+        { e: a2, p: { opacity: 0.8}, o: { duration: 600, delay: 200, easing: "swing"} },
+    ];
+
+    // run animation sequence
+    $.Velocity.RunSequence(sequence);
 }
 
 (function ($) {
@@ -4703,6 +4758,7 @@ $(window).ready(function () {
 
     $(".button").click(function () {
         console.error("Clicked...");
+        animateElems();
     });
 
     initModels().then(function () {
