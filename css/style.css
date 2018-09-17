@@ -565,3 +565,15 @@ p {
 .achievements {
     display: inline-block;
 }
+
+#reincarnation {
+    opacity: 0;
+}
+
+#num-events {
+    opacity: 0;
+}
+
+#goodness {
+    opacity: 0;
+}

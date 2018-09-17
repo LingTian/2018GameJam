@@ -914,6 +914,11 @@ function initModels() {
     return $.getJSON("ConsecutiveEvents.json").then(
         function (json) {
             player = initPlayer('Knight III');
+
+            //FOR TESTING, TODO: remove this logic
+            player.achievements.add(BUFF.TITLE + "TEST1");
+            player.achievements.add(BUFF.TITLE + "TEST2");
+
             reincarnation = 1;
             currentLevel = START_LEVEL;
 
@@ -1316,39 +1321,50 @@ function createResultPageDiv() {
     const div = document.createElement('div');
     currentMaxPage++;
     div.className = `page-num-${currentMaxPage}`;
+
+    const achievementsStrList = [];
+    Array.from(player.achievements).filter(ach => ach.startsWith(BUFF.TITLE)).forEach(
+        ach => {
+            achievementsStrList.push(ach.substring(ach.lastIndexOf(':') + 1));
+        }
+    );
+
+    let achievementHTML = "";
+    achievementsStrList.forEach(function (text, i) {
+        achievementHTML += generateAchievementHTML(i, text)
+    });
+
+    console.error("achievementHTML:");
+    console.error(achievementHTML);
+
     div.innerHTML =
         `<div class="pages-content">
         <div class="pages-background"></div>
         <div class="content-inner">
               <h1>${player.name} 的旅途</h1>
-              <h3>轮回次数：<span class="reincarnation">1</span></h3>
-              <h3>经历事件：<span class="num-events">100</span></h3>
+              <h3>轮回次数：<span id="reincarnation">100</span></h3>
+              <h3>经历事件：<span id="num-events">100</span></h3>
               <h3>获得称号：</h3>
               <div class="achievements">
-                <div class="rubber-stamp" id="achievement1">
-                  <div class="rubber-stamp-inner">
-                    <div class="rubber-line-top"></div>
-                      <div class="offset-text-top">
-                        4字称号1
-                      </span>  
-                      <div class="rubber-line-bottom"></div>
-                      </div>
-                  </div>
-                </div>
-                <div class="rubber-stamp" id="achievement2">
-                  <div class="rubber-stamp-inner">
-                    <div class="rubber-line-top"></div>
-                      <div class="offset-text-top">
-                        4字称号2
-                      </span>  
-                      <div class="rubber-line-bottom"></div>
-                      </div>
-                  </div>
-                </div>
+              ${achievementHTML}
               </div>
+              <h3>善恶值：<span id="goodness">100</span></h3>
         </div>
     </div>`;
     return div;
+}
+
+function generateAchievementHTML(idx, achievement) {
+    return `<div class="rubber-stamp" id="achievement${idx}">
+                  <div class="rubber-stamp-inner">
+                    <div class="rubber-line-top"></div>
+                      <div class="offset-text-top">
+                        ${achievement}
+                      </span>  
+                      <div class="rubber-line-bottom"></div>
+                      </div>
+                  </div>
+                </div>`;
 }
 
 function addAndRemovePage(event) {
@@ -1398,16 +1414,19 @@ function showTitle(title) {
     });
 }
 
-function animateElems() {
+function animateElems(numAchievements) {
     // define element variables
-    const a1 = $('#achievement1');
-    const a2 = $('#achievement2');
 
-    // define animation sequence
     const sequence = [
-        { e: a1, p: { opacity: 0.8}, o: { duration: 600, easing: "swing" } },
-        { e: a2, p: { opacity: 0.8}, o: { duration: 600, delay: 200, easing: "swing"} },
+        {e: $('#reincarnation'), p: {opacity: 0.8}, o: {duration: 600, easing: "swing"}},
+        {e: $('#num-events'), p: {opacity: 0.8}, o: {duration: 600, easing: "swing", delay: 200}}
     ];
+
+    for (let i = 0; i < numAchievements; i++) {
+        sequence.push({e: $(`#achievement${i}`), p: {opacity: 0.8}, o: {duration: 600, delay: 200, easing: "swing"}});
+    }
+
+    sequence.push({e: $('#goodness'), p: {opacity: 0.8}, o: {duration: 600, easing: "swing", delay: 200}})
 
     // run animation sequence
     $.Velocity.RunSequence(sequence);
@@ -4762,7 +4781,7 @@ $(window).ready(function () {
 
     $(".button").click(function () {
         console.error("Clicked...");
-        animateElems();
+        animateElems(player.achievements.size);
     });
 
     initModels().then(function () {
