@@ -9,7 +9,6 @@ let eventsByLevel = {};
 let eventMap = {};
 let currentLevel;
 let reincarnation;
-let currentEvents = [];
 let currentEvent;
 let player;
 let currentMaxPage;
@@ -166,9 +165,10 @@ function createEvents() {
     //TODO: 每一关无限遇到人，加入，白天黑夜，营地，每一关要加关底boss，boss达到一定条件之后随机出现，boss是要探索的。
     //TODO: 可以一开始是？？？或者 修女 => “穿教服的女子”
     //TODO: 做任务做到一定数量就有title， 20， 30， 50， 80， 100， 200
-    //TODO: 称号需要，hover， toast会有字
+    //TODO: 称号需要，hover， toast会有字 [DONE]
     //TODO: 数值调整，不要1:1的感觉。
     //TODO: 加结束逻辑。。
+    //TODO: 加任务关联逻辑 [DONE]
     const allEvents = [];
     allEvents.push(createStatsChangeEvent(1, "修女", CHARA_IMGS["修女"], "冒险家，你能帮我讨伐教会附近的史莱姆吗？", "义不容辞，我遇到一定不会放过他们。", "我还有要事在身。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
     //TODO: 史莱姆，报酬也要改
@@ -480,6 +480,7 @@ class Player {
 
 const EventType = Object.freeze({
     NORMAL: "NORMAL",
+    BOSS: "BOSS",
     STAGE: "STAGE",
     TITLE: "TITLE",
     SUBSEQUENT: "SUBSEQUENT",
@@ -487,13 +488,14 @@ const EventType = Object.freeze({
 });
 
 class EventV2 {
-    constructor(id, name, img, line, startStage, startAchievement, eventType, choice1, choice2, enemy) {
+    constructor(id, name, img, line, startStage, startAchievement, startBuff, eventType, choice1, choice2, enemy) {
         this.id = id;
         this.name = name;
         this.img = img;
         this.line = line;
         this.startStage = startStage;
         this.startAchievement = startAchievement;
+        this.startBuff = startBuff;
         this.eventType = eventType;
         this.choice1 = choice1;
         this.choice2 = choice2;
@@ -536,39 +538,21 @@ class EffectV2 {
     }
 }
 
-// Usage
-const eventV2 = new EventV2(1, 'fakeName', 'fakeImg', 'dummy line', 1, EventType.NORMAL,
-    new Choice(1, "this is choice 1",
-        new EffectV2(
-            "effectId1", EffectType.COMPOSITE, function () { //function 作为回调
-                player.agility += 1;
-                player.intelligence -= 1;
-                player.buffSet.add(BUFF.FAKE);
-            }
-        )),
-    new Choice(2, "this is choice 2",
-        new EffectV2(
-            "effectId2", EffectType.RANDOM, () => {
-                player.gold += -5 + 10 * Math.random(); // +-5 gold effect
-            }
-        )),
-    null);
-
 // function to create a event with both effects are stats change event
 // V1 -> V2 的普通event的utility，用的input还是V1的input
-function createStatsChangeEvent(id, name, img, line, posLine, negLine, stage, type, subsequent, leftAttrEffects, rightAttrEffects) {
+function createStatsChangeEvent(id, name, img, line, posLine, negLine, stage, type, subsequent, leftAttrEffects, rightAttrEffects, startBuff, leftBuff, rightBuff) {
     console.log(rightAttrEffects);
-    return new EventV2(id, name, img, line, stage, null, type,
+    return new EventV2(id, name, img, line, stage, null, startBuff, type,
         new Choice(id, posLine,
-            createStatsEffect(id, leftAttrEffects)
+            createStatsEffect(id, leftAttrEffects, leftBuff)
         ),
         new Choice(id, negLine,
-            createStatsEffect(id, rightAttrEffects)
+            createStatsEffect(id, rightAttrEffects, rightBuff)
         ),
         null);
 }
 
-function createStatsEffect(eventId, attrChange) {
+function createStatsEffect(eventId, attrChange, buff) {
     const callBack = function () {
         player.spirit += attrChange[0];
         player.gold += attrChange[1];
@@ -576,6 +560,9 @@ function createStatsEffect(eventId, attrChange) {
         player.agility += attrChange[3];
         player.intelligence += attrChange[4];
         player.goodness += attrChange[5];
+        if (buff !== undefined) {
+            player.buffSet.add(buff);
+        }
     };
     return new EffectV2(eventId, EffectType.STATS_CHANGE, callBack);
 }
@@ -590,14 +577,14 @@ function convertConsecutiveEventJsonToEvents(json) {
     return consecEvents;
 }
 
-//TODO: add the start stage for all events
+//TODO: StartBuff
 function createConsecutiveEvent(eventJson) {
     const startStage = eventJson.startStage === "" ? null : eventJson.startStage;
     const startAchievement = eventJson.startAchievement === ""
         ? ""
         : parseListAttr(eventJson.startAchievement)[0];
     console.error(startAchievement);
-    return new EventV2(eventJson.id, eventJson.name, eventJson.img, eventJson.text, startStage, startAchievement, EventType.NORMAL, createChoice(eventJson, true), createChoice(eventJson, false), null);
+    return new EventV2(eventJson.id, eventJson.name, eventJson.img, eventJson.text, startStage, startAchievement, null, EventType.NORMAL, createChoice(eventJson, true), createChoice(eventJson, false), null);
 }
 
 function createChoice(eventJson, isChoice1) {
@@ -749,8 +736,8 @@ function parseListAttr(listAttr) {
 
 // 可以再复杂一点 两个选项的buff不一样。
 
-function createFightEventWithBuff(id, name, img, line, posLine, negLine, stage, achievement, type, subsequent, attrToCompare1, attrToCompare2, winBuff, lossBuff, enemy) {
-    return new EventV2(id, name, img, line, stage, achievement, type,
+function createFightEventWithBuff(id, name, img, line, posLine, negLine, stage, achievement, startBuff, type, subsequent, attrToCompare1, attrToCompare2, winBuff, lossBuff, enemy) {
+    return new EventV2(id, name, img, line, stage, achievement, startBuff, type,
         new Choice(id, posLine,
             createStatsEffect(id, subsequent, attrToCompare1, winBuff, lossBuff)
         ),
@@ -778,9 +765,9 @@ function createFightEffect(eventId, subsequent, attrToCompare, winBuff, lossBuff
 }
 
 //V2 small random utility
-
-function createMinorRandomEvent(id, name, img, line, posLine, negLine, stage, achievement, type, subsequent) {
-    return new EventV2(id, name, img, line, stage, achievement, type,
+//TODO: start buff
+function createMinorRandomEvent(id, name, img, line, posLine, negLine, stage, achievement, type, subsequent, startBuff) {
+    return new EventV2(id, name, img, line, stage, achievement, startBuff, type,
         new Choice(id, posLine,
             createMinorRandomEffect(id, subsequent)
         ),
@@ -792,8 +779,8 @@ function createMinorRandomEvent(id, name, img, line, posLine, negLine, stage, ac
 
 //V2 big random utility
 
-function createMajorRandomEvent(id, name, img, line, posLine, negLine, stage, achievement, type, subsequent) {
-    return new EventV2(id, name, img, line, stage, achievement, type,
+function createMajorRandomEvent(id, name, img, line, posLine, negLine, stage, achievement, type, subsequent, startBuff) {
+    return new EventV2(id, name, img, line, stage, achievement, startBuff, type,
         new Choice(id, posLine,
             createMajorRandomEffect(id, subsequent)
         ),
@@ -855,26 +842,6 @@ function initPlayer(name) {
     return new Player(name, playerId);
 }
 
-// TODO: better random
-function getEventsForLevel(level) {
-    console.log("Getting events for level " + level);
-    // const prob = Math.min(1.0, EVENT_PER_LEVEL / eventsByLevel[level].length) * 0.8;
-    let allPossibleEvents = [];
-    for (let curLevel = 1; curLevel <= level; curLevel++) {
-        if (curLevel in eventsByLevel) {
-            console.log(`Adding ${eventsByLevel[curLevel].length} events of level ${curLevel} `);
-            allPossibleEvents = allPossibleEvents.concat(eventsByLevel[curLevel]);
-        }
-    }
-
-    allPossibleEvents = allPossibleEvents.filter(event =>
-        isEmpty(event.startAchievement) || player.achievements.has(event.startAchievement));
-
-    allPossibleEvents = allPossibleEvents.filter((event) => event.eventType === EventType.NORMAL);
-    console.log(`Got ${allPossibleEvents.length} valid events events.`);
-    return getRandomArrayElements(allPossibleEvents, 1);
-}
-
 function getCompleteEvents() {
     const completeEvents = new Set();
     player.achievements.forEach(
@@ -920,6 +887,9 @@ function getNextEvent() {
         allPossibleEvents = allPossibleEvents.filter(event =>
             isEmpty(event.startAchievement) || player.achievements.has(event.startAchievement));
 
+        allPossibleEvents = allPossibleEvents.filter(event =>
+            isEmpty(event.startBuff) || player.buffSet.has(event.startBuff));
+
         // filter current event.
         if (currentEvent != null) {
             allPossibleEvents = allPossibleEvents.filter(event => event.id !== currentEvent.id);
@@ -945,6 +915,11 @@ function getNextEvent() {
 
         return allPossibleEvents[Math.floor(Math.random() * allPossibleEvents.length)];
     } else {
+        // 0.1 几率刷到boss
+        if (Math.random() > 0.1) {
+            return getBossEvent();
+        }
+        
         console.error("getNextEvent currentLevel++");
         if (currentLevel === 9) {
             const endingEvent = getNextTransitionEvent();
@@ -961,6 +936,11 @@ function getNextEvent() {
         currentLevel++;
         return eventMap[STAGE_IDS[currentLevel - 1]]
     }
+}
+
+//TODO: boss event, boss 结束后是过关， 所以上面的过关更新逻辑要重写
+function getBossEvent(level) {
+
 }
 
 function initModels() {
@@ -993,9 +973,6 @@ function initModels() {
             console.log("All events length: " + allEvents.length);
 
             eventsByLevel = loadAllEvents(allEvents);
-
-            currentEvents.push(eventMap[STAGE_IDS[currentLevel]]);
-            currentEvents = currentEvents.concat(getEventsForLevel(currentLevel + 1));
 
             currentMaxPage = 0;
             currentPage = 0;
@@ -1167,9 +1144,10 @@ function postProcessBuff() {
             isEnd = true;
         } else if (buff.startsWith(BUFF.TITLE)) {
             console.log("BUFF.TITLE: " + buff);
-            const title = buff.substring(BUFF.TITLE.length + 1);
+            //TODO: all title should be in the format: [TITLE: EXPLANANTION]
+            const titleStrs = buff.substring(BUFF.TITLE.length + 1).split(",");
             player.achievements.add(buff);
-            showTitle(title);
+            showTitle(titleStrs[0], titleStrs[1]);
         } else if (buff.startsWith(BUFF.COMPLETE)) {
             console.log("BUFF.COMPLETE: " + buff);
             player.achievements.add(buff);
@@ -1214,6 +1192,9 @@ function updateScene(lastEvent) {
         const winEvent = checkWin();
 
         let nextEvent = nextEventId === null ? getNextEvent() : eventMap[nextEventId];
+
+        //Resolve the buff of the event
+        player.buffSet.delete(nextEvent.startBuff);
 
         addAndRemovePage(nextEvent);
 
@@ -1262,10 +1243,13 @@ function createPage(event) {
     if (event.eventType === EventType.NORMAL) {
         console.log("Creating normal event");
         return createEventPageDiv(event);
+    } else if (event.eventType === EventType.BOSS) {
+        console.log("Creating BOSS event");
+        return createEventPageDiv(event);
     } else if (event.eventType === EventType.STAGE) {
         console.log("Creating stage event");
-        // return createStagePageDiv(event);
-        return createResultPageDiv();
+        return createStagePageDiv(event);
+        // return createResultPageDiv();
     } else if (event.eventType === EventType.TITLE) {
         console.log("Creating title event");
         return createStagePageDiv(event);
@@ -1465,11 +1449,11 @@ function addDummyPage(turn) {
     }
 }
 
-function showTitle(title) {
+function showTitle(title, explanation) {
     iziToast.show({
         theme: 'light',
-        title: '获得称号',
-        message: title,
+        title: '获得称号:' + title,
+        message: explanation,
         position: 'topCenter',
         color: 'green'
     });
