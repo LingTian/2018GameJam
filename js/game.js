@@ -433,6 +433,7 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent("end-4", "梦的终结。。", "img/stage/empty_image.png", "仿佛做了一个悠长而又意犹未尽的梦", "", "", "1", EventType.ENDING, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
 
     //boss event
+    createLevel1BossEvents(allEvents);
 
     return allEvents;
 }
@@ -550,9 +551,9 @@ function createLevel1BossEvents(allEvents) {
 
     //boss example
     const id = "boss-1";
-    const name = "亚当：84757";
+    const name = "亚当(84757)";
     const boss = new Player(name, id);
-    const baseEvent = new EventV2(id, boss.name, CHARA_IMGS["亚当"], 1, null, null, EventType.BOSS, "赤手空拳搏斗", "力有不逮，暂时撤退。");
+    const baseEvent = new EventV2(id, boss.name, CHARA_IMGS["亚当"], "看不清面孔的人向这边袭来。。", 1, null, null, EventType.BOSS, "赤手空拳搏斗", "力有不逮，暂时撤退。");
 
     const preLogic = function (baseEvent) {
         if (player.buffSet.has(BUFF.BUFF + ":腐朽的巨剑")) {
@@ -578,7 +579,7 @@ function createLevel1BossEvents(allEvents) {
     const rightLoss = id + "-loss";
 
     allEvents.push(createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallback, leftWin, leftLoss, rightWin, rightLoss));
-    allEvents.push(createStatsChangeEvent("boss-1-win", "", CHARA_IMGS["亚当"], "（微笑）你赢了，可是后面更难的试炼在等待着你。。。", "好吧", "。。。", "1", EventType.SUBSEQUENT, null,
+    allEvents.push(createStatsChangeEvent("boss-1-win", "", CHARA_IMGS["亚当"], "（微笑）你赢了，你的力量比我强大，不过后面更难的试炼在等待着你。。。", "好吧", "。。。", "1", EventType.SUBSEQUENT, null,
         [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, STAGE_IDS[1])]));
     allEvents.push(createStatsChangeEvent("boss-1-loss", "", CHARA_IMGS["亚当"], "就差一点，或许, 有武器就能赢了。。", "好吧", "", "1", EventType.SUBSEQUENT, null,
         [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [BUFF.DEATH, buildBuff(BUFF.TITLE, "出师未捷身先死")]));
@@ -607,12 +608,15 @@ function createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallb
 
     preLogic(baseEvent);
 
-    return new EventV2(baseEvent.id, baseEvent.name, baseEvent.img, baseEvent.line, baseEvent.startStage, baseEvent.startBuff, EventType.BOSS,
-        new Choice(id, baseEvent.choice1,
-            new EffectV2(id, EffectType.COMPOSITE, leftLogic)
+    console.error("baseEvent:");
+    console.error(baseEvent);
+
+    return new EventV2(baseEvent.id, baseEvent.name, baseEvent.img, baseEvent.line, baseEvent.startStage, baseEvent.startAchievement, baseEvent.startBuff, EventType.BOSS,
+        new Choice(baseEvent.id, baseEvent.choice1,
+            new EffectV2(baseEvent.id, EffectType.COMPOSITE, leftLogic)
         ),
-        new Choice(id, baseEvent.choice2,
-            new EffectV2(id, EffectType.COMPOSITE, rightLogic)
+        new Choice(baseEvent.id, baseEvent.choice2,
+            new EffectV2(baseEvent.id, EffectType.COMPOSITE, rightLogic)
         ),
         null);
 }
@@ -931,7 +935,7 @@ function getCompleteEvents() {
                 completeEvents.add(eventId);
             }
         }
-    )
+    );
     return completeEvents;
 }
 
@@ -950,73 +954,77 @@ function getNextTransitionEvent() {
 }
 
 function getNextEvent() {
-    console.error("numEventCurLevel: " + eventsPlayedThisState.size);
-    console.error("EVENT_PER_LEVEL: " + EVENT_PER_LEVEL);
-
-    console.warn("player.achievements:");
-    console.warn(player.achievements);
-
-    if (eventsPlayedThisState.size < EVENT_PER_LEVEL) {
-        let allPossibleEvents = [];
-        for (let curLevel = 1; curLevel <= currentLevel; curLevel++) {
-            if (curLevel in eventsByLevel) {
-                console.log(`Adding ${eventsByLevel[curLevel].length} events of level ${curLevel} `);
-                allPossibleEvents = allPossibleEvents.concat(eventsByLevel[curLevel]);
-            }
-        }
-        allPossibleEvents = allPossibleEvents.filter(event =>
-            isEmpty(event.startAchievement) || player.achievements.has(event.startAchievement));
-
-        allPossibleEvents = allPossibleEvents.filter(event =>
-            isEmpty(event.startBuff) || player.buffSet.has(event.startBuff));
-
-        // filter current event.
-        if (currentEvent != null) {
-            allPossibleEvents = allPossibleEvents.filter(event => event.id !== currentEvent.id);
-        }
-
-        allPossibleEvents = allPossibleEvents.filter(event => event.eventType === EventType.NORMAL);
-        allPossibleEvents = allPossibleEvents.filter(event => !eventsPlayedThisState.has(event.eventId));
-
-        const completeEvents = getCompleteEvents();
-        console.error("completeEvents:");
-        console.error(completeEvents);
-
-        allPossibleEvents = allPossibleEvents.filter(event => !completeEvents.has(event.id));
-
-        //for debug
-        // if (currentLevel >= 3) {
-        //     console.warn(allPossibleEvents[0]);
-        //     allPossibleEvents = allPossibleEvents.filter(event => typeof event.id === 'string' && event.id.includes("-"));
-        // }
-
-        console.error("allPossibleEvents:");
-        allPossibleEvents.forEach(event => console.warn(event));
-
-        return allPossibleEvents[Math.floor(Math.random() * allPossibleEvents.length)];
-    } else {
-        // 0.1 几率刷到boss
-        if (Math.random() > 0.1) {
-            return getBossEvent();
-        }
-        
-        console.error("getNextEvent currentLevel++");
-        if (currentLevel === 9) {
-            const endingEvent = getNextTransitionEvent();
-            if (endingEvent === null) {
-                //Do the reset
-                currentLevel = 0;
-
-                //increase the reincarnation;
-                reincarnation++;
-            } else {
-                return endingEvent;
-            }
-        }
-        currentLevel++;
-        return eventMap[STAGE_IDS[currentLevel - 1]]
-    }
+    return eventMap["boss-1"];
 }
+
+// function getNextEvent() {
+//     console.error("numEventCurLevel: " + eventsPlayedThisState.size);
+//     console.error("EVENT_PER_LEVEL: " + EVENT_PER_LEVEL);
+//
+//     console.warn("player.achievements:");
+//     console.warn(player.achievements);
+//
+//     if (eventsPlayedThisState.size < EVENT_PER_LEVEL) {
+//         let allPossibleEvents = [];
+//         for (let curLevel = 1; curLevel <= currentLevel; curLevel++) {
+//             if (curLevel in eventsByLevel) {
+//                 console.log(`Adding ${eventsByLevel[curLevel].length} events of level ${curLevel} `);
+//                 allPossibleEvents = allPossibleEvents.concat(eventsByLevel[curLevel]);
+//             }
+//         }
+//         allPossibleEvents = allPossibleEvents.filter(event =>
+//             isEmpty(event.startAchievement) || player.achievements.has(event.startAchievement));
+//
+//         allPossibleEvents = allPossibleEvents.filter(event =>
+//             isEmpty(event.startBuff) || player.buffSet.has(event.startBuff));
+//
+//         // filter current event.
+//         if (currentEvent != null) {
+//             allPossibleEvents = allPossibleEvents.filter(event => event.id !== currentEvent.id);
+//         }
+//
+//         allPossibleEvents = allPossibleEvents.filter(event => event.eventType === EventType.NORMAL);
+//         allPossibleEvents = allPossibleEvents.filter(event => !eventsPlayedThisState.has(event.eventId));
+//
+//         const completeEvents = getCompleteEvents();
+//         console.error("completeEvents:");
+//         console.error(completeEvents);
+//
+//         allPossibleEvents = allPossibleEvents.filter(event => !completeEvents.has(event.id));
+//
+//         //for debug
+//         // if (currentLevel >= 3) {
+//         //     console.warn(allPossibleEvents[0]);
+//         //     allPossibleEvents = allPossibleEvents.filter(event => typeof event.id === 'string' && event.id.includes("-"));
+//         // }
+//
+//         console.error("allPossibleEvents:");
+//         allPossibleEvents.forEach(event => console.warn(event));
+//
+//         return allPossibleEvents[Math.floor(Math.random() * allPossibleEvents.length)];
+//     } else {
+//         // 0.1 几率刷到boss
+//         if (Math.random() > 0.1) {
+//             return getBossEvent();
+//         }
+//
+//         console.error("getNextEvent currentLevel++");
+//         if (currentLevel === 9) {
+//             const endingEvent = getNextTransitionEvent();
+//             if (endingEvent === null) {
+//                 //Do the reset
+//                 currentLevel = 0;
+//
+//                 //increase the reincarnation;
+//                 reincarnation++;
+//             } else {
+//                 return endingEvent;
+//             }
+//         }
+//         currentLevel++;
+//         return eventMap[STAGE_IDS[currentLevel - 1]]
+//     }
+// }
 
 //TODO: boss event, boss 结束后是过关， 所以上面的过关更新逻辑要重写
 function getBossEvent(level) {
@@ -1325,6 +1333,9 @@ function createPage(event) {
         return createEventPageDiv(event);
     } else if (event.eventType === EventType.BOSS) {
         console.log("Creating BOSS event");
+        return createEventPageDiv(event);
+    } else if (event.eventType === EventType.SUBSEQUENT) {
+        console.log("Creating SUBSEQUENT event");
         return createEventPageDiv(event);
     } else if (event.eventType === EventType.STAGE) {
         console.log("Creating stage event");
