@@ -432,6 +432,8 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent("end-3", "白光。。。", "img/stage/yomi1.jpg", "白光，闪过。。。？！", "", "", "1", EventType.ENDING, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
     allEvents.push(createStatsChangeEvent("end-4", "梦的终结。。", "img/stage/empty_image.png", "仿佛做了一个悠长而又意犹未尽的梦", "", "", "1", EventType.ENDING, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
 
+    //boss event
+
     return allEvents;
 }
 
@@ -521,11 +523,16 @@ const EffectType = Object.freeze({
 });
 
 const BUFF = Object.freeze({
+    BUFF: "BUFF",
     NEXT: "NEXT", // NEXT EVENT
     DEATH: "DEATH",
     TITLE: "TITLE",
     COMPLETE: "COM"
 });
+
+function buildBuff(buff, desc) {
+    return buff + ":" + desc;
+}
 
 class EffectV2 {
     constructor(effectId, effectType, callBack) {
@@ -538,21 +545,94 @@ class EffectV2 {
     }
 }
 
-// function to create a event with both effects are stats change event
-// V1 -> V2 的普通event的utility，用的input还是V1的input
-function createStatsChangeEvent(id, name, img, line, posLine, negLine, stage, type, subsequent, leftAttrEffects, rightAttrEffects, startBuff, leftBuff, rightBuff) {
-    console.log(rightAttrEffects);
-    return new EventV2(id, name, img, line, stage, null, startBuff, type,
-        new Choice(id, posLine,
-            createStatsEffect(id, leftAttrEffects, leftBuff)
+
+function createLevel1BossEvents(allEvents) {
+
+    //boss example
+    const id = "boss-1";
+    const name = "亚当：84757";
+    const boss = new Player(name, id);
+    const baseEvent = new EventV2(id, boss.name, CHARA_IMGS["亚当"], 1, null, null, EventType.BOSS, "赤手空拳搏斗", "力有不逮，暂时撤退。");
+
+    const preLogic = function (baseEvent) {
+        if (player.buffSet.has(BUFF.BUFF + ":腐朽的巨剑")) {
+            baseEvent.choice1 = "使用不知何时得到的巨剑";
+        }
+    };
+
+    const leftCallback = () => {
+        if (player.buffSet.has(BUFF.BUFF + ":腐朽的巨剑")) {
+            boss.power -= 50;
+        }
+    };
+
+    //Do nothing
+    const rightCallback = () => {};
+    const winCheck = () => {
+        return player.power >= boss.power;
+    };
+
+    const leftWin = id + "-win";
+    const rightWin = id + "-win";
+    const leftLoss = id + "-loss";
+    const rightLoss = id + "-loss";
+
+    allEvents.push(createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallback, leftWin, leftLoss, rightWin, rightLoss));
+    allEvents.push(createStatsChangeEvent("boss-1-win", "", CHARA_IMGS["亚当"], "（微笑）你赢了，可是后面更难的试炼在等待着你。。。", "好吧", "。。。", "1", EventType.SUBSEQUENT, null,
+        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, STAGE_IDS[1])]));
+    allEvents.push(createStatsChangeEvent("boss-1-loss", "", CHARA_IMGS["亚当"], "就差一点，或许, 有武器就能赢了。。", "好吧", "", "1", EventType.SUBSEQUENT, null,
+        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [BUFF.DEATH, buildBuff(BUFF.TITLE, "出师未捷身先死")]));
+}
+
+function createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallback, leftWin, leftLoss, rightWin, rightLoss) {
+    console.log("createBossEvent");
+
+    const leftLogic = function () {
+        leftCallback();
+        if (winCheck()) {
+            addNextEventBuff(rightWin);
+        } else {
+            addNextEventBuff(rightLoss);
+        }
+    };
+
+    const rightLogic = function () {
+        rightCallback();
+        if (winCheck()) {
+            addNextEventBuff(leftWin);
+        } else {
+            addNextEventBuff(leftLoss);
+        }
+    };
+
+    preLogic(baseEvent);
+
+    return new EventV2(baseEvent.id, baseEvent.name, baseEvent.img, baseEvent.line, baseEvent.startStage, baseEvent.startBuff, EventType.BOSS,
+        new Choice(id, baseEvent.choice1,
+            new EffectV2(id, EffectType.COMPOSITE, leftLogic)
         ),
-        new Choice(id, negLine,
-            createStatsEffect(id, rightAttrEffects, rightBuff)
+        new Choice(id, baseEvent.choice2,
+            new EffectV2(id, EffectType.COMPOSITE, rightLogic)
         ),
         null);
 }
 
-function createStatsEffect(eventId, attrChange, buff) {
+// function to create a event with both effects are stats change event
+// V1 -> V2 的普通event的utility，用的input还是V1的input
+// TODO: subsequent其实没用，还是要用leftBuff和rightBuff控制走向
+function createStatsChangeEvent(id, name, img, line, posLine, negLine, stage, type, subsequent, leftAttrEffects, rightAttrEffects, startBuff, leftBuffs, rightBuffs) {
+    console.log(rightAttrEffects);
+    return new EventV2(id, name, img, line, stage, null, startBuff, type,
+        new Choice(id, posLine,
+            createStatsEffect(id, leftAttrEffects, leftBuffs)
+        ),
+        new Choice(id, negLine,
+            createStatsEffect(id, rightAttrEffects, rightBuffs)
+        ),
+        null);
+}
+
+function createStatsEffect(eventId, attrChange, buffs) {
     const callBack = function () {
         player.spirit += attrChange[0];
         player.gold += attrChange[1];
@@ -560,8 +640,10 @@ function createStatsEffect(eventId, attrChange, buff) {
         player.agility += attrChange[3];
         player.intelligence += attrChange[4];
         player.goodness += attrChange[5];
-        if (buff !== undefined) {
-            player.buffSet.add(buff);
+        if (buffs !== undefined) {
+            buffs.forEach((buff) => {
+                player.buffSet.add(buff)
+            });
         }
     };
     return new EffectV2(eventId, EffectType.STATS_CHANGE, callBack);
@@ -712,10 +794,8 @@ function createBuffChoice(eventJson, isChoice1) {
 }
 
 function addNextEventBuff(nextEventId) {
-    console.error("nextEventId: " + nextEventId);
     if (!isEmpty(nextEventId)) {
         const nextEventBuff = BUFF.NEXT + ":" + nextEventId;
-        console.error("adding... " + nextEventBuff);
         player.buffSet.add(nextEventBuff);
         console.error(player.buffSet);
     }
@@ -1144,7 +1224,7 @@ function postProcessBuff() {
             isEnd = true;
         } else if (buff.startsWith(BUFF.TITLE)) {
             console.log("BUFF.TITLE: " + buff);
-            //TODO: all title should be in the format: [TITLE: EXPLANANTION]
+            //TODO: all title should be in the format: [TITLE: EXPLANATION]
             const titleStrs = buff.substring(BUFF.TITLE.length + 1).split(",");
             player.achievements.add(buff);
             showTitle(titleStrs[0], titleStrs[1]);
