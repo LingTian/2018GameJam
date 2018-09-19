@@ -862,7 +862,6 @@ function createMinorRandomEvent(id, name, img, line, posLine, negLine, stage, ac
 }
 
 //V2 big random utility
-
 function createMajorRandomEvent(id, name, img, line, posLine, negLine, stage, achievement, type, subsequent, startBuff) {
     return new EventV2(id, name, img, line, stage, achievement, startBuff, type,
         new Choice(id, posLine,
@@ -940,13 +939,13 @@ function getCompleteEvents() {
 }
 
 function getNextTransitionEvent() {
-    if (currentEvent.id == "end-1") {
+    if (currentEvent.id === "end-1") {
         return eventMap["end-2"];
-    } else if (currentEvent.id == "end-2") {
+    } else if (currentEvent.id === "end-2") {
         return eventMap["end-3"];
-    } else if (currentEvent.id == "end-3") {
+    } else if (currentEvent.id === "end-3") {
         return eventMap["end-4"];
-    } else if (currentEvent.id == "end-4") {
+    } else if (currentEvent.id === "end-4") {
         return null;
     } else {
         return eventMap["end-1"];
