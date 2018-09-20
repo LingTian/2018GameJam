@@ -174,7 +174,8 @@ function createEvents() {
         EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], null, [buildBuff(BUFF.NEXT, "1-1")], null));
 
     //TODO: title for this
-    allEvents.push(createStatsChangeEvent("1-1", "史莱姆", CHARA_IMGS["修女"], "呜噜呜噜?##!!", "邪恶的史莱姆，接招吧！", "没想到看上去还挺可爱，就放过它吧。", "1", EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10]));
+    allEvents.push(createStatsChangeEvent("1-1", "史莱姆", CHARA_IMGS["修女"], "呜噜呜噜?##!!", "邪恶的史莱姆，接招吧！", "没想到看上去还挺可爱，就放过它吧。", "1", EventType.NORMAL,
+        [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], null, [buildBuff(BUFF.MESSAGE, "讨伐史莱姆,你消灭了邪恶的史莱姆！")]));
 
     allEvents.push(createStatsChangeEvent(2, "修女", CHARA_IMGS["修女"], "你愿意帮忙捐助一下教会嘛？", "乐于奉献。", "我手边有点紧.", "1", EventType.NORMAL, [-1, -1], [10, -10, 0, 0, 0, 10], [5, 0, 0, 0, 0, 0]));
     allEvents.push(createStatsChangeEvent(3, "修女", CHARA_IMGS["修女"], "教会的经书隐藏着智慧。", "能借我阅读一下嘛？", "我还是想休息一下。", "1", EventType.NORMAL, [-1, -1], [0, 0, 10, 10, 10, 0], [-10, 0, 0, 0, 0, 0]));
@@ -187,7 +188,7 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent("4-2", "黑骑士", CHARA_IMGS["黑骑士"], "我早已忘记XXX了。", "嗯。。。", "嗯。。。", "3", EventType.SUBSEQUENT, [-1, -1], [-10, 0, 0, 0, 0, 20], [-10, 0, 0, 0, 0, -20]));
 
     allEvents.push(createStatsChangeEvent(5, "修女", CHARA_IMGS["修女"], "听闻东方有种神奇的草药，我这里有它标示的地图，现在免费赠送给您。", "修女的话似乎可信，值得尝试。", "此去不知归途，还是休息休息吧。", "2",
-        EventType.NORMAL, [-1, -1], [-20, 0, 0, 0, 0, 0], [10, 0, 0, 0, 0, 0], buildBuff(BUFF.BUFF, "5")));
+        EventType.NORMAL, [-1, -1], [-20, 0, 0, 0, 0, 0], [10, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.BUFF, "5")], null));
     //TODO: 加入草药任务 需要解锁 需要比较敏捷 图片TODO
     allEvents.push(createStatsChangeEvent("5-1", "修女", CHARA_IMGS["修女"], "你在孤零零的悬崖上看到一株特别的草药。", "这就是修女说的草药吗？", "感觉上去采摘有点危险。", "3", EventType.NORMAL,
         [-1, -1], [-10, 0, 0, 0, 0, 20], [-10, 0, 0, 0, 0, -20]));
@@ -564,7 +565,8 @@ const BUFF = Object.freeze({
     NEXT: "NEXT", // NEXT EVENT
     DEATH: "DEATH",
     TITLE: "TITLE",
-    COMPLETE: "COM"
+    COMPLETE: "COM",
+    MESSAGE: "MESSAGE"
 });
 
 function buildBuff(buff, desc) {
@@ -680,6 +682,8 @@ function createStatsEffect(eventId, attrChange, buffs) {
         player.agility += attrChange[3];
         player.intelligence += attrChange[4];
         player.goodness += attrChange[5];
+        console.warn("buffs:");
+        console.warn(buffs);
         if (buffs !== undefined && buffs !== null) {
             buffs.forEach((buff) => {
                 player.buffSet.add(buff)
@@ -988,79 +992,81 @@ function getNextTransitionEvent() {
     }
 }
 
-function getNextEvent() {
-    return eventMap["boss-1"];
-}
 
 //TODO: check BUFF.BUFF触发startBuff的逻辑
-// function getNextEvent() {
-//     console.error("numEventCurLevel: " + eventsPlayedThisState.size);
-//     console.error("EVENT_PER_LEVEL: " + EVENT_PER_LEVEL);
-//
-//     console.warn("player.achievements:");
-//     console.warn(player.achievements);
-//
-//     if (eventsPlayedThisState.size < EVENT_PER_LEVEL) {
-//         let allPossibleEvents = [];
-//         for (let curLevel = 1; curLevel <= currentLevel; curLevel++) {
-//             if (curLevel in eventsByLevel) {
-//                 console.log(`Adding ${eventsByLevel[curLevel].length} events of level ${curLevel} `);
-//                 allPossibleEvents = allPossibleEvents.concat(eventsByLevel[curLevel]);
-//             }
-//         }
-//         allPossibleEvents = allPossibleEvents.filter(event =>
-//             isEmpty(event.startAchievement) || player.achievements.has(event.startAchievement));
-//
-//         allPossibleEvents = allPossibleEvents.filter(event =>
-//             isEmpty(event.startBuff) || player.buffSet.has(event.startBuff));
-//
-//         // filter current event.
-//         if (currentEvent != null) {
-//             allPossibleEvents = allPossibleEvents.filter(event => event.id !== currentEvent.id);
-//         }
-//
-//         allPossibleEvents = allPossibleEvents.filter(event => event.eventType === EventType.NORMAL);
-//         allPossibleEvents = allPossibleEvents.filter(event => !eventsPlayedThisState.has(event.eventId));
-//
-//         const completeEvents = getCompleteEvents();
-//         console.error("completeEvents:");
-//         console.error(completeEvents);
-//
-//         allPossibleEvents = allPossibleEvents.filter(event => !completeEvents.has(event.id));
-//
-//         //for debug
-//         // if (currentLevel >= 3) {
-//         //     console.warn(allPossibleEvents[0]);
-//         //     allPossibleEvents = allPossibleEvents.filter(event => typeof event.id === 'string' && event.id.includes("-"));
-//         // }
-//
-//         console.error("allPossibleEvents:");
-//         allPossibleEvents.forEach(event => console.warn(event));
-//
-//         return allPossibleEvents[Math.floor(Math.random() * allPossibleEvents.length)];
-//     } else {
-//         // 0.1 几率刷到boss
-//         if (Math.random() > 0.1) {
-//             return getBossEvent();
-//         }
-//
-//         console.error("getNextEvent currentLevel++");
-//         if (currentLevel === 9) {
-//             const endingEvent = getNextTransitionEvent();
-//             if (endingEvent === null) {
-//                 //Do the reset
-//                 currentLevel = 0;
-//
-//                 //increase the reincarnation;
-//                 reincarnation++;
-//             } else {
-//                 return endingEvent;
-//             }
-//         }
-//         currentLevel++;
-//         return eventMap[STAGE_IDS[currentLevel - 1]]
-//     }
-// }
+function getNextEvent() {
+
+    if (currentMaxPage === 2) {
+        return eventMap["1"];
+    } else {
+        console.error("numEventCurLevel: " + eventsPlayedThisState.size);
+        console.error("EVENT_PER_LEVEL: " + EVENT_PER_LEVEL);
+
+        console.warn("player.achievements:");
+        console.warn(player.achievements);
+
+        if (eventsPlayedThisState.size < EVENT_PER_LEVEL) {
+            let allPossibleEvents = [];
+            for (let curLevel = 1; curLevel <= currentLevel; curLevel++) {
+                if (curLevel in eventsByLevel) {
+                    console.log(`Adding ${eventsByLevel[curLevel].length} events of level ${curLevel} `);
+                    allPossibleEvents = allPossibleEvents.concat(eventsByLevel[curLevel]);
+                }
+            }
+            allPossibleEvents = allPossibleEvents.filter(event =>
+                isEmpty(event.startAchievement) || player.achievements.has(event.startAchievement));
+
+            allPossibleEvents = allPossibleEvents.filter(event =>
+                isEmpty(event.startBuff) || player.buffSet.has(event.startBuff));
+
+            // filter current event.
+            if (currentEvent != null) {
+                allPossibleEvents = allPossibleEvents.filter(event => event.id !== currentEvent.id);
+            }
+
+            allPossibleEvents = allPossibleEvents.filter(event => event.eventType === EventType.NORMAL);
+            allPossibleEvents = allPossibleEvents.filter(event => !eventsPlayedThisState.has(event.eventId));
+
+            const completeEvents = getCompleteEvents();
+            console.error("completeEvents:");
+            console.error(completeEvents);
+
+            allPossibleEvents = allPossibleEvents.filter(event => !completeEvents.has(event.id));
+
+            //for debug
+            // if (currentLevel >= 3) {
+            //     console.warn(allPossibleEvents[0]);
+            //     allPossibleEvents = allPossibleEvents.filter(event => typeof event.id === 'string' && event.id.includes("-"));
+            // }
+
+            console.error("allPossibleEvents:");
+            allPossibleEvents.forEach(event => console.warn(event));
+
+            return allPossibleEvents[Math.floor(Math.random() * allPossibleEvents.length)];
+        } else {
+            // 0.1 几率刷到boss
+            if (Math.random() > 0.1) {
+                return getBossEvent();
+            }
+
+            console.error("getNextEvent currentLevel++");
+            if (currentLevel === 9) {
+                const endingEvent = getNextTransitionEvent();
+                if (endingEvent === null) {
+                    //Do the reset
+                    currentLevel = 0;
+
+                    //increase the reincarnation;
+                    reincarnation++;
+                } else {
+                    return endingEvent;
+                }
+            }
+            currentLevel++;
+            return eventMap[STAGE_IDS[currentLevel - 1]]
+        }
+    }
+}
 
 //TODO: boss event, boss 结束后是过关， 所以上面的过关更新逻辑要重写
 function getBossEvent(level) {
@@ -1252,6 +1258,7 @@ function getColorByValue(value) {
     }
 }
 
+//Check death logic
 function postProcessBuff() {
     let nextEventId = null;
     console.log("player.buffSet: ");
@@ -1276,6 +1283,9 @@ function postProcessBuff() {
             console.log("BUFF.COMPLETE: " + buff);
             player.achievements.add(buff);
             // showTitle(title);
+        } else if (buff.startsWith(BUFF.MESSAGE)) {
+            const titleStrs = buff.substring(BUFF.MESSAGE.length + 1).split(",");
+            showMessage(titleStrs[0], titleStrs[1]);
         }
         player.buffSet.delete(buff);
     });
@@ -1589,6 +1599,17 @@ function showTitle(title, explanation) {
         color: 'green'
     });
 }
+
+function showMessage(title, explanation) {
+    iziToast.show({
+        theme: 'light',
+        title: title,
+        message: explanation,
+        position: 'topCenter',
+        color: 'grey'
+    });
+}
+
 
 function animateElems(numAchievements) {
     // define element variables
