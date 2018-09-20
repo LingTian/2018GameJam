@@ -90,7 +90,6 @@ const CHARA_IMGS = {
     "沼泽": "img/stage/swamp.png",
     "冰原": "img/stage/iceland-1.png",
     "岩浆": "img/stage/volcano.png",
-
 };
 
 function convertToImmutableGenesisCharacter() {
@@ -180,7 +179,7 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(2, "修女", CHARA_IMGS["修女"], "你愿意帮忙捐助一下教会嘛？", "乐于奉献。", "我手边有点紧.", "1", EventType.NORMAL, [-1, -1], [10, -10, 0, 0, 0, 10], [5, 0, 0, 0, 0, 0]));
     allEvents.push(createStatsChangeEvent(3, "修女", CHARA_IMGS["修女"], "教会的经书隐藏着智慧。", "能借我阅读一下嘛？", "我还是想休息一下。", "1", EventType.NORMAL, [-1, -1], [0, 0, 10, 10, 10, 0], [-10, 0, 0, 0, 0, 0]));
     allEvents.push(createStatsChangeEvent(4, "修女", CHARA_IMGS["修女"], "我很后悔我之前做过的错事，能否帮我去跟骑士道歉？", "我可以帮助你，愿你能得到解脱。", "如果做错的事情都可以重来，那么经历将毫无意义！", "3",
-        EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 20], [-10, 0, 0, 0, 0, -20], null, [buildBuff(BUFF.BUFF, "4")]));
+        EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 20], [-10, 0, 0, 0, 0, -20], null, [buildBuff(BUFF.BUFF, "4")], null));
 
     //TODO: XXX? 加入title
     allEvents.push(createStatsChangeEvent("4-1", "黑骑士", CHARA_IMGS["黑骑士"], "孤独的月光下一名骑士正在沉思。", "有人很后悔她做过的事情，想拖我来道歉。", "。。。", "1", EventType.NORMAL,
@@ -260,10 +259,13 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(26, "商人", CHARA_IMGS["商人"], "我这里正需要人手，要不要来打零工换些金钱。", "我真有此意。", "没什么时间。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
     allEvents.push(createStatsChangeEvent(27, "商人", CHARA_IMGS["商人"], "（打盹）", "摸摸看他身上有啥？", "还是不打扰他了。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10]));
     //TODO: 有几率跟他干 几率打  打输了死
-    allEvents.push(createStatsChangeEvent(27, "商人", CHARA_IMGS["商人"], "别跑，你这个小偷", "找死。", "还给你还给你。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, -10], [0, -10, 0, 0, 0, 10]));
+    allEvents.push(createStatsChangeEvent("27-1", "商人", CHARA_IMGS["商人"], "别跑，你这个小偷", "找死。", "还给你还给你。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, -10], [0, -10, 0, 0, 0, 10]));
 
     //TODO: 商人有几率卖过关的东西（这里有什么？）
-    allEvents.push(createStatsChangeEvent(44, "商人", CHARA_IMGS["商人"], "我这里有两个上古的圣物，你选一个吧。", "腐朽的巨剑。", "泛黄的魔法书。", "1", EventType.NORMAL, [-1, -1], [0, 0, 10, 0, 0, 0], [0, 0, 0, 0, 10, 0]));
+    allEvents.push(createStatsChangeEvent("44", "商人", CHARA_IMGS["商人"], "我这里有两个上古的圣物，你选一个吧。", "腐朽的巨剑。", "泛黄的魔法书。", "1", EventType.NORMAL,
+        [-1, -1], [0, 0, 10, 0, 0, 0], [0, 0, 0, 0, 10, 0], null,
+        [buildBuff(BUFF.BUFF, "腐朽的巨剑"), buildBuff(BUFF.MESSAGE, "获得物品,腐朽的巨剑"), buildBuff(BUFF.COMPLETE, "44")],
+        [buildBuff(BUFF.BUFF, "泛黄的魔法书"), buildBuff(BUFF.MESSAGE, "获得物品,泛黄的魔法书"), buildBuff(BUFF.COMPLETE, "44")]));
 
     allEvents.push(createStatsChangeEvent(28, "巫妖", CHARA_IMGS["巫妖"], "亡灵国度是容不得活人的。", "人类世界就容得下活人吗？", "这不过是亡灵虚假的谎言。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10]));
     //TODO: pending
@@ -400,11 +402,11 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(117, "商人", CHARA_IMGS["商人"], "年轻的冒险家，能否帮我运输一批货物？", "正好手头有点紧。", "还不如休息一下。", "1", EventType.NORMAL, [-1, -1], [-20, 30, 10, 0, 0, 0], [10, 0, 0, 0, 0, 0]));
 
     //TODO: 不同路线遇到不同的王，神器buff 才进入比较环节，死亡（你的（武器）在王的面前不堪一击）
-    allEvents.push(createStatsChangeEvent(500, "邪恶的王", CHARA_IMGS["邪恶的王"], "你看上去过于羸弱，不堪一击，今天就放你一马。", "你们boss都这个套路吗？", "...", "1", EventType.NORMAL, [-1, -1], [-50, 0, 0, 0, 0, 20], [-10, 0, 0, 0, 0, 20]));
-    allEvents.push(createStatsChangeEvent(500, "善良的王", CHARA_IMGS["善良的王"], "你看上去过于羸弱，不堪一击，今天就放你一马。", "你们boss都这个套路吗？", "...", "1", EventType.NORMAL, [-1, -1], [-50, 0, 0, 0, 0, 20], [-10, 0, 0, 0, 0, 20]));
+    allEvents.push(createStatsChangeEvent(500, "邪恶的王", CHARA_IMGS["邪恶的王"], "你看上去过于羸弱，不堪一击，今天就放你一马。", "你们boss都这个套路吗？", "...", "5", EventType.NORMAL, [-1, -1], [-50, 0, 0, 0, 0, 20], [-10, 0, 0, 0, 0, 20]));
+    allEvents.push(createStatsChangeEvent(500, "善良的王", CHARA_IMGS["善良的王"], "你看上去过于羸弱，不堪一击，今天就放你一马。", "你们boss都这个套路吗？", "...", "5", EventType.NORMAL, [-1, -1], [-50, 0, 0, 0, 0, 20], [-10, 0, 0, 0, 0, 20]));
 
-    allEvents.push(createStatsChangeEvent(502, "邪恶的王", CHARA_IMGS["邪恶的王"], "你身上邪恶的味道我很讨厌。", "岂能放过你。", "岂能放过你。", "1", EventType.NORMAL, [-1, -1], [-50, 0, 0, 0, 0, 20], [-50, 0, 0, 0, 0, 20]));
-    allEvents.push(createStatsChangeEvent(503, "善良的王", CHARA_IMGS["善良的王"], "你身上伪善的味道我很讨厌。", "岂能放过你。", "岂能放过你。", "1", EventType.NORMAL, [-1, -1], [-50, 0, 0, 0, 0, 20], [-50, 0, 0, 0, 0, 20]));
+    allEvents.push(createStatsChangeEvent(502, "邪恶的王", CHARA_IMGS["邪恶的王"], "你身上邪恶的味道我很讨厌。", "岂能放过你。", "岂能放过你。", "5", EventType.NORMAL, [-1, -1], [-50, 0, 0, 0, 0, 20], [-50, 0, 0, 0, 0, 20]));
+    allEvents.push(createStatsChangeEvent(503, "善良的王", CHARA_IMGS["善良的王"], "你身上伪善的味道我很讨厌。", "岂能放过你。", "岂能放过你。", "5", EventType.NORMAL, [-1, -1], [-50, 0, 0, 0, 0, 20], [-50, 0, 0, 0, 0, 20]));
 
     allEvents.push(createStatsChangeEvent("stage-1", "村落", CHARA_IMGS["村落"], "从黑夜中醒来，晨起的星光璀璨，照亮了远方的小村。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
     allEvents.push(createStatsChangeEvent("stage-2", "城镇", CHARA_IMGS["城镇"], "行走了许久，也没有丝毫感到饥饿，前方似乎有个更大的城镇。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
@@ -417,17 +419,24 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent("stage-9", "岩浆", CHARA_IMGS["岩浆"], "末日般的场景，与一个挣扎的灵魂。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
 
     //触发
-    allEvents.push(createStatsChangeEvent("stage-11", "村落", CHARA_IMGS["村落"], "你在村落的西方发现一条通往大路的通道。", "朝大路走去", "在村子里继续转一转。", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
-    allEvents.push(createStatsChangeEvent("stage-21", "城镇", CHARA_IMGS["城镇"], "村落的中心的高台下似乎有条密道。", "去调查一下看看", "在城镇里继续转一转", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
-    allEvents.push(createStatsChangeEvent("stage-31", "城堡", CHARA_IMGS["城堡"], "城堡的出口处似乎有个魔物。", "去挑战魔物。", "继续在城堡里看看好了", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
-    allEvents.push(createStatsChangeEvent("stage-41", "洞窟", CHARA_IMGS["洞窟"], "你在洞穴深处看到了一个天然的泉水。", "去泉水周围看看", "回头转转洞窟。", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
-    allEvents.push(createStatsChangeEvent("stage-51", "森林", CHARA_IMGS["森林"], "森林的隐秘处似乎有着一个孤坟。", "去调查一下看看。", "森林里继续逛逛", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
-    allEvents.push(createStatsChangeEvent("stage-61", "悬崖", CHARA_IMGS["悬崖"], "云峰之巅，似乎有着宝藏。", "上顶峰瞅瞅。", "继续在悬崖周围转转", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
-    allEvents.push(createStatsChangeEvent("stage-71", "沼泽", CHARA_IMGS["沼泽"], "沼泽深处隐藏着一个可怕的魔物。", "前往沼泽深处。", "继续在周围转转。", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
-    allEvents.push(createStatsChangeEvent("stage-81", "冰原", CHARA_IMGS["冰原"], "浩渺的冰原上，矗立着一个奇怪的神殿。", "进入神殿。", "回头继续前行。", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
-    allEvents.push(createStatsChangeEvent("stage-91", "岩浆", CHARA_IMGS["岩浆"], "岩浆的尽头是一个落魄的祭坛。", "祭坛里有什么？", "我是谁？", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
-
-
+    allEvents.push(createStatsChangeEvent("stage-1-end", "村落", CHARA_IMGS["村落"], "你在村落的西方发现一条通往大路的通道。", "朝大路走去", "在村子里继续转一转。", "1", EventType.BOSS,
+        [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, "boss-1")]));
+    allEvents.push(createStatsChangeEvent("stage-2-end", "城镇", CHARA_IMGS["城镇"], "村落的中心的高台下似乎有条密道。", "去调查一下看看", "在城镇里继续转一转", "1", EventType.BOSS,
+        [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, "boss-2")]));
+    allEvents.push(createStatsChangeEvent("stage-3-end", "城堡", CHARA_IMGS["城堡"], "城堡的出口处似乎有个魔物。", "去挑战魔物。", "继续在城堡里看看好了", "1", EventType.BOSS,
+        [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, "boss-3")]));
+    allEvents.push(createStatsChangeEvent("stage-4-end", "洞窟", CHARA_IMGS["洞窟"], "你在洞穴深处看到了一个天然的泉水。", "去泉水周围看看", "回头转转洞窟。", "1", EventType.BOSS,
+        [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, "boss-4")]));
+    allEvents.push(createStatsChangeEvent("stage-5-end", "森林", CHARA_IMGS["森林"], "森林的隐秘处似乎有着一个孤坟。", "去调查一下看看。", "森林里继续逛逛", "1", EventType.BOSS,
+        [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, "boss-5")]));
+    allEvents.push(createStatsChangeEvent("stage-6-end", "悬崖", CHARA_IMGS["悬崖"], "云峰之巅，似乎有着宝藏。", "上顶峰瞅瞅。", "继续在悬崖周围转转", "1", EventType.BOSS,
+        [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, "boss-6")]));
+    allEvents.push(createStatsChangeEvent("stage-7-end", "沼泽", CHARA_IMGS["沼泽"], "沼泽深处隐藏着一个可怕的魔物。", "前往沼泽深处。", "继续在周围转转。", "1", EventType.BOSS,
+        [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, "boss-7")]));
+    allEvents.push(createStatsChangeEvent("stage-8-end", "冰原", CHARA_IMGS["冰原"], "浩渺的冰原上，矗立着一个奇怪的神殿。", "进入神殿。", "回头继续前行。", "1", EventType.BOSS,
+        [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, "boss-8")]));
+    allEvents.push(createStatsChangeEvent("stage-9-end", "岩浆", CHARA_IMGS["岩浆"], "岩浆的尽头是一个落魄的祭坛。", "祭坛里有什么？", "我是谁？", "1", EventType.BOSS,
+        [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, "boss-9")]));
 
     //0结束 -1 随机 其他数字是链接
     //称号，buff
@@ -464,13 +473,25 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(804, "称号", "1.png", "一念地狱", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
 
     //ending transition
-    allEvents.push(createStatsChangeEvent("end-1", "天空。。。", "img/stage/yomi.jpg", "走了很久，也没有再遇到人，头上则是一片湛蓝的天空", "", "", "1", EventType.ENDING, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
-    allEvents.push(createStatsChangeEvent("end-2", "天空的下方。。。", "img/stage/yomi1.jpg", "天空下方，是。。。？！", "", "", "1", EventType.ENDING, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
-    allEvents.push(createStatsChangeEvent("end-3", "白光。。。", "img/stage/yomi1.jpg", "白光，闪过。。。？！", "", "", "1", EventType.ENDING, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
-    allEvents.push(createStatsChangeEvent("end-4", "梦的终结。。", "img/stage/empty_image.png", "仿佛做了一个悠长而又意犹未尽的梦", "", "", "1", EventType.ENDING, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
+    allEvents.push(createStatsChangeEvent("end-1", "天空。。。", "img/stage/yomi.jpg", "走了很久，也没有再遇到人，头上则是一片湛蓝的天空", "", "", "1", EventType.ENDING,
+        [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, "end-2")], [buildBuff(BUFF.NEXT, "end-2")]));
+    allEvents.push(createStatsChangeEvent("end-2", "天空的下方。。。", "img/stage/yomi1.jpg", "天空下方，是。。。？！", "", "", "1", EventType.ENDING,
+        [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, "end-3")], [buildBuff(BUFF.NEXT, "end-3")]));
+    allEvents.push(createStatsChangeEvent("end-3", "白光。。。", "img/stage/yomi1.jpg", "白光，闪过。。。？！", "", "", "1", EventType.ENDING,
+        [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, "end-4")], [buildBuff(BUFF.NEXT, "end-4")]));
+    allEvents.push(createStatsChangeEvent("end-4", "梦的终结。。", "img/stage/empty_image.png", "仿佛做了一个悠长而又意犹未尽的梦", "", "", "1", EventType.ENDING,
+        [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, STAGE_IDS[0])], [buildBuff(BUFF.NEXT, STAGE_IDS[0])]));
 
     //boss event
-    createLevel1BossEvents(allEvents);
+    createLevel1BossEvents(allEvents, 1);
+    createLevel1BossEvents(allEvents, 2);
+    createLevel1BossEvents(allEvents, 3);
+    createLevel1BossEvents(allEvents, 4);
+    createLevel1BossEvents(allEvents, 5);
+    createLevel1BossEvents(allEvents, 6);
+    createLevel1BossEvents(allEvents, 7);
+    createLevel1BossEvents(allEvents, 8);
+    createLevel9BossEvents(allEvents);
 
     return allEvents;
 }
@@ -485,7 +506,6 @@ function isMobile() {
     }
     return false;
 }
-
 
 function getRandomArrayElements(arr, count) {
     let shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index;
@@ -585,10 +605,49 @@ class EffectV2 {
 }
 
 
-function createLevel1BossEvents(allEvents) {
+function createLevel1BossEvents(allEvents, level) {
 
     //boss example
-    const id = "boss-1";
+    const id = "boss-" + level;
+    const name = "亚当(84757)";
+    const boss = new Player(name, id);
+    const baseEvent = new EventV2(id, boss.name, CHARA_IMGS["亚当"], "看不清面孔的人向这边袭来。。", 1, null, null, EventType.BOSS, "赤手空拳搏斗", "力有不逮，暂时撤退。");
+
+    //TODO: 这个logic是错的= =！
+    const preLogic = function (baseEvent) {
+        if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
+            baseEvent.choice1 = "使用不知何时得到的巨剑";
+        }
+    };
+
+    const leftCallback = () => {
+        if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
+            boss.power -= 50;
+        }
+    };
+
+    //Do nothing
+    const rightCallback = () => {};
+    const winCheck = () => {
+        return player.power >= boss.power;
+    };
+
+    const leftWin = id + "-win";
+    const rightWin = id + "-win";
+    const leftLoss = id + "-loss";
+    const rightLoss = id + "-loss";
+
+    allEvents.push(createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallback, leftWin, leftLoss, rightWin, rightLoss));
+    allEvents.push(createStatsChangeEvent(id + "-win", "", CHARA_IMGS["亚当"], "（微笑）你赢了，你的力量比我强大，不过后面更难的试炼在等待着你。。。", "好吧", "。。。", "1", EventType.SUBSEQUENT, null,
+        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, STAGE_IDS[level])], [buildBuff(BUFF.NEXT, STAGE_IDS[level])]));
+    allEvents.push(createStatsChangeEvent(id + "-loss", "", CHARA_IMGS["亚当"], "就差一点，或许, 有武器就能赢了。。", "好吧", "", "1", EventType.SUBSEQUENT, null,
+        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [BUFF.DEATH, buildBuff(BUFF.TITLE, "出师未捷身先死")], [BUFF.DEATH, buildBuff(BUFF.TITLE, "出师未捷身先死")]));
+}
+
+function createLevel9BossEvents(allEvents) {
+
+    //boss example
+    const id = "boss-9";
     const name = "亚当(84757)";
     const boss = new Player(name, id);
     const baseEvent = new EventV2(id, boss.name, CHARA_IMGS["亚当"], "看不清面孔的人向这边袭来。。", 1, null, null, EventType.BOSS, "赤手空拳搏斗", "力有不逮，暂时撤退。");
@@ -617,10 +676,10 @@ function createLevel1BossEvents(allEvents) {
     const rightLoss = id + "-loss";
 
     allEvents.push(createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallback, leftWin, leftLoss, rightWin, rightLoss));
-    allEvents.push(createStatsChangeEvent("boss-1-win", "", CHARA_IMGS["亚当"], "（微笑）你赢了，你的力量比我强大，不过后面更难的试炼在等待着你。。。", "好吧", "。。。", "1", EventType.SUBSEQUENT, null,
-        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, STAGE_IDS[1])]));
-    allEvents.push(createStatsChangeEvent("boss-1-loss", "", CHARA_IMGS["亚当"], "就差一点，或许, 有武器就能赢了。。", "好吧", "", "1", EventType.SUBSEQUENT, null,
-        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [BUFF.DEATH, buildBuff(BUFF.TITLE, "出师未捷身先死")]));
+    allEvents.push(createStatsChangeEvent(id + "-win", "", CHARA_IMGS["亚当"], "（微笑）你赢了，你的力量比我强大，不过后面更难的试炼在等待着你。。。", "好吧", "。。。", "1", EventType.SUBSEQUENT, null,
+        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, "end-1")], [buildBuff(BUFF.NEXT, "end-1")]));
+    allEvents.push(createStatsChangeEvent(id + "-loss", "", CHARA_IMGS["亚当"], "就差一点，或许, 有武器就能赢了。。", "好吧", "", "1", EventType.SUBSEQUENT, null,
+        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [BUFF.DEATH, buildBuff(BUFF.TITLE, "出师未捷身先死")], [BUFF.DEATH, buildBuff(BUFF.TITLE, "出师未捷身先死")]));
 }
 
 function createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallback, leftWin, leftLoss, rightWin, rightLoss) {
@@ -645,9 +704,6 @@ function createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallb
     };
 
     preLogic(baseEvent);
-
-    console.error("baseEvent:");
-    console.error(baseEvent);
 
     return new EventV2(baseEvent.id, baseEvent.name, baseEvent.img, baseEvent.line, baseEvent.startStage, baseEvent.startAchievement, baseEvent.startBuff, EventType.BOSS,
         new Choice(baseEvent.id, baseEvent.choice1,
@@ -969,7 +1025,7 @@ function getCompleteEvents() {
     const completeEvents = new Set();
     player.achievements.forEach(
         achievement => {
-            if (achievement.startsWith("COM")) {
+            if (achievement.startsWith(BUFF.COMPLETE)) {
                 const eventId = achievement.substring(4);
                 completeEvents.add(eventId);
             }
@@ -992,12 +1048,10 @@ function getNextTransitionEvent() {
     }
 }
 
-
-//TODO: check BUFF.BUFF触发startBuff的逻辑
 function getNextEvent() {
 
     if (currentMaxPage === 2) {
-        return eventMap["4"];
+        return eventMap["44"];
     } else {
         console.error("numEventCurLevel: " + eventsPlayedThisState.size);
         console.error("EVENT_PER_LEVEL: " + EVENT_PER_LEVEL);
@@ -1008,76 +1062,60 @@ function getNextEvent() {
         console.warn("player.achievements:");
         console.warn(player.achievements);
 
-        if (eventsPlayedThisState.size < EVENT_PER_LEVEL) {
-            let allPossibleEvents = [];
-            for (let curLevel = 1; curLevel <= currentLevel; curLevel++) {
-                if (curLevel in eventsByLevel) {
-                    console.log(`Adding ${eventsByLevel[curLevel].length} events of level ${curLevel} `);
-                    allPossibleEvents = allPossibleEvents.concat(eventsByLevel[curLevel]);
-                }
-            }
-
-            allPossibleEvents = allPossibleEvents.filter(event =>
-                isEmpty(event.startAchievement) || player.achievements.has(event.startAchievement));
-
-            console.warn("has buff: " + player.buffSet.has("BUFF:4"));
-
-            allPossibleEvents = allPossibleEvents.filter(event =>
-                isEmpty(event.startBuff) || player.buffSet.has(event.startBuff));
-
-
-            // filter current event.
-            if (currentEvent != null) {
-                allPossibleEvents = allPossibleEvents.filter(event => event.id !== currentEvent.id);
-            }
-
-            allPossibleEvents = allPossibleEvents.filter(event => event.eventType === EventType.NORMAL);
-            allPossibleEvents = allPossibleEvents.filter(event => !eventsPlayedThisState.has(event.eventId));
-
-            const completeEvents = getCompleteEvents();
-            console.error("completeEvents:");
-            console.error(completeEvents);
-
-            allPossibleEvents = allPossibleEvents.filter(event => !completeEvents.has(event.id));
-
-            //for debug
-            // if (currentLevel >= 3) {
-            //     console.warn(allPossibleEvents[0]);
-            //     allPossibleEvents = allPossibleEvents.filter(event => typeof event.id === 'string' && event.id.includes("-"));
-            // }
-
-            console.error("allPossibleEvents:");
-            allPossibleEvents.forEach(event => console.warn(event));
-
-            return allPossibleEvents[Math.floor(Math.random() * allPossibleEvents.length)];
-        } else {
+        if (eventsPlayedThisState.size > EVENT_PER_LEVEL && Math.random() < 0.1) {
             // 0.1 几率刷到boss
-            if (Math.random() > 0.1) {
-                return getBossEvent();
-            }
-
-            console.error("getNextEvent currentLevel++");
-            if (currentLevel === 9) {
-                const endingEvent = getNextTransitionEvent();
-                if (endingEvent === null) {
-                    //Do the reset
-                    currentLevel = 0;
-
-                    //increase the reincarnation;
-                    reincarnation++;
-                } else {
-                    return endingEvent;
-                }
-            }
-            currentLevel++;
-            return eventMap[STAGE_IDS[currentLevel - 1]]
+            //TODO: 用 currentLevel 代替 1
+            return getBossEvent(currentLevel);
         }
+
+        let allPossibleEvents = [];
+        for (let curLevel = 1; curLevel <= currentLevel; curLevel++) {
+            if (curLevel in eventsByLevel) {
+                console.log(`Adding ${eventsByLevel[curLevel].length} events of level ${curLevel} `);
+                allPossibleEvents = allPossibleEvents.concat(eventsByLevel[curLevel]);
+            }
+        }
+
+        allPossibleEvents = allPossibleEvents.filter(event =>
+            isEmpty(event.startAchievement) || player.achievements.has(event.startAchievement));
+
+        console.warn("has buff: " + player.buffSet.has("BUFF:4"));
+
+        allPossibleEvents = allPossibleEvents.filter(event =>
+            isEmpty(event.startBuff) || player.buffSet.has(event.startBuff));
+
+
+        // filter current event.
+        if (currentEvent != null) {
+            allPossibleEvents = allPossibleEvents.filter(event => event.id !== currentEvent.id);
+        }
+
+        allPossibleEvents = allPossibleEvents.filter(event => event.eventType === EventType.NORMAL);
+        allPossibleEvents = allPossibleEvents.filter(event => !eventsPlayedThisState.has(event.eventId));
+
+        const completeEvents = getCompleteEvents();
+        console.error("completeEvents:");
+        console.error(completeEvents);
+
+        allPossibleEvents = allPossibleEvents.filter(event => !completeEvents.has(event.id));
+
+        //for debug
+        // if (currentLevel >= 3) {
+        //     console.warn(allPossibleEvents[0]);
+        //     allPossibleEvents = allPossibleEvents.filter(event => typeof event.id === 'string' && event.id.includes("-"));
+        // }
+
+        console.error("allPossibleEvents:");
+        allPossibleEvents.forEach(event => console.warn(event));
+
+        return allPossibleEvents[Math.floor(Math.random() * allPossibleEvents.length)];
     }
 }
 
 //TODO: boss event, boss 结束后是过关， 所以上面的过关更新逻辑要重写
 function getBossEvent(level) {
-
+    console.warn("Get boss event: " + `stage-${level}-end`);
+    return eventMap[`stage-${level}-end`];
 }
 
 function initModels() {
@@ -1104,6 +1142,8 @@ function initModels() {
             console.log("Consecutive events length: " + allEvents.length);
             allEvents = allEvents.concat(createEvents());
             for (let i = 0; i < allEvents.length; i++) {
+                console.error("i = " + i);
+                console.error(allEvents[i]);
                 eventMap[allEvents[i].id] = allEvents[i];
             }
 
@@ -1303,16 +1343,14 @@ function postProcessBuff() {
     return nextEventId;
 }
 
-function updateScene(lastEvent) {
+function updateScene() {
     //update player status
 
     console.error("updateScene: ");
-    console.error(lastEvent);
+    console.error(currentEvent);
 
-    if (lastEvent.eventType === EventType.STAGE) {
-        eventsPlayedThisState.clear();
-    } else if (lastEvent !== null) {
-        const lastChoice = choiceId === 0 ? lastEvent.choice1 : lastEvent.choice2;
+    if (currentEvent !== null && currentEvent.eventType !== EventType.STAGE) {
+        const lastChoice = choiceId === 0 ? currentEvent.choice1 : currentEvent.choice2;
         const lastEffect = lastChoice.effect;
         console.warn("lastEffect: ");
         console.warn(lastEffect);
@@ -1334,6 +1372,7 @@ function updateScene(lastEvent) {
         uploadData();
     } else {
 
+        //TODO: win logic
         const winEvent = checkWin();
 
         let nextEvent = nextEventId === null ? getNextEvent() : eventMap[nextEventId];
@@ -1342,6 +1381,17 @@ function updateScene(lastEvent) {
         if (nextEvent.startBuff !== undefined && nextEvent.startBuff !== null) {
             player.buffSet.delete(nextEvent.startBuff);
         }
+
+        if (nextEvent.eventType === EventType.STAGE) {
+            currentLevel++;
+            eventsPlayedThisState.clear();
+            //轮回logic
+            if (currentEvent.eventType === EventType.ENDING) {
+                currentLevel = START_LEVEL;
+                reincarnation++;
+            }
+        }
+
         addAndRemovePage(nextEvent);
 
         currentEvent = nextEvent;
@@ -5036,7 +5086,7 @@ $(window).ready(function () {
                     console.log("flipping ...");
                     $(`.page-num-${currentPage} .pos-line`).removeClass('show');
                     $(`.page-num-${currentPage} .neg-line`).removeClass('show');
-                    updateScene(currentEvent);
+                    updateScene();
                 }
             }
         });
