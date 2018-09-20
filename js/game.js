@@ -189,11 +189,12 @@ function createEvents() {
 
     allEvents.push(createStatsChangeEvent(6, "修女", CHARA_IMGS["修女"], "西边悬崖上有把勇者之剑，快去拿回来吧～", "赶紧去取一下。", "悬崖上真的只有宝剑嘛？", "5", EventType.NORMAL, [600, 500], [0, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
     //TODO: 和stage悬崖挂钩，悬崖上真的只有宝剑嘛？ 修女：我不清楚，不过数十年间，去悬崖的冒险者都没有归还。
+    allEvents.push(createStatsChangeEvent(205, "修女", CHARA_IMGS["修女"], "我不清楚，不过数十年间，去悬崖的冒险者都没有归还。", "看来还要谨慎为上。", "看来还要谨慎为上。", "5", EventType.NORMAL, [600, 500], [0, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
 
     allEvents.push(createStatsChangeEvent(7, "牧师", CHARA_IMGS["牧师"], "年轻的冒险者，来吃些免费的食物吧。", "正有此意。", "不劳者不食.", "1", EventType.NORMAL, [-1, -1], [10, 0, 0, 0, 0, -10], [-10, 0, 0, 0, 0, 10], ""));
     allEvents.push(createStatsChangeEvent(8, "牧师", CHARA_IMGS["牧师"], "教会附近有一些僵尸，能否帮忙清理。", "要我出手的话可是费用不菲。", "就顺手帮一下吧。", "1", EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, -10], [-10, 0, 0, 0, 0, 10], ""));
     //TODO: 加入僵尸 要打 205
-    allEvents.push(createStatsChangeEvent(205, "僵尸", CHARA_IMGS["僵尸"], "呜噜呜噜?##!!", "邪恶的僵尸，接招吧！", "没想到看上去还挺可爱，就放过它吧。", "1", EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
+    allEvents.push(createStatsChangeEvent(207, "僵尸", CHARA_IMGS["僵尸"], "呜噜呜噜?##!!", "邪恶的僵尸，接招吧！", "没想到看上去还挺可爱，就放过它吧。", "1", EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
 
     allEvents.push(createStatsChangeEvent(37, "牧师", CHARA_IMGS["牧师"], "城外有一批战争的难民我们应该去救援他们吗？", "我会保护他们。", "我们不必去。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
     //TODO: 太弱就挂
