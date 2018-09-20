@@ -183,9 +183,9 @@ function createEvents() {
         EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 20], [-10, 0, 0, 0, 0, -20], null, [buildBuff(BUFF.BUFF, "4")]));
 
     //TODO: XXX? 加入title
-    allEvents.push(createStatsChangeEvent("4-1", "黑骑士", CHARA_IMGS["黑骑士"], "孤独的月光下一名骑士正在沉思。", "有人很后悔她做过的事情，想拖我来道歉。", "。。。", "3", EventType.NORMAL,
+    allEvents.push(createStatsChangeEvent("4-1", "黑骑士", CHARA_IMGS["黑骑士"], "孤独的月光下一名骑士正在沉思。", "有人很后悔她做过的事情，想拖我来道歉。", "。。。", "1", EventType.NORMAL,
         [-1, -1], [-10, 0, 0, 0, 0, 20], [-10, 0, 0, 0, 0, -20], buildBuff(BUFF.BUFF, "4"), [buildBuff(BUFF.NEXT, "4-2")]));
-    allEvents.push(createStatsChangeEvent("4-2", "黑骑士", CHARA_IMGS["黑骑士"], "我早已忘记XXX了。", "嗯。。。", "嗯。。。", "3", EventType.SUBSEQUENT, [-1, -1], [-10, 0, 0, 0, 0, 20], [-10, 0, 0, 0, 0, -20]));
+    allEvents.push(createStatsChangeEvent("4-2", "黑骑士", CHARA_IMGS["黑骑士"], "我早已忘记XXX了。", "嗯。。。", "嗯。。。", "1", EventType.SUBSEQUENT, [-1, -1], [-10, 0, 0, 0, 0, 20], [-10, 0, 0, 0, 0, -20]));
 
     allEvents.push(createStatsChangeEvent(5, "修女", CHARA_IMGS["修女"], "听闻东方有种神奇的草药，我这里有它标示的地图，现在免费赠送给您。", "修女的话似乎可信，值得尝试。", "此去不知归途，还是休息休息吧。", "2",
         EventType.NORMAL, [-1, -1], [-20, 0, 0, 0, 0, 0], [10, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.BUFF, "5")], null));
@@ -997,10 +997,13 @@ function getNextTransitionEvent() {
 function getNextEvent() {
 
     if (currentMaxPage === 2) {
-        return eventMap["1"];
+        return eventMap["4"];
     } else {
         console.error("numEventCurLevel: " + eventsPlayedThisState.size);
         console.error("EVENT_PER_LEVEL: " + EVENT_PER_LEVEL);
+
+        console.warn("player.buffSet:");
+        console.warn(player.buffSet);
 
         console.warn("player.achievements:");
         console.warn(player.achievements);
@@ -1013,11 +1016,15 @@ function getNextEvent() {
                     allPossibleEvents = allPossibleEvents.concat(eventsByLevel[curLevel]);
                 }
             }
+
             allPossibleEvents = allPossibleEvents.filter(event =>
                 isEmpty(event.startAchievement) || player.achievements.has(event.startAchievement));
 
+            console.warn("has buff: " + player.buffSet.has("BUFF:4"));
+
             allPossibleEvents = allPossibleEvents.filter(event =>
                 isEmpty(event.startBuff) || player.buffSet.has(event.startBuff));
+
 
             // filter current event.
             if (currentEvent != null) {
@@ -1263,31 +1270,35 @@ function postProcessBuff() {
     let nextEventId = null;
     console.log("player.buffSet: ");
     console.log(player.buffSet);
-    var values = player.buffSet.values();
+    const values = player.buffSet.values();
     player.buffSet.forEach(buff => {
         console.log("Buff: " + buff);
         if (buff.startsWith(BUFF.NEXT)) {
             console.log("BUFF.NEXT: " + buff);
             nextEventId = buff.split(":")[1];
+            player.buffSet.delete(buff);
         } else if (buff.startsWith(BUFF.DEATH)) {
             console.log("BUFF.DEATH: " + buff);
             endBuff = buff;
             isEnd = true;
+            player.buffSet.delete(buff);
         } else if (buff.startsWith(BUFF.TITLE)) {
             console.log("BUFF.TITLE: " + buff);
             //TODO: all title should be in the format: [TITLE: EXPLANATION]
             const titleStrs = buff.substring(BUFF.TITLE.length + 1).split(",");
             player.achievements.add(buff);
             showTitle(titleStrs[0], titleStrs[1]);
+            player.buffSet.delete(buff);
         } else if (buff.startsWith(BUFF.COMPLETE)) {
             console.log("BUFF.COMPLETE: " + buff);
             player.achievements.add(buff);
             // showTitle(title);
+            player.buffSet.delete(buff);
         } else if (buff.startsWith(BUFF.MESSAGE)) {
             const titleStrs = buff.substring(BUFF.MESSAGE.length + 1).split(",");
             showMessage(titleStrs[0], titleStrs[1]);
+            player.buffSet.delete(buff);
         }
-        player.buffSet.delete(buff);
     });
     return nextEventId;
 }
@@ -1308,10 +1319,6 @@ function updateScene(lastEvent) {
         console.warn("callBack: ");
         console.warn(lastEffect.callBack);
         console.warn(typeof lastEffect.callBack);
-        if (lastEvent.startBuff !== undefined && lastEvent.startBuff !== null) {
-            //buff 触发事件后就被清除
-            player.buffSet.delete(lastEffect.startBuff);
-        }
         lastEffect.callBack();
     }
 
@@ -1332,8 +1339,9 @@ function updateScene(lastEvent) {
         let nextEvent = nextEventId === null ? getNextEvent() : eventMap[nextEventId];
 
         //Resolve the buff of the event
-        player.buffSet.delete(nextEvent.startBuff);
-
+        if (nextEvent.startBuff !== undefined && nextEvent.startBuff !== null) {
+            player.buffSet.delete(nextEvent.startBuff);
+        }
         addAndRemovePage(nextEvent);
 
         currentEvent = nextEvent;
