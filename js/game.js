@@ -171,10 +171,34 @@ function createEvents() {
     const allEvents = [];
     allEvents.push(createStatsChangeEvent("1", "修女", CHARA_IMGS["修女"], "冒险家，你能帮我讨伐教会附近的史莱姆吗？", "义不容辞，我遇到一定不会放过他们。", "我还有要事在身。", "1",
         EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], null, [buildBuff(BUFF.NEXT, "1-1")], null));
+    allEvents.push(createStatsChangeEvent(8, "牧师", CHARA_IMGS["牧师"], "教会附近有一些僵尸，能否帮忙清理。", "要我出手的话可是费用不菲。", "就顺手帮一下吧。", "1",
+        EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], null, [buildBuff(BUFF.NEXT, "8-1")], null));
+    allEvents.push(createStatsChangeEvent(37, "牧师", CHARA_IMGS["牧师"], "城外有一批战争的难民我们应该去救援他们吗。", "我会保护他们。", "我们不必去。", "1",
+        EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], null, [buildBuff(BUFF.NEXT, "37-1")], null));
 
-    //TODO: title for this
+    allEvents.push(createStatsChangeEvent(18, "僧侣", CHARA_IMGS["僧侣"], "我有一本武技的密卷，想要购买吗?", "如果不交出密卷，你只有死路一条。", "好的，我买下来了。", "1",
+        EventType.NORMAL, [-1, -1], [-10, 0, 20, 0, 0, -20], [0, -10, 20, 0, 0, 0], null, [buildBuff(BUFF.NEXT, "18-1"),buildBuff(BUFF.TITLE, "持强凌弱")], null));
+
+    allEvents.push(createStatsChangeEvent(65, "密探", CHARA_IMGS["密探"], "能帮我去偷份文件吗?", "如果有钱的话。", "这种事情我可不干。", "1",
+        EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, -20], [0, 0, 0, 0, 0, 30], null, [buildBuff(BUFF.NEXT, "65-1")], null));
+    allEvents.push(createStatsChangeEvent("19", "僧侣", CHARA_IMGS["僧侣"], "我正在被疯狂的教会追杀，你能保护我吗？", "保护他。", "听说告发他还有奖金。", "1",
+        EventType.NORMAL, [-1, -1], [-10, 0, 20, 0, 0, -20], [0, -10, 20, 0, 0, 0], null, [buildBuff(BUFF.BUFF, "19-1")], null));
+
+
+    //TODO: title for this 其实这块应该都是打的 就是打不过得死 前置条件不应该是null
+
     allEvents.push(createStatsChangeEvent("1-1", "史莱姆", CHARA_IMGS["修女"], "呜噜呜噜?##!!", "邪恶的史莱姆，接招吧！", "没想到看上去还挺可爱，就放过它吧。", "1", EventType.NORMAL,
-        [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], null, [buildBuff(BUFF.MESSAGE, "讨伐史莱姆,你消灭了邪恶的史莱姆！")]));
+        [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "1-1"), [buildBuff(BUFF.MESSAGE, "讨伐史莱姆,你消灭了邪恶的史莱姆！")],null));
+    allEvents.push(createStatsChangeEvent("8-1", "僵尸", CHARA_IMGS["修女"], "呜噜呜噜?##!!", "邪恶的僵尸，接招吧！", "僵尸这么可怜，还是放过他们把。", "1", EventType.NORMAL,
+        [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "8-1"), [buildBuff(BUFF.MESSAGE, "讨伐僵尸,你消灭了邪恶的僵尸！")],null));
+    allEvents.push(createStatsChangeEvent("37-1", "敌人", CHARA_IMGS["士兵"], "来者何人!", "接招吧！", "看上去似乎很强还是逃走吧。", "1", EventType.NORMAL,
+        [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "37-1"), [buildBuff(BUFF.MESSAGE, "讨伐敌方士兵,你保护了受侵略的难民！")],null));
+    allEvents.push(createStatsChangeEvent("18-1", "僧侣", CHARA_IMGS["僧侣"], "。。。", "受死吧。", "受死吧。", "1", EventType.NORMAL,
+        [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "18-1"), [buildBuff(BUFF.MESSAGE, "你杀死了僧侣")],null));
+    allEvents.push(createStatsChangeEvent("19-1", "巫妖", CHARA_IMGS["巫妖"], "有没有见过一个僧侣", "出卖僧侣。", "我并没有见过。", "1", EventType.NORMAL,
+        [-1, -1], [-10, 0, 0, 0, 0, -50], [-10, 10, 10, 10, 10, 20], buildBuff(BUFF.BUFF, "19-1"),null,[buildBuff(BUFF.title, "守口如瓶")]));
+    allEvents.push(createStatsChangeEvent("65-1", "法师", CHARA_IMGS["法师"], "(打盹中)", "趁机头文件。", "想想还是不要吧。", "1", EventType.NORMAL,
+        [-1, -1], [-10, 20, 0, 0, 0, -50], [10, 0, 0, 0, 0, 0], buildBuff(BUFF.BUFF, "65-1"),null,null));
 
     allEvents.push(createStatsChangeEvent(2, "修女", CHARA_IMGS["修女"], "你愿意帮忙捐助一下教会嘛？", "乐于奉献。", "我手边有点紧.", "1", EventType.NORMAL, [-1, -1], [10, -10, 0, 0, 0, 10], [5, 0, 0, 0, 0, 0]));
     allEvents.push(createStatsChangeEvent(3, "修女", CHARA_IMGS["修女"], "教会的经书隐藏着智慧。", "能借我阅读一下嘛？", "我还是想休息一下。", "1", EventType.NORMAL, [-1, -1], [0, 0, 10, 10, 10, 0], [-10, 0, 0, 0, 0, 0]));
@@ -198,13 +222,13 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(205, "修女", CHARA_IMGS["修女"], "我不清楚，不过数十年间，去悬崖的冒险者都没有归还。", "看来还要谨慎为上。", "看来还要谨慎为上。", "5", EventType.NORMAL, [600, 500], [0, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10]));
 
     allEvents.push(createStatsChangeEvent(7, "牧师", CHARA_IMGS["牧师"], "年轻的冒险者，来吃些免费的食物吧。", "正有此意。", "不劳者不食.", "1", EventType.NORMAL, [-1, -1], [10, 0, 0, 0, 0, -10], [-10, 0, 0, 0, 0, 10]));
-    allEvents.push(createStatsChangeEvent(8, "牧师", CHARA_IMGS["牧师"], "教会附近有一些僵尸，能否帮忙清理。", "要我出手的话可是费用不菲。", "就顺手帮一下吧。", "1", EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, -10], [-10, 0, 0, 0, 0, 10]));
+    // allEvents.push(createStatsChangeEvent(8, "牧师", CHARA_IMGS["牧师"], "教会附近有一些僵尸，能否帮忙清理。", "要我出手的话可是费用不菲。", "就顺手帮一下吧。", "1", EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, -10], [-10, 0, 0, 0, 0, 10]));
     //TODO: 加入僵尸 要打 205
-    allEvents.push(createStatsChangeEvent(206, "僵尸", CHARA_IMGS["僵尸"], "呜噜呜噜?##!!", "邪恶的僵尸，接招吧！", "僵尸这么可怜，还是放过他们把。", "1", EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10]));
+    // allEvents.push(createStatsChangeEvent(206, "僵尸", CHARA_IMGS["僵尸"], "呜噜呜噜?##!!", "邪恶的僵尸，接招吧！", "僵尸这么可怜，还是放过他们把。", "1", EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10]));
 
-    allEvents.push(createStatsChangeEvent(37, "牧师", CHARA_IMGS["牧师"], "城外有一批战争的难民我们应该去救援他们吗？", "我会保护他们。", "我们不必去。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10]));
+    // allEvents.push(createStatsChangeEvent(37, "牧师", CHARA_IMGS["牧师"], "城外有一批战争的难民我们应该去救援他们吗？", "我会保护他们。", "我们不必去。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10]));
     //TODO: 太弱就挂
-    allEvents.push(createStatsChangeEvent(207, "敌人", CHARA_IMGS["士兵"], "来者何人？", "接招吧。", "看上去似乎很强还是逃走吧。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10]));
+    // allEvents.push(createStatsChangeEvent(207, "敌人", CHARA_IMGS["士兵"], "来者何人？", "接招吧。", "看上去似乎很强还是逃走吧。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10]));
 
     allEvents.push(createStatsChangeEvent(66, "医生", CHARA_IMGS["医生"], "能否借我些金钱去帮助我的病人？", "我又不是慈善家。", "我只有这些了，代表我的心意。", "1", EventType.NORMAL, [-1, -1], [10, 0, 0, 0, 0, -10], [0, -10, 0, 0, 0, 10]));
     //分叉
@@ -217,11 +241,11 @@ function createEvents() {
     //allEvents.push(createStatsChangeEvent(15, "医生", CHARA_IMGS["医生"], "医者仁心，王子病重而亡。王却因此处死我，能否帮我复仇。", "公正与怜悯，我会帮助你！", "你将带着怨恨长眠于此。。", "1", EventType.NORMAL, [615, -1], [-10, 0, 10, 10, 10, 20], [10, 0, 0, 0, 0, -20]));
     allEvents.push(createStatsChangeEvent(16, "僧侣", CHARA_IMGS["僧侣"], "需要学习下武技嘛?", "当然愿意。", "还不如休息一下。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 0, 0, 0], [10, 0, 0, 0, 0, 0]));
     allEvents.push(createStatsChangeEvent(17, "僧侣", CHARA_IMGS["僧侣"], "年轻的冒险家需要治疗吗?", "感谢你的帮助。", "我并不信任你。", "1", EventType.NORMAL, [-1, -1], [20, 0, 0, 0, 0, 0], [-10, 0, 0, 0, 0, 0]));
-    allEvents.push(createStatsChangeEvent(18, "僧侣", CHARA_IMGS["僧侣"], "我有一本武技的密卷，想要购买吗?", "如果不交出密卷，你只有死路一条。", "好的，我买下来了。", "1", EventType.NORMAL, [607, -1], [-10, 0, 20, 0, 0, -20], [0, -10, 20, 0, 0, 0]));
+    // allEvents.push(createStatsChangeEvent(18, "僧侣", CHARA_IMGS["僧侣"], "我有一本武技的密卷，想要购买吗?", "如果不交出密卷，你只有死路一条。", "好的，我买下来了。", "1", EventType.NORMAL, [607, -1], [-10, 0, 20, 0, 0, -20], [0, -10, 20, 0, 0, 0]));
     //TODO: 跟僧侣比较属性 208
-    allEvents.push(createStatsChangeEvent(208, "僧侣", CHARA_IMGS["僧侣"], "。。。", "受死吧。", "受死吧", "1", EventType.NORMAL, [-1, -1], [0, 10, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10]));
+    // allEvents.push(createStatsChangeEvent(208, "僧侣", CHARA_IMGS["僧侣"], "。。。", "受死吧。", "受死吧", "1", EventType.NORMAL, [-1, -1], [0, 10, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10]));
 
-    allEvents.push(createStatsChangeEvent(19, "僧侣", CHARA_IMGS["僧侣"], "我正在被疯狂的教会追杀，你能保护我吗？", "保护他。", "听说告发他还有奖金。", "1", EventType.NORMAL, [615, -1], [0, 0, 0, 0, 0, 20], [0, 20, 0, 0, 0, -20]));
+    // allEvents.push(createStatsChangeEvent(19, "僧侣", CHARA_IMGS["僧侣"], "我正在被疯狂的教会追杀，你能保护我吗？", "保护他。", "听说告发他还有奖金。", "1", EventType.NORMAL, [615, -1], [0, 0, 0, 0, 0, 20], [0, 20, 0, 0, 0, -20]));
     //TODO: 和巫妖互动（巫妖追杀僧侣），告发就不会触发巫妖事件。 巫妖211
 
     //TODO: 一开始的名字可以是？？？骑士
@@ -257,9 +281,13 @@ function createEvents() {
     allEvents.push(createMajorRandomEvent(102, "蒙面的旅人", CHARA_IMGS["蒙面的旅人"], "长路漫漫，是选择前进还是后退呢？", "朝前走吧。", "走回头路也不错。", "1", EventType.RANDOM, [-1, -1]));
 
     allEvents.push(createStatsChangeEvent(26, "商人", CHARA_IMGS["商人"], "我这里正需要人手，要不要来打零工换些金钱。", "我真有此意。", "没什么时间。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
-    allEvents.push(createStatsChangeEvent(27, "商人", CHARA_IMGS["商人"], "（打盹）", "摸摸看他身上有啥？", "还是不打扰他了。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10]));
+    // allEvents.push(createStatsChangeEvent(27, "商人", CHARA_IMGS["商人"], "（打盹）", "摸摸看他身上有啥？", "还是不打扰他了。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10]));
     //TODO: 有几率跟他干 几率打  打输了死
-    allEvents.push(createStatsChangeEvent("27-1", "商人", CHARA_IMGS["商人"], "别跑，你这个小偷", "找死。", "还给你还给你。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, -10], [0, -10, 0, 0, 0, 10]));
+    allEvents.push(createStatsChangeEvent(27, "商人", CHARA_IMGS["商人"], "(打盹中)", "摸摸看他身上有啥。", "还是不打扰他了。", "1", EventType.NORMAL,
+        [-1, -1], [-10, 10, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10], buildBuff(BUFF.BUFF, "65-1"),null,null));
+    allEvents.push(createStatsChangeEvent("27-1", "商人", CHARA_IMGS["商人"], "该死的小偷别跑", "揍他一顿。", "乖乖退还。", "1", EventType.NORMAL,
+        [-1, -1], [-10, 20, 0, 0, 0, 10], [-10, -20, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "65-1"), [buildBuff(BUFF.MESSAGE, "你暴揍了商人一顿！")],null));
+
 
     //TODO: 商人有几率卖过关的东西（这里有什么？）
     allEvents.push(createStatsChangeEvent("44", "商人", CHARA_IMGS["商人"], "我这里有两个上古的圣物，你选一个吧。", "腐朽的巨剑。", "泛黄的魔法书。", "1", EventType.NORMAL,
@@ -301,7 +329,7 @@ function createEvents() {
     //new
     allEvents.push(createStatsChangeEvent(35, "密探", CHARA_IMGS["密探"], "想要钱嘛，告诉我点消息？", "告诉他人的秘密。", "此等不义之举不能参与。", "1", EventType.NORMAL, [-1, -1], [0, 10, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10]));
     //TODO: 告诉谁的秘密。
-    allEvents.push(createStatsChangeEvent(65, "密探", CHARA_IMGS["密探"], "能帮我去偷份文件吗？。", "如果有钱的话。", "这种事情我可不干。", "1", EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10]));
+    // allEvents.push(createStatsChangeEvent(65, "密探", CHARA_IMGS["密探"], "能帮我去偷份文件吗？。", "如果有钱的话。", "这种事情我可不干。", "1", EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10]));
     //TODO: 跟人干，敏捷 （法师正在打盹，要窃取法师的文件吗？）
 
     allEvents.push(createStatsChangeEvent(38, "士兵", CHARA_IMGS["士兵"], "我是一名现役的军官，是否需要我传授你一些武艺？？", "我想听听。", "我没有多余的金币。", "1", EventType.NORMAL, [-1, -1], [-10, -10, 10, 10, 0, 1], [0, 0, 0, 0, 0, 0]));
@@ -312,11 +340,26 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(49, "酒馆老板", CHARA_IMGS["酒馆老板"], "要不要来打工赚点钱。", "刚好手边有点紧。", "没时间浪费精力了。", "1", EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 0], [5, 0, 0, 0, 0, 0]));
 
     //TODO: 和过关有关
-    allEvents.push(createStatsChangeEvent(50, "酒馆老板", CHARA_IMGS["酒馆老板"], "上次旅行的法师落下了个法杖，你需要吗？", "看起来很不错，买了！", "刚好手边有点紧。", "1", EventType.NORMAL, [-1, -1], [0, -10, 0, 0, 10, 0], [5, 0, 0, 0, 0, 0]));
+    allEvents.push(createStatsChangeEvent("50", "酒馆老板", CHARA_IMGS["酒馆老板"], "上次旅行的法师落下了个法杖，你需要吗？", "看起来很不错，买了！。", "刚好手边有点紧。", "1", EventType.NORMAL,
+        [-1, -1], [0, -10, 0, 0, 10, 0], [5, 0, 0, 0, 0, 0], null,
+        [buildBuff(BUFF.BUFF, "法师的长杖"), buildBuff(BUFF.MESSAGE, "获得物品,法师的长杖"), buildBuff(BUFF.COMPLETE, "50")],
+        null));
     //TODO: 和过关有关
-    allEvents.push(createStatsChangeEvent(51, "酒馆老板", CHARA_IMGS["酒馆老板"], "上次旅行的战士落下了个巨剑，你需要吗？", "看起来很不错，买了！", "刚好手边有点紧。", "1", EventType.NORMAL, [-1, -1], [0, -10, 10, 0, 0, 0], [5, 0, 0, 0, 0, 0]));
+    allEvents.push(createStatsChangeEvent("51", "酒馆老板", CHARA_IMGS["酒馆老板"], "上次旅行的战士落下了个巨剑，你需要吗？", "看起来很不错，买了！。", "刚好手边有点紧。", "1", EventType.NORMAL,
+        [-1, -1], [0, -10, 0, 0, 10, 0], [5, 0, 0, 0, 0, 0], null,
+        [buildBuff(BUFF.BUFF, "战士的巨剑"), buildBuff(BUFF.MESSAGE, "获得物品,战士的巨剑"), buildBuff(BUFF.COMPLETE, "51")],
+        null));
     //TODO: 和过关有关
-    allEvents.push(createStatsChangeEvent(52, "酒馆老板", CHARA_IMGS["酒馆老板"], "上次旅行的盗贼落下了个匕首，你需要吗？", "看起来很不错，买了！", "刚好手边有点紧。", "1", EventType.NORMAL, [-1, -1], [0, -10, 0, 10, 0, 0], [5, 0, 0, 0, 0, 0]));
+    allEvents.push(createStatsChangeEvent("52", "酒馆老板", CHARA_IMGS["酒馆老板"], "上次旅行的盗贼落下了个匕首，你需要吗？", "看起来很不错，买了！。", "刚好手边有点紧。", "1", EventType.NORMAL,
+        [-1, -1], [0, -10, 0, 0, 10, 0], [5, 0, 0, 0, 0, 0], null,
+        [buildBuff(BUFF.BUFF, "盗贼的匕首"), buildBuff(BUFF.MESSAGE, "获得物品,盗贼的匕首"), buildBuff(BUFF.COMPLETE, "52")],
+        null));
+
+    // allEvents.push(createStatsChangeEvent(50, "酒馆老板", CHARA_IMGS["酒馆老板"], "上次旅行的法师落下了个法杖，你需要吗？", "看起来很不错，买了！", "刚好手边有点紧。", "1", EventType.NORMAL, [-1, -1], [0, -10, 0, 0, 10, 0], [5, 0, 0, 0, 0, 0]));
+    //TODO: 和过关有关
+    // allEvents.push(createStatsChangeEvent(51, "酒馆老板", CHARA_IMGS["酒馆老板"], "上次旅行的战士落下了个巨剑，你需要吗？", "看起来很不错，买了！", "刚好手边有点紧。", "1", EventType.NORMAL, [-1, -1], [0, -10, 10, 0, 0, 0], [5, 0, 0, 0, 0, 0]));
+    //TODO: 和过关有关
+    // allEvents.push(createStatsChangeEvent(52, "酒馆老板", CHARA_IMGS["酒馆老板"], "上次旅行的盗贼落下了个匕首，你需要吗？", "看起来很不错，买了！", "刚好手边有点紧。", "1", EventType.NORMAL, [-1, -1], [0, -10, 0, 10, 0, 0], [5, 0, 0, 0, 0, 0]));
 
     allEvents.push(createStatsChangeEvent(53, "亚当", CHARA_IMGS["亚当"], "传闻黑骑士因公主而堕落。", "原来如此，但是公主是谁？", "可怜的骑士。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [-10, 0, 0, 0, 0, -10]));
     allEvents.push(createStatsChangeEvent(54, "亚当", CHARA_IMGS["亚当"], "据说北方的洞窟里有一只魔龙", "我也听说类似的传说", "让我来想想如何打败它。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 0], [-10, 0, 0, 0, 0, 0]));
