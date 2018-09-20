@@ -170,7 +170,8 @@ function createEvents() {
     //TODO: 加结束逻辑。。
     //TODO: 加任务关联逻辑 [DONE]
     const allEvents = [];
-    allEvents.push(createStatsChangeEvent(1, "修女" CHARA_IMGS["修女"], "冒险家，你能帮我讨伐教会附近的史莱姆吗？", "义不容辞，我遇到一定不会放过他们。", "我还有要事在身。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
+    allEvents.push(createStatsChangeEvent(1, "修女", CHARA_IMGS["修女"], "冒险家，你能帮我讨伐教会附近的史莱姆吗？", "义不容辞，我遇到一定不会放过他们。", "我还有要事在身。", "1", EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
+
     //TODO: 史莱姆，报酬也要改 check 201 需要解锁 不确定怎么做
     allEvents.push(createStatsChangeEvent(201, "史莱姆", CHARA_IMGS["修女"], "呜噜呜噜?##!!", "邪恶的史莱姆，接招吧！", "没想到看上去还挺可爱，就放过它吧。", "1", EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
 
@@ -194,10 +195,11 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(7, "牧师", CHARA_IMGS["牧师"], "年轻的冒险者，来吃些免费的食物吧。", "正有此意。", "不劳者不食.", "1", EventType.NORMAL, [-1, -1], [10, 0, 0, 0, 0, -10], [-10, 0, 0, 0, 0, 10], ""));
     allEvents.push(createStatsChangeEvent(8, "牧师", CHARA_IMGS["牧师"], "教会附近有一些僵尸，能否帮忙清理。", "要我出手的话可是费用不菲。", "就顺手帮一下吧。", "1", EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, -10], [-10, 0, 0, 0, 0, 10], ""));
     //TODO: 加入僵尸 要打 205
-    allEvents.push(createStatsChangeEvent(207, "僵尸", CHARA_IMGS["僵尸"], "呜噜呜噜?##!!", "邪恶的僵尸，接招吧！", "没想到看上去还挺可爱，就放过它吧。", "1", EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
+    allEvents.push(createStatsChangeEvent(206, "僵尸", CHARA_IMGS["僵尸"], "呜噜呜噜?##!!", "邪恶的僵尸，接招吧！", "僵尸这么可怜，还是放过他们把。", "1", EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
 
     allEvents.push(createStatsChangeEvent(37, "牧师", CHARA_IMGS["牧师"], "城外有一批战争的难民我们应该去救援他们吗？", "我会保护他们。", "我们不必去。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
     //TODO: 太弱就挂
+    allEvents.push(createStatsChangeEvent(207, "敌人", CHARA_IMGS["士兵"], "来者何人？", "接招吧。", "看上去似乎很强还是逃走吧。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], ""));
 
     allEvents.push(createStatsChangeEvent(66, "医生", CHARA_IMGS["医生"], "能否借我些金钱去帮助我的病人？", "我又不是慈善家。", "我只有这些了，代表我的心意。", "1", EventType.NORMAL, [-1, -1], [10, 0, 0, 0, 0, -10], [0, -10, 0, 0, 0, 10], ""));
     //分叉
@@ -211,10 +213,11 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(16, "僧侣", CHARA_IMGS["僧侣"], "需要学习下武技嘛?", "当然愿意。", "还不如休息一下。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 0, 0, 0], [10, 0, 0, 0, 0, 0], ""));
     allEvents.push(createStatsChangeEvent(17, "僧侣", CHARA_IMGS["僧侣"], "年轻的冒险家需要治疗吗?", "感谢你的帮助。", "我并不信任你。", "1", EventType.NORMAL, [-1, -1], [20, 0, 0, 0, 0, 0], [-10, 0, 0, 0, 0, 0], ""));
     allEvents.push(createStatsChangeEvent(18, "僧侣", CHARA_IMGS["僧侣"], "我有一本武技的密卷，想要购买吗?", "如果不交出密卷，你只有死路一条。", "好的，我买下来了。", "1", EventType.NORMAL, [607, -1], [-10, 0, 20, 0, 0, -20], [0, -10, 20, 0, 0, 0], ""));
-    //TODO: 跟僧侣比较属性
+    //TODO: 跟僧侣比较属性 208
+    allEvents.push(createStatsChangeEvent(208, "僧侣", CHARA_IMGS["僧侣"], "。。。", "受死吧。", "受死吧", "1", EventType.NORMAL, [-1, -1], [0, 10, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10], ""));
 
     allEvents.push(createStatsChangeEvent(19, "僧侣", CHARA_IMGS["僧侣"], "我正在被疯狂的教会追杀，你能保护我吗？", "保护他。", "听说告发他还有奖金。", "1", EventType.NORMAL, [615, -1], [0, 0, 0, 0, 0, 20], [0, 20, 0, 0, 0, -20], ""));
-    //TODO: 和巫妖互动（巫妖追杀僧侣），告发就不会触发巫妖事件。
+    //TODO: 和巫妖互动（巫妖追杀僧侣），告发就不会触发巫妖事件。 巫妖211
 
     //TODO: 一开始的名字可以是？？？骑士
     allEvents.push(createStatsChangeEvent(20, "奇怪的白骑士", CHARA_IMGS["白骑士"], "每一个人都是勇士，打败敌人最好的方法就是让自己变得更强。", "我想跟您学习武技。", "你在说什么？？？", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 0, 0, 0], [-10, 0, 0, 0, 0, 0], ""));
@@ -228,11 +231,14 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(20, "黑骑士", CHARA_IMGS["黑骑士"], "曾经的天真，帮助愚蠢的我长大。", "这不是你堕落的理由。", "也许他是个真正的骑士。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [-10, 0, 0, 0, 0, -10], ""));
     //TODO: 这段再考虑一下
     allEvents.push(createStatsChangeEvent(21, "黑骑士", CHARA_IMGS["黑骑士"], "大众总喜欢将真相扭曲到自己可以接受的程度，这就是一种充满惰性的思维方式。", "这个人思维很独特，我想跟他学习一下。", "我并不认为他很强大。", "1", EventType.NORMAL, [-1, 610], [0, 0, 10, 0, 0, -10], [0, 0, 0, 0, 0, 0], ""));
-    //TODO: 和关底有互动
+    //TODO: 和关底有互动 209
     allEvents.push(createStatsChangeEvent(22, "黑骑士", CHARA_IMGS["黑骑士"], "在现实里，王子和公主可能不会在一起，因为他们都以为自己是骑士，只会默默的等待。", "非常悲哀的存在呢。", "那么王子和公主都是谁呢？", "1", EventType.NORMAL, [-1, -1], [10, 0, 10, 10, 10, 10], [-10, 0, -10, -10, -10, -10], ""));
-    //TODO: 和修女互动
+    //TODO: 和修女互动 title 这个我没想好怎么互动
+
     allEvents.push(createStatsChangeEvent(23, "黑骑士", CHARA_IMGS["黑骑士"], "有人需要真皮，所以才有了猎人去虐杀动物， 最终被捕的是猎人，那么披着真皮的人呢？", "这就是堕落的借口吗？", "也许错的不是他。", "1", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 10], [10, 0, 10, 10, 10, -10], ""));
-    //TODO: 和猎人互动
+    //TODO: 和猎人互动 209
+    allEvents.push(createStatsChangeEvent(209, "猎人", CHARA_IMGS["猎人"], "没想到黑骑士会帮我出头？", "他是一个正义的骑士。", "他只是愤世嫉俗罢了。", "1", EventType.NORMAL, [-1, -1], [10, 0, 0, 0, 0, 10], [10, 0, 10, 10, 10, -10], ""));
+
     allEvents.push(createStatsChangeEvent(41, "黑骑士", CHARA_IMGS["黑骑士"], "手中有剑，便提剑前行；手中无剑，便忘剑前进。", "言之有理。", "手无寸铁该如何战斗。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 0, 0, 0, 10], ""));
     allEvents.push(createStatsChangeEvent(42, "黑骑士", CHARA_IMGS["黑骑士"], "伟大的代价就是责任。", "我想听听。", "没空理会。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 0, -10], [0, 0, 0, 0, 0, 10], ""));
     allEvents.push(createStatsChangeEvent(64, "黑骑士", CHARA_IMGS["黑骑士"], "我将会为公主的幸福之路献上我的尸骸。", "骑士最终的结局就是被公主杀死。", "你需要更理智的看待爱情。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, -10], [-10, 0, 0, 0, 0, 10], ""));
@@ -246,8 +252,10 @@ function createEvents() {
     allEvents.push(createMajorRandomEvent(102, "蒙面的旅人", CHARA_IMGS["蒙面的旅人"], "长路漫漫，是选择前进还是后退呢？", "朝前走吧。", "走回头路也不错。", "1", EventType.RANDOM, [-1, -1]));
 
     allEvents.push(createStatsChangeEvent(26, "商人", CHARA_IMGS["商人"], "我这里正需要人手，要不要来打零工换些金钱。", "我真有此意。", "没什么时间。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
-    allEvents.push(createStatsChangeEvent(27, "商人", CHARA_IMGS["商人"], "（打盹）", "摸摸看他身手有啥？", "还是不打扰他了。", "1", EventType.NORMAL, [-1, -1], [0, 10, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10], ""));
-    //TODO: 有几率跟他干
+    allEvents.push(createStatsChangeEvent(27, "商人", CHARA_IMGS["商人"], "（打盹）", "摸摸看他身上有啥？", "还是不打扰他了。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10], ""));
+    //TODO: 有几率跟他干 几率打  打输了死
+    allEvents.push(createStatsChangeEvent(27, "商人", CHARA_IMGS["商人"], "别跑，你这个小偷", "找死。", "还给你还给你。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, -10], [0, -10, 0, 0, 0, 10], ""));
+
     //TODO: 商人有几率卖过关的东西（这里有什么？）
     allEvents.push(createStatsChangeEvent(44, "商人", CHARA_IMGS["商人"], "我这里有两个上古的圣物，你选一个吧。", "腐朽的巨剑。", "泛黄的魔法书。", "1", EventType.NORMAL, [-1, -1], [0, 0, 10, 0, 0, 0], [0, 0, 0, 0, 10, 0], ""));
 
@@ -257,6 +265,10 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(30, "巫妖", CHARA_IMGS["巫妖"], "会去尊重崇尚献出生命的人，都是与你无关紧要的人。真正在乎你的人，只希望你好好的活着。", "为了守护所爱之人，有些牺牲是必须的 ", "我会保护好自己。", "1", EventType.NORMAL, [-1, -1], [10, 0, 10, 10, 10, 10], [10, 0, 10, 10, 10, -10], ""));
     allEvents.push(createStatsChangeEvent(63, "巫妖", CHARA_IMGS["巫妖"], "转瞬百年，诸事无常。", "巫妖不会懂得生命的意义", "我也想获得长生", "1", EventType.NORMAL, [-1, -1], [0, 0, 10, 10, 10, 10], [0, 0, 10, 10, 10, -10], ""));
     allEvents.push(createStatsChangeEvent(67, "巫妖", CHARA_IMGS["巫妖"], " 就是因为自己非常怕死，所以才会对别人的死亡流下眼泪。", "巫妖也会流眼泪？", "邪恶的巫妖从不流眼泪。", "1", EventType.NORMAL, [-1, -1], [10, 0, 10, 10, 10, -10], [10, 0, 10, 10, 10, 10], ""));
+
+    //TODO: title 与僧侣互动 正义使者
+    allEvents.push(createStatsChangeEvent(211, "巫妖", CHARA_IMGS["巫妖"], "有没有见过一个僧侣。", "出卖僧侣。", "我并没有见过。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10], ""));
+
 
     allEvents.push(createStatsChangeEvent(31, "盗贼", CHARA_IMGS["盗贼"], "要不要跟我学学身手。", "我正好想变的更加灵活。", "偷窃的本事还是算了。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 20, 0, 0], [0, 0, 0, 0, 0, 10], ""));
     allEvents.push(createStatsChangeEvent(29, "盗贼", CHARA_IMGS["盗贼"], "跟我一起去历练吧。", "刚好出去历练一下", "成为一个盗贼并没有很有趣。", "1", EventType.NORMAL, [-1, -1], [10, 10, 10, 10, 10, 0], [0, 0, 0, 0, 0, 10], ""));
@@ -349,12 +361,15 @@ function createEvents() {
 
     //比较，善良大于一定并且总属性够高。
     allEvents.push(createStatsChangeEvent(78, "石中剑", CHARA_IMGS["石中剑"], "石头上插着一把荆棘缠绕的圣剑。", "拔出圣剑，我自为王。", "王者的使命过于沉重", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10], ""));
-    //TODO: 属性不够拔不出来
+    //TODO: 属性不够拔不出来 212
+    allEvents.push(createStatsChangeEvent(212, "石中剑", CHARA_IMGS["石中剑"], "石中剑似乎纹丝不动。", "。。。", "。。。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10], ""));
 
     allEvents.push(createStatsChangeEvent(79, "朗格努斯", CHARA_IMGS["朗格努斯"], "枪身血红，似乎滴血一般。", "让我来用着魔枪结束乱世。", "王者的使命过于沉重", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10], ""));
-    //TODO: 属性不够，可以减属性
+    //TODO: 属性不够，死了 反噬
 
     allEvents.push(createStatsChangeEvent(80, "雷沃汀", CHARA_IMGS["雷沃汀"], "永远燃烧的火焰之剑。", "我能承受火焰之魂。", "冒火的剑怎么可能能拿得起来？", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10], ""));
+    //TODO: 属性不够，可以减属性
+
 
     allEvents.push(createStatsChangeEvent(87, "闪闪的金币", CHARA_IMGS["钱币"], "地上有一枚闪闪发光金币。", "不关我的事。", "捡起来看看", "1", EventType.NORMAL, [-1, -1], [5, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0], ""));
     allEvents.push(createMajorRandomEvent(88, "不幸的金币", CHARA_IMGS["钱币"], "一枚金光闪闪的钱币", "抛一下试试运气", "抛一下试试运气", "1", EventType.RANDOM, [-1, -1]));
@@ -394,6 +409,19 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent("stage-7", "沼泽", CHARA_IMGS["沼泽"], "泥泞不堪,满目疮痍。我的脚蹼却丝毫不受沼泽的拖累。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
     allEvents.push(createStatsChangeEvent("stage-8", "冰原", CHARA_IMGS["冰原"], "茕茕孑立，踽踽而行。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
     allEvents.push(createStatsChangeEvent("stage-9", "岩浆", CHARA_IMGS["岩浆"], "末日般的场景，与一个挣扎的灵魂。", "", "", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+
+    //触发
+    allEvents.push(createStatsChangeEvent("stage-11", "村落", CHARA_IMGS["村落"], "你在村落的西方发现一条通往大路的通道。", "朝大路走去", "在村子里继续转一转。", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent("stage-21", "城镇", CHARA_IMGS["城镇"], "村落的中心的高台下似乎有条密道。", "去调查一下看看", "在城镇里继续转一转", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent("stage-31", "城堡", CHARA_IMGS["城堡"], "城堡的出口处似乎有个魔物。", "去挑战魔物。", "继续在城堡里看看好了", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent("stage-41", "洞窟", CHARA_IMGS["洞窟"], "你在洞穴深处看到了一个天然的泉水。", "去泉水周围看看", "回头转转洞窟。", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent("stage-51", "森林", CHARA_IMGS["森林"], "森林的隐秘处似乎有着一个孤坟。", "去调查一下看看。", "森林里继续逛逛", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent("stage-61", "悬崖", CHARA_IMGS["悬崖"], "云峰之巅，似乎有着宝藏。", "上顶峰瞅瞅。", "继续在悬崖周围转转", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent("stage-71", "沼泽", CHARA_IMGS["沼泽"], "沼泽深处隐藏着一个可怕的魔物。", "前往沼泽深处。", "继续在周围转转。", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent("stage-81", "冰原", CHARA_IMGS["冰原"], "浩渺的冰原上，矗立着一个奇怪的神殿。", "进入神殿。", "回头继续前行。", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+    allEvents.push(createStatsChangeEvent("stage-91", "岩浆", CHARA_IMGS["岩浆"], "岩浆的尽头是一个落魄的祭坛。", "祭坛里有什么？", "我是谁？", "1", EventType.STAGE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], ""));
+
+
 
     //0结束 -1 随机 其他数字是链接
     //称号，buff
