@@ -306,8 +306,22 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(211, "巫妖", CHARA_IMGS["巫妖"], "有没有见过一个僧侣。", "出卖僧侣。", "我并没有见过。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10]));
 
     allEvents.push(createStatsChangeEvent(31, "盗贼", CHARA_IMGS["盗贼"], "要不要跟我学学身手。", "我正好想变的更加灵活。", "偷窃的本事还是算了。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 20, 0, 0], [0, 0, 0, 0, 0, 10]));
-    allEvents.push(createStatsChangeEvent(29, "盗贼", CHARA_IMGS["盗贼"], "跟我一起去历练吧。", "刚好出去历练一下", "成为一个盗贼并没有很有趣。", "1", EventType.NORMAL, [-1, -1], [10, 10, 10, 10, 10, 0], [0, 0, 0, 0, 0, 10]));
+    // allEvents.push(createStatsChangeEvent(29, "盗贼", CHARA_IMGS["盗贼"], "跟我一起去历练吧。", "刚好出去历练一下", "成为一个盗贼并没有很有趣。", "1", EventType.NORMAL, [-1, -1], [10, 10, 10, 10, 10, 0], [0, 0, 0, 0, 0, 10]));
     //TODO: 属性不够历练就挂
+
+    allEvents.push(createAdvancedEvent(
+        new EventV2(29, "盗贼", CHARA_IMGS["盗贼"], "跟我一起去历练吧。", null, null, null, EventType.NORMAL, "刚好出去历练一下", "成为一个盗贼并没有很有趣。"),
+        new StartCondition(1, null, null),
+        new AdvancedEventAttrs(
+            () => player.agility >= 50 && player.power >= 50,
+            null,
+            [[10, 10, 10, 10, 10, 0], null],
+            [[0, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, 10]],
+            [[buildBuff(BUFF.TITLE, "江湖侠盗,成功通过了盗贼试炼")], [buildBuff(BUFF.DEATH)]],
+            [null, null]
+        )
+    ));
+
 
     allEvents.push(createStatsChangeEvent(30, "法师", CHARA_IMGS["法师"], "要么安于现状，要么改变现状，改变的总是要付出。", "我愿意跟你修炼。", "要钱还是算了吧。", "1", EventType.NORMAL, [-1, -1], [-10, -10, 0, 0, 30, 0], [0, 0, 0, 0, 0, 0]));
     allEvents.push(createStatsChangeEvent(31, "法师", CHARA_IMGS["法师"], "听说过法师塔吗？", "我想进入学习。", "我会保护好自己。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 30, 0, 0], [0, 0, 0, 0, 0, -10]));
@@ -632,9 +646,7 @@ class StartCondition {
 }
 
 class AdvancedEventAttrs {
-    constructor(line1, line2, condition1, condition2, statChangeDuo1, statChangeDuo2, buffDuo1, buffDuo2) {
-        this.line1 = line1;
-        this.line2 = line2;
+    constructor(condition1, condition2, statChangeDuo1, statChangeDuo2, buffDuo1, buffDuo2) {
         this.condition1 = condition1;
         this.condition2 = condition2;
         this.statChangeDuo1 = statChangeDuo1;
@@ -814,12 +826,12 @@ function createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallb
 
 function createAdvancedEvent(baseEvent, startCondition, advancedEventAttrs) {
     return new EventV2(baseEvent.id, baseEvent.name, baseEvent.img, baseEvent.line,
-        startCondition.startStage, startCondition.startAchievement, startCondition.startBuff,
-        new Choice(baseEvent.id, baseEvent.line1,
+        startCondition.startStage, startCondition.startAchievement, startCondition.startBuff, baseEvent.eventType,
+        new Choice(baseEvent.id, baseEvent.choice1,
             createStatsEffect(baseEvent.id, advancedEventAttrs.statChangeDuo1[0], advancedEventAttrs.buffDuo1[0],
                 advancedEventAttrs.condition1, advancedEventAttrs.statChangeDuo1[1], advancedEventAttrs.buffDuo1[1])
         ),
-        new Choice(baseEvent.id, baseEvent.line2,
+        new Choice(baseEvent.id, baseEvent.choice2,
             createStatsEffect(baseEvent.id, advancedEventAttrs.statChangeDuo2[0], advancedEventAttrs.buffDuo2[0],
                 advancedEventAttrs.condition2, advancedEventAttrs.statChangeDuo2[1], advancedEventAttrs.buffDuo2[1])
         ),
@@ -848,24 +860,28 @@ function createStatsEffect(eventId, attrChange, buffs, conditionCheck, attrChang
         }
 
         if (checkPass) {
-            player.spirit += attrChange[0];
-            player.gold += attrChange[1];
-            player.power += attrChange[2];
-            player.agility += attrChange[3];
-            player.intelligence += attrChange[4];
-            player.goodness += attrChange[5];
+            if (attrChange !== undefined && attrChange !== null) {
+                player.spirit += attrChange[0];
+                player.gold += attrChange[1];
+                player.power += attrChange[2];
+                player.agility += attrChange[3];
+                player.intelligence += attrChange[4];
+                player.goodness += attrChange[5];
+            }
             if (buffs !== undefined && buffs !== null) {
                 buffs.forEach((buff) => {
                     player.buffSet.add(buff)
                 });
             }
         } else {
-            player.spirit += attrChange1[0];
-            player.gold += attrChange1[1];
-            player.power += attrChange1[2];
-            player.agility += attrChange1[3];
-            player.intelligence += attrChange1[4];
-            player.goodness += attrChange1[5];
+            if (attrChange1 !== undefined && attrChange1 !== null) {
+                player.spirit += attrChange1[0];
+                player.gold += attrChange1[1];
+                player.power += attrChange1[2];
+                player.agility += attrChange1[3];
+                player.intelligence += attrChange1[4];
+                player.goodness += attrChange1[5];
+            }
             if (buffs1 !== undefined && buffs1 !== null) {
                 buffs1.forEach((buff) => {
                     player.buffSet.add(buff)
@@ -1178,7 +1194,7 @@ function getNextTransitionEvent() {
 function getNextEvent() {
 
     if (currentMaxPage === 2) {
-        return eventMap["44"];
+        return eventMap["29"];
     } else {
         console.error("numEventCurLevel: " + eventsPlayedThisState.size);
         console.error("EVENT_PER_LEVEL: " + EVENT_PER_LEVEL);
@@ -1769,7 +1785,7 @@ function addDummyPage(turn) {
 function showTitle(title, explanation) {
     iziToast.show({
         theme: 'light',
-        title: '获得称号:' + title,
+        title: '获得称号<' + title + '>',
         message: explanation,
         position: 'topCenter',
         color: 'green'
