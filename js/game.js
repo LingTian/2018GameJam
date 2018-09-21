@@ -305,7 +305,6 @@ function createEvents() {
     //TODO: title 与僧侣互动 正义使者
     allEvents.push(createStatsChangeEvent(211, "巫妖", CHARA_IMGS["巫妖"], "有没有见过一个僧侣。", "出卖僧侣。", "我并没有见过。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10]));
 
-
     allEvents.push(createStatsChangeEvent(31, "盗贼", CHARA_IMGS["盗贼"], "要不要跟我学学身手。", "我正好想变的更加灵活。", "偷窃的本事还是算了。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 20, 0, 0], [0, 0, 0, 0, 0, 10]));
     allEvents.push(createStatsChangeEvent(29, "盗贼", CHARA_IMGS["盗贼"], "跟我一起去历练吧。", "刚好出去历练一下", "成为一个盗贼并没有很有趣。", "1", EventType.NORMAL, [-1, -1], [10, 10, 10, 10, 10, 0], [0, 0, 0, 0, 0, 10]));
     //TODO: 属性不够历练就挂
@@ -624,6 +623,27 @@ const EventType = Object.freeze({
     ENDING: "ENDING",
 });
 
+class StartCondition {
+    constructor(startStage, startAchievement, startBuff) {
+        this.startStage = startStage;
+        this.startAchievement = startAchievement;
+        this.startBuff = startBuff;
+    }
+}
+
+class AdvancedEventAttrs {
+    constructor(line1, line2, condition1, condition2, statChangeDuo1, statChangeDuo2, buffDuo1, buffDuo2) {
+        this.line1 = line1;
+        this.line2 = line2;
+        this.condition1 = condition1;
+        this.condition2 = condition2;
+        this.statChangeDuo1 = statChangeDuo1;
+        this.statChangeDuo2 = statChangeDuo2;
+        this.buffDuo1 = buffDuo1;
+        this.buffDuo2 = buffDuo2;
+    }
+}
+
 class EventV2 {
     constructor(id, name, img, line, startStage, startAchievement, startBuff, eventType, choice1, choice2, enemy) {
         this.id = id;
@@ -792,11 +812,23 @@ function createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallb
         null);
 }
 
+function createAdvancedEvent(baseEvent, startCondition, advancedEventAttrs) {
+    return new EventV2(baseEvent.id, baseEvent.name, baseEvent.img, baseEvent.line,
+        startCondition.startStage, startCondition.startAchievement, startCondition.startBuff,
+        new Choice(baseEvent.id, baseEvent.line1,
+            createStatsEffect(baseEvent.id, advancedEventAttrs.statChangeDuo1[0], advancedEventAttrs.buffDuo1[0],
+                advancedEventAttrs.condition1, advancedEventAttrs.statChangeDuo1[1], advancedEventAttrs.buffDuo1[1])
+        ),
+        new Choice(baseEvent.id, baseEvent.line2,
+            createStatsEffect(baseEvent.id, advancedEventAttrs.statChangeDuo2[0], advancedEventAttrs.buffDuo2[0],
+                advancedEventAttrs.condition2, advancedEventAttrs.statChangeDuo2[1], advancedEventAttrs.buffDuo2[1])
+        ),
+        null);
+}
+
 // function to create a event with both effects are stats change event
 // V1 -> V2 的普通event的utility，用的input还是V1的input
-// TODO: subsequent其实没用，还是要用leftBuff和rightBuff控制走向
-function createStatsChangeEvent(id, name, img, line, posLine, negLine, stage, type, subsequent, leftAttrEffects, rightAttrEffects, startBuff, leftBuffs, rightBuffs) {
-    console.log(rightAttrEffects);
+function createStatsChangeEvent(id, name, img, line, posLine, negLine, stage, type, achievement, leftAttrEffects, rightAttrEffects, startBuff, leftBuffs, rightBuffs) {
     return new EventV2(id, name, img, line, stage, null, startBuff, type,
         new Choice(id, posLine,
             createStatsEffect(id, leftAttrEffects, leftBuffs)
@@ -807,20 +839,38 @@ function createStatsChangeEvent(id, name, img, line, posLine, negLine, stage, ty
         null);
 }
 
-function createStatsEffect(eventId, attrChange, buffs) {
+function createStatsEffect(eventId, attrChange, buffs, conditionCheck, attrChange1, buffs1) {
     const callBack = function () {
-        player.spirit += attrChange[0];
-        player.gold += attrChange[1];
-        player.power += attrChange[2];
-        player.agility += attrChange[3];
-        player.intelligence += attrChange[4];
-        player.goodness += attrChange[5];
-        console.warn("buffs:");
-        console.warn(buffs);
-        if (buffs !== undefined && buffs !== null) {
-            buffs.forEach((buff) => {
-                player.buffSet.add(buff)
-            });
+
+        let checkPass = true;
+        if (conditionCheck !== null && conditionCheck !== undefined) {
+            checkPass = conditionCheck();
+        }
+
+        if (checkPass) {
+            player.spirit += attrChange[0];
+            player.gold += attrChange[1];
+            player.power += attrChange[2];
+            player.agility += attrChange[3];
+            player.intelligence += attrChange[4];
+            player.goodness += attrChange[5];
+            if (buffs !== undefined && buffs !== null) {
+                buffs.forEach((buff) => {
+                    player.buffSet.add(buff)
+                });
+            }
+        } else {
+            player.spirit += attrChange1[0];
+            player.gold += attrChange1[1];
+            player.power += attrChange1[2];
+            player.agility += attrChange1[3];
+            player.intelligence += attrChange1[4];
+            player.goodness += attrChange1[5];
+            if (buffs1 !== undefined && buffs1 !== null) {
+                buffs1.forEach((buff) => {
+                    player.buffSet.add(buff)
+                });
+            }
         }
     };
     return new EffectV2(eventId, EffectType.STATS_CHANGE, callBack);
@@ -1141,7 +1191,6 @@ function getNextEvent() {
 
         if (eventsPlayedThisState.size > EVENT_PER_LEVEL && Math.random() < 0.1) {
             // 0.1 几率刷到boss
-            //TODO: 用 currentLevel 代替 1
             return getBossEvent(currentLevel);
         }
 
@@ -1161,7 +1210,6 @@ function getNextEvent() {
         allPossibleEvents = allPossibleEvents.filter(event =>
             isEmpty(event.startBuff) || player.buffSet.has(event.startBuff));
 
-
         // filter current event.
         if (currentEvent != null) {
             allPossibleEvents = allPossibleEvents.filter(event => event.id !== currentEvent.id);
@@ -1176,12 +1224,6 @@ function getNextEvent() {
 
         allPossibleEvents = allPossibleEvents.filter(event => !completeEvents.has(event.id));
 
-        //for debug
-        // if (currentLevel >= 3) {
-        //     console.warn(allPossibleEvents[0]);
-        //     allPossibleEvents = allPossibleEvents.filter(event => typeof event.id === 'string' && event.id.includes("-"));
-        // }
-
         console.error("allPossibleEvents:");
         allPossibleEvents.forEach(event => console.warn(event));
 
@@ -1189,7 +1231,6 @@ function getNextEvent() {
     }
 }
 
-//TODO: boss event, boss 结束后是过关， 所以上面的过关更新逻辑要重写
 function getBossEvent(level) {
     console.warn("Get boss event: " + `stage-${level}-end`);
     return eventMap[`stage-${level}-end`];
