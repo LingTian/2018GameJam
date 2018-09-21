@@ -166,7 +166,7 @@ function createEvents() {
     //TODO: 做任务做到一定数量就有title， 20， 30， 50， 80， 100， 200
     //TODO: 称号需要，hover， toast会有字 [DONE]
     //TODO: 数值调整，不要1:1的感觉。
-    //TODO: 加结束逻辑。。
+    //TODO: 加结束逻辑, 每个死亡尽量不同
     //TODO: 加任务关联逻辑 [DONE]
     const allEvents = [];
     allEvents.push(createStatsChangeEvent("1", "修女", CHARA_IMGS["修女"], "冒险家，你能帮我讨伐教会附近的史莱姆吗？", "义不容辞，我遇到一定不会放过他们。", "我还有要事在身。", "1",
@@ -317,7 +317,7 @@ function createEvents() {
             null,
             [[10, 10, 10, 10, 10, 0], null],
             [[0, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, 10]],
-            [[buildBuff(BUFF.TITLE, "江湖侠盗,成功通过了盗贼试炼")], [buildBuff(BUFF.DEATH)]],
+            [[buildBuff(BUFF.TITLE, "江湖侠盗,成功通过了盗贼试炼")], [buildBuff(BUFF.DEATH, "600")]],
             [null, null]
         )
     ));
@@ -750,7 +750,7 @@ function createLevel1BossEvents(allEvents, level) {
     allEvents.push(createStatsChangeEvent(id + "-win", "", CHARA_IMGS["亚当"], "（微笑）你赢了，你的力量比我强大，不过后面更难的试炼在等待着你。。。", "好吧", "。。。", "1", EventType.SUBSEQUENT, null,
         [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, STAGE_IDS[level])], [buildBuff(BUFF.NEXT, STAGE_IDS[level])]));
     allEvents.push(createStatsChangeEvent(id + "-loss", "", CHARA_IMGS["亚当"], "就差一点，或许, 有武器就能赢了。。", "好吧", "", "1", EventType.SUBSEQUENT, null,
-        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [BUFF.DEATH, buildBuff(BUFF.TITLE, "出师未捷身先死")], [BUFF.DEATH, buildBuff(BUFF.TITLE, "出师未捷身先死")]));
+        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.DEATH, '600'), buildBuff(BUFF.TITLE, "出师未捷身先死")], [buildBuff(BUFF.DEATH, '600'), buildBuff(BUFF.TITLE, "出师未捷身先死")]));
 }
 
 function createLevel9BossEvents(allEvents) {
@@ -788,7 +788,7 @@ function createLevel9BossEvents(allEvents) {
     allEvents.push(createStatsChangeEvent(id + "-win", "", CHARA_IMGS["亚当"], "（微笑）你赢了，你的力量比我强大，不过后面更难的试炼在等待着你。。。", "好吧", "。。。", "1", EventType.SUBSEQUENT, null,
         [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, "end-1")], [buildBuff(BUFF.NEXT, "end-1")]));
     allEvents.push(createStatsChangeEvent(id + "-loss", "", CHARA_IMGS["亚当"], "就差一点，或许, 有武器就能赢了。。", "好吧", "", "1", EventType.SUBSEQUENT, null,
-        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [BUFF.DEATH, buildBuff(BUFF.TITLE, "出师未捷身先死")], [BUFF.DEATH, buildBuff(BUFF.TITLE, "出师未捷身先死")]));
+        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.DEATH, 600), buildBuff(BUFF.TITLE, "出师未捷身先死")], [buildBuff(BUFF.DEATH, 600), buildBuff(BUFF.TITLE, "出师未捷身先死")]));
 }
 
 function createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallback, leftWin, leftLoss, rightWin, rightLoss) {
@@ -1194,7 +1194,7 @@ function getNextTransitionEvent() {
 function getNextEvent() {
 
     if (currentMaxPage === 2) {
-        return eventMap["29"];
+        return eventMap["end-1"];
     } else {
         console.error("numEventCurLevel: " + eventsPlayedThisState.size);
         console.error("EVENT_PER_LEVEL: " + EVENT_PER_LEVEL);
@@ -1455,6 +1455,7 @@ function postProcessBuff() {
             console.log("BUFF.DEATH: " + buff);
             endBuff = buff;
             isEnd = true;
+            nextEventId = buff.substring(BUFF.DEATH.length + 1);
             player.buffSet.delete(buff);
         } else if (buff.startsWith(BUFF.TITLE)) {
             console.log("BUFF.TITLE: " + buff);
@@ -5192,7 +5193,7 @@ $(window).ready(function () {
         // });
 
         $('.pages').turn({
-            duration: 1500,
+            duration: 500,
             width: width,
             height: height,
             // acceleration: true,
