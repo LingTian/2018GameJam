@@ -710,7 +710,7 @@ function createEvents() {
 
     allEvents.push(createAdvancedEvent(
         new EventV2("502-2", "502-2", CHARA_IMGS["善良的王"], "王迅速的挥动长剑，向你袭来。", null, null, null, EventType.NORMAL, "靠力量挡住这次攻击。", "赶紧闪避这次攻击。"),
-        new StartCondition(1, null, null),
+        new StartCondition(1, 502-1, null),
         new AdvancedEventAttrs(
             () => player.intelligence >= 50 && player.spirit >= 50,
             null,
@@ -723,7 +723,7 @@ function createEvents() {
 
     allEvents.push(createAdvancedEvent(
         new EventV2("502-3", "502-3", CHARA_IMGS["善良的王"], "王用手抓向你的武器。", null, null, null, EventType.NORMAL, "迅速打断他的技能。", "用魔力优先构建魔法盾。"),
-        new StartCondition(1, null, null),
+        new StartCondition(1, 502-1, null),
         new AdvancedEventAttrs(
             () => player.intelligence >= 50 && player.spirit >= 50,
             null,
