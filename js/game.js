@@ -754,6 +754,7 @@ function createEvents() {
     createLevel1BossEvents(allEvents, 8);
     createLevel9BossEvents(allEvents);
 
+    allEvents.push(createStatsChangeEvent(601, "称号", "1.png", "法海无边", "Pass。", "Pass.", "1", EventType.TITLE, [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
     return allEvents;
 }
 
@@ -1745,8 +1746,10 @@ function createPage(event) {
         return createEventPageDiv(event);
     } else if (event.eventType === EventType.STAGE) {
         console.log("Creating stage event");
-        // return createStagePageDiv(event);
-        // Add some mock titles
+        return createStagePageDiv(event);
+    } else if (event.eventType === EventType.TITLE) {
+        console.log("Creating title event");
+        //Mocks
         player.achievements.add(buildBuff(BUFF.TITLE, "称号1,称号1描述"));
         player.achievements.add(buildBuff(BUFF.TITLE, "称号2,称号2描述"));
         player.achievements.add(buildBuff(BUFF.TITLE, "称号3,称号3描述"));
@@ -1754,9 +1757,6 @@ function createPage(event) {
         player.achievements.add(buildBuff(BUFF.TITLE, "称号5,称号5描述"));
         player.achievements.add(buildBuff(BUFF.TITLE, "称号6,称号6描述"));
         return createResultPageDiv();
-    } else if (event.eventType === EventType.TITLE) {
-        console.log("Creating title event");
-        return createStagePageDiv(event);
     } else if (event.eventType === EventType.ENDING) {
         console.log("Creating ending event");
         return createEndingTransitionPageDiv(event);
@@ -1925,6 +1925,9 @@ function addAndRemovePage(event) {
     $('.pages').turn('addPage', div);
     addDummyPage(true);
     $('.pages').turn('removePage', 'l');
+    if (event.eventType === EventType.TITLE) {
+        animateElems();
+    }
 }
 
 function addPage(event, turn) {
@@ -1933,6 +1936,9 @@ function addPage(event, turn) {
     $('.pages').append(div);
     if (turn) {
         $('.pages').turn('addPage', div);
+    }
+    if (event.eventType === EventType.TITLE) {
+        animateElems();
     }
 }
 
