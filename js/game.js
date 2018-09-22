@@ -244,7 +244,7 @@ function createEvents() {
             () => player.intelligence >= 50,
             [[0, 50, 0, 0, 0, -50], null],
             [null, null],
-            [[buildBuff(BUFF.TITLE, "告密者")], [buildBuff(BUFF.DEATH, 'dead-1')]],
+            [[buildBuff(BUFF.TITLE, "告密者|你告发了某人")], [buildBuff(BUFF.DEATH, 'dead-1')]],
             [[buildBuff(BUFF.MESSAGE, "着急的巫妖|巫妖似乎很心急，没有注意到你的谎言")], [buildBuff(BUFF.MESSAGE, "巫妖的话|不要试图去欺骗一个智慧的巫妖。说罢巫妖朝你身上下了一个凶狠的诅咒。"), buildBuff(BUFF.BUFF, "诅咒")]]
         )
     ));
@@ -258,7 +258,7 @@ function createEvents() {
             () => player.intelligence >= 0,
             [[0, 50, 0, 0, 0, -20], null],
             [null, null],
-            [[buildBuff(BUFF.TITLE, "窃密者")], [buildBuff(BUFF.NEXT, "65-2")]],
+            [[buildBuff(BUFF.TITLE, "窃密者|你窃取了别人的东西")], [buildBuff(BUFF.NEXT, "65-2")]],
             [[buildBuff(BUFF.MESSAGE, "还是不敢|你放弃了偷窃，恍惚中你仿佛看到了法师嘴角的一丝笑意")]]
         )
     ));
@@ -299,7 +299,7 @@ function createEvents() {
             () => player.intelligence >= 0,
             [[-10, 50, 0, 0, 0, -50], [-20, -50, 0, 0, 0, -50]],
             [[10, -50, 0, 0, 0, 10]],
-            [[buildBuff(BUFF.MESSAGE, "抢夺成功|你轻易的暴打了商人一顿，并且又搜出了一堆金币。"), buildBuff(BUFF.TITLE, "欺负弱小")], [buildBuff(BUFF.MESSAGE, "抢夺失败|没想到商人的力量出奇的大，你被商人暴打了一顿。")]],
+            [[buildBuff(BUFF.MESSAGE, "抢夺成功|你轻易的暴打了商人一顿，并且又搜出了一堆金币。"), buildBuff(BUFF.TITLE, "欺负弱小|你在冒险中欺凌了别人")], [buildBuff(BUFF.MESSAGE, "抢夺失败|没想到商人的力量出奇的大，你被商人暴打了一顿。")]],
             [[buildBuff(BUFF.MESSAGE, "还是算了|你乖乖把钱还给了商人。")], null],
         )
     ));
