@@ -307,8 +307,6 @@ function createEvents() {
     ));
 
 
-
-
     // allEvents.push(createStatsChangeEvent("1-1", "史莱姆", CHARA_IMGS["修女"], "呜噜呜噜?##!!", "邪恶的史莱姆，接招吧！", "没想到看上去还挺可爱，就放过它吧。", "1", EventType.NORMAL,
     //     [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "1-1"), [buildBuff(BUFF.MESSAGE, "讨伐史莱姆,你消灭了邪恶的史莱姆！")],null));
     // allEvents.push(createStatsChangeEvent("8-1", "僵尸", CHARA_IMGS["修女"], "呜噜呜噜?##!!", "邪恶的僵尸，接招吧！", "僵尸这么可怜，还是放过他们把。", "1", EventType.NORMAL,
@@ -587,8 +585,6 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent("79-1", "朗格努斯", CHARA_IMGS["朗格努斯"], "你凭借强大的精神力抵御住了朗格努斯的吞噬。", "。。。", "。。。", "1", EventType.NORMAL,
         [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "79"), [buildBuff(BUFF.title, "魔枪之主")],[buildBuff(BUFF.title, "魔枪之主")]));
 
-
-
     // allEvents.push(createStatsChangeEvent(80, "雷沃汀", CHARA_IMGS["雷沃汀"], "永远燃烧的火焰之剑。", "我能承受火焰之魂。", "冒火的剑怎么可能能拿得起来？", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10]));
     allEvents.push(createStatsChangeEvent("80", "雷沃汀", CHARA_IMGS["雷沃汀"], "永远燃烧的火焰之剑。", "我能承受火焰之魂。", "冒火的剑怎么可能能拿得起来？", "1",
         EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], null, [buildBuff(BUFF.NEXT, "80")], null));
@@ -800,6 +796,10 @@ class Player {
         this.goodness = MAX_VAL;
         this.buffSet = new Set();
         this.achievements = new Set();
+    }
+
+    getAllTitles() {
+        return Array.from(this.achievements).filter(ach => ach.startsWith(BUFF.TITLE));
     }
 }
 
@@ -1344,7 +1344,7 @@ function getCompleteEvents() {
     player.achievements.forEach(
         achievement => {
             if (achievement.startsWith(BUFF.COMPLETE)) {
-                const eventId = achievement.substring(4);
+                const eventId = achievement.substring(BUFF.COMPLETE.length + 1);
                 completeEvents.add(eventId);
             }
         }
@@ -1431,18 +1431,6 @@ function initModels() {
     return $.getJSON("ConsecutiveEvents.json").then(
         function (json) {
             player = initPlayer('Knight III');
-
-            //FOR TESTING, TODO: remove this logic
-            player.achievements.add(BUFF.TITLE + "TEST1");
-            player.achievements.add(BUFF.TITLE + "TEST2");
-            player.achievements.add(BUFF.TITLE + "TEST3");
-            player.achievements.add(BUFF.TITLE + "TEST4");
-            player.achievements.add(BUFF.TITLE + "TEST5");
-            player.achievements.add(BUFF.TITLE + "TEST6");
-            player.achievements.add(BUFF.TITLE + "TEST7");
-            player.achievements.add(BUFF.TITLE + "TEST8");
-            player.achievements.add(BUFF.TITLE + "TEST9");
-            player.achievements.add(BUFF.TITLE + "TEST10");
 
             reincarnation = 1;
             currentLevel = START_LEVEL;
@@ -1757,8 +1745,15 @@ function createPage(event) {
         return createEventPageDiv(event);
     } else if (event.eventType === EventType.STAGE) {
         console.log("Creating stage event");
-        return createStagePageDiv(event);
-        // return createResultPageDiv();
+        // return createStagePageDiv(event);
+        // Add some mock titles
+        player.achievements.add(buildBuff(BUFF.TITLE, "称号1,称号1描述"));
+        player.achievements.add(buildBuff(BUFF.TITLE, "称号2,称号2描述"));
+        player.achievements.add(buildBuff(BUFF.TITLE, "称号3,称号3描述"));
+        player.achievements.add(buildBuff(BUFF.TITLE, "称号4,称号4描述"));
+        player.achievements.add(buildBuff(BUFF.TITLE, "称号5,称号5描述"));
+        player.achievements.add(buildBuff(BUFF.TITLE, "称号6,称号6描述"));
+        return createResultPageDiv();
     } else if (event.eventType === EventType.TITLE) {
         console.log("Creating title event");
         return createStagePageDiv(event);
@@ -1848,7 +1843,7 @@ function createEventPageAndTurn(eventPage) {
 
 function addDeadPage(event) {
     const achievementsStrList = [];
-    Array.from(player.achievements).filter(ach => ach.startsWith(BUFF.TITLE)).forEach(
+    player.getAllTitles().forEach(
         ach => {
             achievementsStrList.push(ach.substring(ach.lastIndexOf(':') + 1));
         }
@@ -1877,9 +1872,9 @@ function createResultPageDiv() {
     div.className = `page-num-${currentMaxPage}`;
 
     const achievementsStrList = [];
-    Array.from(player.achievements).filter(ach => ach.startsWith(BUFF.TITLE)).forEach(
+    player.getAllTitles().forEach(
         ach => {
-            achievementsStrList.push(ach.substring(ach.lastIndexOf(':') + 1));
+            achievementsStrList.push(ach.substring(ach.lastIndexOf(':') + 1).split(',')[0]);
         }
     );
 
@@ -1979,7 +1974,7 @@ function showMessage(title, explanation) {
 }
 
 
-function animateElems(numAchievements) {
+function animateElems() {
     // define element variables
 
     const sequence = [
@@ -1987,14 +1982,29 @@ function animateElems(numAchievements) {
         {e: $('#num-events'), p: {opacity: 0.8}, o: {duration: 600, easing: "swing", delay: 200}}
     ];
 
-    for (let i = 0; i < numAchievements; i++) {
-        sequence.push({e: $(`#achievement${i}`), p: {opacity: 0.8}, o: {duration: 600, delay: 200, easing: "swing"}});
-    }
+    let i = 0;
+    player.getAllTitles().forEach(
+        (title) => {
+            console.warn(title);
+            const titleStrs = title.substring(BUFF.TITLE + 1).split(":")[1].split(",");
+            sequence.push({e: $(`#achievement${i}`), p: {opacity: 0.8}, o: {duration: 600, delay: 200, easing: "swing"}});
+            tippy(`#achievement${i}`, {
+                content: titleStrs[1],
+                delay: 100,
+                arrow: true,
+                arrowType: 'round',
+                size: 'large',
+                duration: 500,
+                animation: 'scale'
+            });
+            i++;
+        });
 
     sequence.push({e: $('#goodness'), p: {opacity: 0.8}, o: {duration: 600, easing: "swing", delay: 200}})
 
     // run animation sequence
     $.Velocity.RunSequence(sequence);
+
 }
 
 (function ($) {
@@ -5346,7 +5356,7 @@ $(window).ready(function () {
 
     $(".button").click(function () {
         console.error("Clicked...");
-        animateElems(player.achievements.size);
+        animateElems();
     });
 
     initModels().then(function () {
@@ -5362,10 +5372,6 @@ $(window).ready(function () {
             width = 600;
             height = 431;
         }
-
-        // $('.button1').click(function () {
-        //     updateScene(currentEvent);
-        // });
 
         $('.pages').turn({
             duration: 500,
