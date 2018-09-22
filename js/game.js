@@ -610,7 +610,7 @@ function createEvents() {
     //         [null, null]
     //     )
     // ));
-
+    //
     allEvents.push(createAdvancedEvent(
         new EventV2("80-1", "雷沃汀", CHARA_IMGS["雷沃汀"], "雷沃汀熊熊的火焰不断吞噬着你。", null, null, null, EventType.NORMAL, "。。。", "。。。？"),
         new StartCondition(1, "80-1", null),
