@@ -222,8 +222,8 @@ function createEvents() {
             null,
             [[30, 30, 10, 10, 10, 0], null],
             [[0, 0, 0, 0, 0, -50], [0, 0, 0, 0, 0, -50]],
-            [[buildBuff(BUFF.title, "正义使者")], [buildBuff(BUFF.DEATH)]],
-            [[buildBuff(BUFF.title, "冷眼旁观")], null]
+            [[buildBuff(BUFF.title, "正义使者,你帮助了弱者，匡扶正义。")], [buildBuff(BUFF.DEATH)]],
+            [[buildBuff(BUFF.title, "冷眼旁观,人世间的冷漠大都如此。")], null]
         )
     ));
 
@@ -561,39 +561,106 @@ function createEvents() {
     // //TODO: 属性不够拔不出来 212 这里比较
     // allEvents.push(createStatsChangeEvent(212, "石中剑", CHARA_IMGS["石中剑"], "石中剑似乎纹丝不动。", "。。。", "。。。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10]));
 
-    allEvents.push(createStatsChangeEvent("78", "石中剑", CHARA_IMGS["石中剑"], "石头上插着一把荆棘缠绕的圣剑。", "拔出圣剑，我自为王。", "王者的使命过于沉重", "1",
-        EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], null, [buildBuff(BUFF.NEXT, "78")], null));
+    allEvents.push(createAdvancedEvent(
+        new EventV2(78, "石中剑", CHARA_IMGS["石中剑"], "石头上插着一把荆棘缠绕的圣剑。", null, null, null, EventType.NORMAL, "拔出圣剑，我自为王。", "王者的使命过于沉重。"),
+        new StartCondition(1, null, null),
+        new AdvancedEventAttrs(
+            () => (player.agility + player.power +player.intelligence) >= 200,
+            null,
+            [[20, 20, 20, 20, 20, 20], [-10,0,0,0,0,0]],
+            [null,null],
+            [[buildBuff(BUFF.TITLE, "命中王者,拔出者为王")], [buildBuff(BUFF.MESSAGE, "石中剑纹丝不动")]],
+            [null, null]
+        )
+    ));
+
+    allEvents.push(createAdvancedEvent(
+        new EventV2(79, "朗格努斯", CHARA_IMGS["朗格努斯"], "枪身血红，似乎滴血一般。", null, null, null, EventType.NORMAL, "让我来用着魔枪结束乱世。", "王者的使命过于沉重。"),
+        new StartCondition(1, null, null),
+        new AdvancedEventAttrs(
+            () => (player.agility + player.power +player.intelligence) >= 0,
+            null,
+            [[0, 0, 0, 0, 0, 0], null],
+            [null,null],
+            [[buildBuff(BUFF.NEXT, "79-1")],  null],
+            [null, null]
+        )
+    ));
+
+    allEvents.push(createAdvancedEvent(
+        new EventV2("79-1", "朗格努斯", CHARA_IMGS["朗格努斯"], "朗格努斯仿佛活过来一般，不断吞噬着你的精力。", null, null, null, EventType.NORMAL, "。。。", "。。。"),
+        new StartCondition(1, "79-1", null),
+        new AdvancedEventAttrs(
+            () => (player.agility + player.power +player.intelligence) >= 200,
+            () => (player.agility + player.power +player.intelligence) >= 200,
+            [[20, 20, 20, 20, 20, 20], null],
+            [[20, 20, 20, 20, 20, 20], null],
+            [[buildBuff(BUFF.MESSAGE, "你凭借强大的精神力抵御住了朗格努斯的吞噬。"),buildBuff(BUFF.title, "魔枪之主")], [buildBuff(BUFF.DEATH, "902")]],
+            [[buildBuff(BUFF.MESSAGE, "你凭借强大的精神力抵御住了朗格努斯的吞噬。"),buildBuff(BUFF.title, "魔枪之主")], [buildBuff(BUFF.DEATH, "902")]]
+        )
+    ));
+
+
+
+    allEvents.push(createAdvancedEvent(
+        new EventV2("80", "雷沃汀", CHARA_IMGS["雷沃汀"], "永远燃烧的火焰之剑。", null, null, null, EventType.NORMAL, "我能承受火焰之魂。", "冒火的剑怎么可能能拿得起来？"),
+        new StartCondition(1, null, null),
+        new AdvancedEventAttrs(
+            () => (player.agility + player.power +player.intelligence) >= 0,
+            null,
+            [[0, 0, 0, 0, 0, 0], [-20, -20, -20, -20, -20, -20]],
+            [null,null],
+            [[buildBuff(BUFF.NEXT, "80-1。"),[buildBuff(BUFF.MESSAGE, "雷沃汀的熊熊火焰灼伤了你！")]],
+            [null, null]
+        )
+    ));
+
+    allEvents.push(createAdvancedEvent(
+        new EventV2("80-1", "雷沃汀", CHARA_IMGS["雷沃汀"], "雷沃汀熊熊的火焰不断吞噬着你。", null, null, null, EventType.NORMAL, "。。。", "。。。？"),
+        new StartCondition(1, "80-1", null),
+        new AdvancedEventAttrs(
+            () => (player.agility + player.power +player.intelligence) >= 200,
+            () => (player.agility + player.power +player.intelligence) >= 200,
+            [[20, 20, 20, 20, 20, 20], [-20, -20, -20, -20, -20, -20]],
+            [null,null],
+            [[buildBuff(BUFF.MESSAGE, "你凭借强大的实力抵御了火焰的吞噬"),buildBuff(BUFF.title, "火焰魔剑，永远燃烧的火焰之剑。")],  [buildBuff(BUFF.MESSAGE, "雷沃汀的熊熊火焰灼伤了你！")]],
+            [[buildBuff(BUFF.MESSAGE, "你凭借强大的实力抵御了火焰的吞噬"),buildBuff(BUFF.title, "火焰魔剑，永远燃烧的火焰之剑。")],  [buildBuff(BUFF.MESSAGE, "雷沃汀的熊熊火焰灼伤了你！")]]
+        )
+    ));
+
+    // allEvents.push(createStatsChangeEvent("78", "石中剑", CHARA_IMGS["石中剑"], "石头上插着一把荆棘缠绕的圣剑。", "拔出圣剑，我自为王。", "王者的使命过于沉重", "1",
+    //     EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], null, [buildBuff(BUFF.NEXT, "78-1")], null));
 
     //TODO: 属性不够，可以减属性
-    allEvents.push(createStatsChangeEvent("78-1", "石中剑", CHARA_IMGS["石中剑"], "石中剑似乎纹丝不动。", "。。。", "。。。", "1", EventType.NORMAL,
-        [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "78"), [buildBuff(BUFF.MESSAGE, "你尝试了许久放弃了！")],[buildBuff(BUFF.MESSAGE, "你尝试了许久放弃了！")]));
-    allEvents.push(createStatsChangeEvent("78-2", "石中剑", CHARA_IMGS["石中剑"], "你凭借强大的精神力抵御住了朗格努斯的吞噬。", "。。。", "。。。", "1", EventType.NORMAL,
-        [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "78"), [buildBuff(BUFF.title, "石中剑")],[buildBuff(BUFF.title, "石中剑")]));
+    // allEvents.push(createStatsChangeEvent("78-1", "石中剑", CHARA_IMGS["石中剑"], "石中剑似乎纹丝不动。", "。。。", "。。。", "1", EventType.NORMAL,
+    //     [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "78"), [buildBuff(BUFF.MESSAGE, "你尝试了许久放弃了！")],[buildBuff(BUFF.MESSAGE, "你尝试了许久放弃了！")]));
+    // allEvents.push(createStatsChangeEvent("78-2", "石中剑", CHARA_IMGS["石中剑"], "你凭借强大的精神力抵御住了朗格努斯的吞噬。", "。。。", "。。。", "1", EventType.NORMAL,
+    //     [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "78"), [buildBuff(BUFF.title, "石中剑")],[buildBuff(BUFF.title, "石中剑")]));
 
 
     // allEvents.push(createStatsChangeEvent(79, "朗格努斯", CHARA_IMGS["朗格努斯"], "枪身血红，似乎滴血一般。", "让我来用着魔枪结束乱世。", "王者的使命过于沉重", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10]));
     // //TODO: 属性不够，死了 反噬 比较
     // allEvents.push(createStatsChangeEvent(213, "朗格努斯", CHARA_IMGS["朗格努斯"], "朗格努斯仿佛活过来一般，不断吞噬着你的精力。", "。。。", "。。。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10]));
     // allEvents.push(createStatsChangeEvent(213, "朗格努斯", CHARA_IMGS["朗格努斯"], "你凭借强大的精神力抵御住了朗格努斯的吞噬。", "。。。", "。。。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10]));
-
-    allEvents.push(createStatsChangeEvent("79", "朗格努斯", CHARA_IMGS["朗格努斯"], "枪身血红，似乎滴血一般。", "让我来用着魔枪结束乱世。", "王者的使命过于沉重。", "1",
-        EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], null, [buildBuff(BUFF.NEXT, "79")], null));
-
-    //TODO: 属性不够，可以减属性
-    allEvents.push(createStatsChangeEvent("79-1", "朗格努斯", CHARA_IMGS["朗格努斯"], "朗格努斯仿佛活过来一般，不断吞噬着你的精力。", "。。。", "。。。", "1", EventType.NORMAL,
-        [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "79"), [buildBuff(BUFF.MESSAGE, "朗格努斯疯狂的吞噬了你")],[buildBuff(BUFF.MESSAGE, "朗格努斯疯狂的吞噬了你！")]));
-    allEvents.push(createStatsChangeEvent("79-1", "朗格努斯", CHARA_IMGS["朗格努斯"], "你凭借强大的精神力抵御住了朗格努斯的吞噬。", "。。。", "。。。", "1", EventType.NORMAL,
-        [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "79"), [buildBuff(BUFF.title, "魔枪之主")],[buildBuff(BUFF.title, "魔枪之主")]));
+    //
+    // allEvents.push(createStatsChangeEvent("79", "朗格努斯", CHARA_IMGS["朗格努斯"], "枪身血红，似乎滴血一般。", "让我来用着魔枪结束乱世。", "王者的使命过于沉重。", "1",
+    //     EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], null, [buildBuff(BUFF.NEXT, "79")], null));
+    //
+    // //TODO: 属性不够，可以减属性
+    // allEvents.push(createStatsChangeEvent("79-1", "朗格努斯", CHARA_IMGS["朗格努斯"], "朗格努斯仿佛活过来一般，不断吞噬着你的精力。", "。。。", "。。。", "1", EventType.NORMAL,
+    //     [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "79"), [buildBuff(BUFF.MESSAGE, "朗格努斯疯狂的吞噬了你")],[buildBuff(BUFF.MESSAGE, "朗格努斯疯狂的吞噬了你！")]));
+    // allEvents.push(createStatsChangeEvent("79-1", "朗格努斯", CHARA_IMGS["朗格努斯"], "你凭借强大的精神力抵御住了朗格努斯的吞噬。", "。。。", "。。。", "1", EventType.NORMAL,
+    //     [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "79"), [buildBuff(BUFF.title, "魔枪之主")],[buildBuff(BUFF.title, "魔枪之主")]));
 
     // allEvents.push(createStatsChangeEvent(80, "雷沃汀", CHARA_IMGS["雷沃汀"], "永远燃烧的火焰之剑。", "我能承受火焰之魂。", "冒火的剑怎么可能能拿得起来？", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10]));
-    allEvents.push(createStatsChangeEvent("80", "雷沃汀", CHARA_IMGS["雷沃汀"], "永远燃烧的火焰之剑。", "我能承受火焰之魂。", "冒火的剑怎么可能能拿得起来？", "1",
-        EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], null, [buildBuff(BUFF.NEXT, "80")], null));
-
-    //TODO: 属性不够，可以减属性
-    allEvents.push(createStatsChangeEvent("80-1", "雷沃汀", CHARA_IMGS["雷沃汀"], "雷沃汀的熊熊火焰灼伤了你。", "。。。", "。。。", "1", EventType.NORMAL,
-        [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "80"), [buildBuff(BUFF.MESSAGE, "雷沃汀的熊熊火焰灼伤了你！")],[buildBuff(BUFF.MESSAGE, "雷沃汀的熊熊火焰灼伤了你！")]));
-    allEvents.push(createStatsChangeEvent("80-1", "雷沃汀", CHARA_IMGS["雷沃汀"], "你凭借强大的精神力抵御住了朗格努斯的吞噬。", "。。。", "。。。", "1", EventType.NORMAL,
-        [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "80"), [buildBuff(BUFF.MESSAGE, "你成功获得了火焰魔剑雷沃汀！")],[buildBuff(BUFF.MESSAGE, "你成功获得了火焰魔剑雷沃汀！")]));
+    // allEvents.push(createStatsChangeEvent("80", "雷沃汀", CHARA_IMGS["雷沃汀"], "永远燃烧的火焰之剑。", "我能承受火焰之魂。", "冒火的剑怎么可能能拿得起来？", "1",
+    //     EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], null, [buildBuff(BUFF.NEXT, "80")], null));
+    //
+    // //TODO: 属性不够，可以减属性
+    // allEvents.push(createStatsChangeEvent("80-1", "雷沃汀", CHARA_IMGS["雷沃汀"], "雷沃汀的熊熊火焰灼伤了你。", "。。。", "。。。", "1", EventType.NORMAL,
+    //     [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "80"), [buildBuff(BUFF.MESSAGE, "雷沃汀的熊熊火焰灼伤了你！")],[buildBuff(BUFF.MESSAGE, "雷沃汀的熊熊火焰灼伤了你！")]));
+    // allEvents.push(createStatsChangeEvent("80-1", "雷沃汀", CHARA_IMGS["雷沃汀"], "你凭借强大的精神力抵御住了朗格努斯的吞噬。", "。。。", "。。。", "1", EventType.NORMAL,
+    //     [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "80"), [buildBuff(BUFF.MESSAGE, "你成功获得了火焰魔剑雷沃汀！")],[buildBuff(BUFF.MESSAGE, "你成功获得了火焰魔剑雷沃汀！")]));
 
     // allEvents.push(createStatsChangeEvent(213, "雷沃汀", CHARA_IMGS["朗格努斯"], "雷沃汀的熊熊火焰灼伤了你。", "。。。", "。。。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10]));
     // allEvents.push(createStatsChangeEvent(213, "朗格努斯", CHARA_IMGS["朗格努斯"], "你凭借强大的精神力抵御住了朗格努斯的吞噬。", "。。。", "。。。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10]));
