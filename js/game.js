@@ -156,6 +156,7 @@ function createEvents() {
     loadfooter.push("Out of the same mouth come praise and cursing.");
     loadfooter.push("Avoid godless chatter.");
 
+    //TODO: boss战斗，优先级：1
     //精力，金钱，力量，敏捷，智力，善恶
 
     //宗教相关人物：修女，牧师，僧侣，巫妖，信仰
@@ -165,9 +166,7 @@ function createEvents() {
     //TODO: 可以一开始是？？？或者 修女 => “穿教服的女子”
     //TODO: 做任务做到一定数量就有title， 20， 30， 50， 80， 100， 200
     //TODO: 称号需要，hover， toast会有字 [DONE]
-    //TODO: 数值调整，不要1:1的感觉。
-    //TODO: 加结束逻辑, 每个死亡尽量不同
-    //TODO: 加任务关联逻辑 [DONE]
+    //TODO: 数值调整，不要1:1的感觉。[DONE?]
     const allEvents = [];
     allEvents.push(createStatsChangeEvent("1", "修女", CHARA_IMGS["修女"], "冒险家，你能帮我讨伐教会附近的史莱姆吗？", "义不容辞，我遇到一定不会放过他们。", "我还有要事在身。", "1",
         EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], null, [buildBuff(BUFF.NEXT, "1-1")], null));
@@ -177,16 +176,13 @@ function createEvents() {
         EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], null, [buildBuff(BUFF.NEXT, "37-1")], null));
 
     allEvents.push(createStatsChangeEvent(18, "僧侣", CHARA_IMGS["僧侣"], "我有一本武技的密卷，想要购买吗?", "如果不交出密卷，你只有死路一条。", "好的，我买下来了。", "1",
-        EventType.NORMAL, [-1, -1], [-10, 0, 20, 0, 0, -20], [0, -10, 20, 0, 0, 0], null, [buildBuff(BUFF.NEXT, "18-1"),buildBuff(BUFF.TITLE, "持强凌弱")], null));
+        EventType.NORMAL, [-1, -1], [-10, 0, 20, 0, 0, -20], [0, -10, 20, 0, 0, 0], null, [buildBuff(BUFF.NEXT, "18-1"), buildBuff(BUFF.TITLE, "持强凌弱|你在冒险的过程中欺负了弱小！")], null));
 
     allEvents.push(createStatsChangeEvent(65, "密探", CHARA_IMGS["密探"], "能帮我去偷份文件吗?", "如果有钱的话。", "这种事情我可不干。", "1",
         EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, -20], [0, 0, 0, 0, 0, 30], null, [buildBuff(BUFF.NEXT, "65-1")], null));
     allEvents.push(createStatsChangeEvent("19", "僧侣", CHARA_IMGS["僧侣"], "我正在被疯狂的教会追杀，你能保护我吗？", "保护他。", "听说告发他还有奖金。", "1",
         EventType.NORMAL, [-1, -1], [-10, 0, 20, 0, 0, -20], [0, -10, 20, 0, 0, 0], null, [buildBuff(BUFF.BUFF, "19-1")], null));
 
-
-    //TODO: title for this 其实这块应该都是打的 就是打不过得死 前置条件不应该是null 【DONE】
-    //TODO: 帮忙check一下下面我改的对不对
 
     allEvents.push(createAdvancedEvent(
         new EventV2("1-1", "史莱姆", CHARA_IMGS["史莱姆"], "呜噜呜噜?##!!", null, null, null, EventType.NORMAL, "邪恶的史莱姆，接招吧！", "没想到看上去还挺可爱，就放过它吧。"),
@@ -196,8 +192,8 @@ function createEvents() {
             null,
             [[10, 10, 1, 1, 1, 0], null],
             [[0, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, 10]],
-            [[buildBuff(BUFF.MESSAGE, "讨伐史莱姆,你消灭了邪恶的史莱姆！")], [buildBuff(BUFF.DEATH)]],
-            [[buildBuff(BUFF.MESSAGE, "你放过了弱小的史莱姆。")], null]
+            [[buildBuff(BUFF.MESSAGE, "讨伐史莱姆|你消灭了邪恶的史莱姆！")], [buildBuff(BUFF.DEATH, 'dead-1')]],
+            [[buildBuff(BUFF.MESSAGE, "放弃|你放过了弱小的史莱姆。")], null]
         )
     ));
 
@@ -205,12 +201,12 @@ function createEvents() {
         new EventV2("8-1", "僵尸", CHARA_IMGS["僵尸"], "呜噜呜噜?##!!", null, null, null, EventType.NORMAL, "邪恶的僵尸，接招吧！", "想想还是放过他吧。"),
         new StartCondition(1, "8-1", null),
         new AdvancedEventAttrs(
-            () =>player.agility>=20 && player.power >= 20,
-            () =>player.agility>=5 && player.power >= 10,
+            () => player.agility >= 20 && player.power >= 20,
+            () => player.agility >= 5 && player.power >= 10,
             [[20, 20, 5, 5, 5, 0], null],
             [[20, 20, 5, 5, 5, 0], [0, 0, 0, 0, 0, 10]],
-            [[buildBuff(BUFF.MESSAGE, "讨伐僵尸,你消灭了邪恶的僵尸！")], [buildBuff(BUFF.DEATH)]],
-            [[buildBuff(BUFF.MESSAGE, "你放弃攻击僵尸，但是它反身咬向你的脖子，你被匆忙迎敌。")], [buildBuff(BUFF.MESSAGE, "你放弃攻击僵尸，但是它反身咬向你的脖子。"),buildBuff(BUFF.DEATH)]]
+            [[buildBuff(BUFF.MESSAGE, "讨伐僵尸|你消灭了邪恶的僵尸！")], [buildBuff(BUFF.DEATH, 'dead-1')]],
+            [[buildBuff(BUFF.MESSAGE, "放弃|放弃攻击僵尸，但是它反身咬向你的脖子，你被匆忙迎敌。")], [buildBuff(BUFF.MESSAGE, "放弃|你放弃攻击僵尸，但是它反身咬向你的脖子。"), buildBuff(BUFF.DEATH, 'dead-1')]]
         )
     ));
 
@@ -218,12 +214,12 @@ function createEvents() {
         new EventV2("37-1", "敌人", CHARA_IMGS["士兵"], "来者何人!", null, null, null, EventType.NORMAL, "接招吧！", "看上去似乎很强还是逃走吧。"),
         new StartCondition(1, "37-1", null),
         new AdvancedEventAttrs(
-            () =>player.spirit>=30 && player.power >= 30,
+            () => player.spirit >= 30 && player.power >= 30,
             null,
             [[30, 30, 10, 10, 10, 0], null],
             [[0, 0, 0, 0, 0, -50], [0, 0, 0, 0, 0, -50]],
-            [[buildBuff(BUFF.title, "正义使者,你帮助了弱者，匡扶正义。")], [buildBuff(BUFF.DEATH)]],
-            [[buildBuff(BUFF.title, "冷眼旁观,人世间的冷漠大都如此。")], null]
+            [[buildBuff(BUFF.TITLE, "正义使者|你帮助了弱者，匡扶正义。")], [buildBuff(BUFF.DEATH, 'dead-1')]],
+            [[buildBuff(BUFF.TITLE, "冷眼旁观|人世间的冷漠大都如此。")], null]
         )
     ));
 
@@ -231,12 +227,12 @@ function createEvents() {
         new EventV2("18-1", "僧侣", CHARA_IMGS["僧侣"], "。。。", null, null, null, EventType.NORMAL, "受死吧。", "受死吧。"),
         new StartCondition(1, "18-1", null),
         new AdvancedEventAttrs(
-            () =>player.spirit>=30 && player.power >= 50,
+            () => player.spirit >= 30 && player.power >= 50,
             null,
             [[-15, 0, 20, 0, 0, -50], null],
             [[-15, 0, 20, 0, 0, -50], null],
-            [[buildBuff(BUFF.MESSAGE, "你杀死了僧侣")], [buildBuff(BUFF.DEATH)]],
-            [[buildBuff(BUFF.MESSAGE, "你杀死了僧侣")], [buildBuff(BUFF.DEATH)]]
+            [[buildBuff(BUFF.MESSAGE, "杀人了|你杀死了僧侣")], [buildBuff(BUFF.DEATH, 'dead-1')]],
+            [[buildBuff(BUFF.MESSAGE, "杀人了|你杀死了僧侣")], [buildBuff(BUFF.DEATH, 'dead-1')]]
         )
     ));
 
@@ -244,12 +240,12 @@ function createEvents() {
         new EventV2("19-1", "巫妖", CHARA_IMGS["巫妖"], "有没有见过一个僧侣?", null, null, null, EventType.NORMAL, "出卖僧侣。", "(冷静)我并没有见过。"),
         new StartCondition(1, "19-1", null),
         new AdvancedEventAttrs(
-            () =>player.spirit>=0 && player.power >= 0,
-            () =>player.intelligence>=50,
+            () => player.spirit >= 0 && player.power >= 0,
+            () => player.intelligence >= 50,
             [[0, 50, 0, 0, 0, -50], null],
             [null, null],
-            [[buildBuff(BUFF.title, "告密者")], [buildBuff(BUFF.DEATH)]],
-            [[buildBuff(BUFF.MESSAGE, "巫妖似乎很心急，没有注意到你的谎言")], [buildBuff(BUFF.MESSAGE, "巫妖：不要试图去欺骗一个智慧的巫妖。说罢巫妖朝你身上下了一个凶狠的诅咒。"),buildBuff(BUFF.BUFF, "诅咒")]]
+            [[buildBuff(BUFF.TITLE, "告密者")], [buildBuff(BUFF.DEATH, 'dead-1')]],
+            [[buildBuff(BUFF.MESSAGE, "着急的巫妖|巫妖似乎很心急，没有注意到你的谎言")], [buildBuff(BUFF.MESSAGE, "巫妖的话|不要试图去欺骗一个智慧的巫妖。说罢巫妖朝你身上下了一个凶狠的诅咒。"), buildBuff(BUFF.BUFF, "诅咒")]]
         )
     ));
 
@@ -258,12 +254,12 @@ function createEvents() {
         new EventV2("65-1", "法师", CHARA_IMGS["法师"], "(打盹中)", null, null, null, EventType.NORMAL, "趁机偷文件。", "想想还是不要吧。"),
         new StartCondition(1, "65-1", null),
         new AdvancedEventAttrs(
-            () =>player.agility >= 20,
-            () =>player.intelligence>=0,
+            () => player.agility >= 20,
+            () => player.intelligence >= 0,
             [[0, 50, 0, 0, 0, -20], null],
             [null, null],
-            [[buildBuff(BUFF.title, "窃密者")], [buildBuff(BUFF.NEXT, "65-2")]],
-            [[buildBuff(BUFF.MESSAGE, "你放弃了偷窃，恍惚中你仿佛看到了法师嘴角的一丝笑意")]]
+            [[buildBuff(BUFF.TITLE, "窃密者")], [buildBuff(BUFF.NEXT, "65-2")]],
+            [[buildBuff(BUFF.MESSAGE, "还是不敢|你放弃了偷窃，恍惚中你仿佛看到了法师嘴角的一丝笑意")]]
         )
     ));
 
@@ -271,12 +267,14 @@ function createEvents() {
         new EventV2("65-1", "法师", CHARA_IMGS["法师"], "法师挥舞起了法杖，在准备施法。", null, null, null, EventType.NORMAL, "赶紧打断他！", "构建个镜面魔法。"),
         new StartCondition(1, "65-2", null),
         new AdvancedEventAttrs(
-            () =>player.agility >= 50,
-            () =>player.intelligence >= 50,
+            () => player.agility >= 50,
+            () => player.intelligence >= 50,
             [[30, 30, 0, 0, 20, -20], null],
-            [[30, 30, 0, 0, 20, -20], [buildBuff(BUFF.DEATH)]],
-            [[buildBuff(BUFF.MESSAGE, "你身手敏捷，飞快的扔出一把匕首，直接命中了法师了咽喉。"),buildBuff(BUFF.title, "法师杀手")], [buildBuff(BUFF.MESSAGE, "你身手过于迟钝，法师的魔法无情的轰击在你的身上，你仿佛碎片一般随风飘去。"),buildBuff(BUFF.DEATH)]],
-            [[buildBuff(BUFF.MESSAGE, "你深厚的魔力构建了一个镜面魔法，反射了法师的攻击，法师如同碎片一般随风散去。"),buildBuff(BUFF.title, "法师杀手")], [buildBuff(BUFF.MESSAGE, "你的发力根本无法构建镜面魔法，法师的魔法无情的轰击在你的身上，你仿佛碎片一般随风飘去。"),buildBuff(BUFF.DEATH)]],
+            [[30, 30, 0, 0, 20, -20], [buildBuff(BUFF.DEATH, 'dead-1')]],
+            [[buildBuff(BUFF.MESSAGE, "攻击成功|你身手敏捷，飞快的扔出一把匕首，直接命中了法师了咽喉。"), buildBuff(BUFF.TITLE, "法师杀手|击杀了某位强力的法师")],
+                [buildBuff(BUFF.MESSAGE, "攻击失败|你身手过于迟钝，法师的魔法无情的轰击在你的身上，你仿佛碎片一般随风飘去。"), buildBuff(BUFF.DEATH, 'dead-1')]],
+            [[buildBuff(BUFF.MESSAGE, "防御成功|你深厚的魔力构建了一个镜面魔法，反射了法师的攻击，法师如同碎片一般随风散去。"), buildBuff(BUFF.TITLE, "法师杀手|击杀了某位强力的法师")],
+                [buildBuff(BUFF.MESSAGE, "防御失败|你的发力根本无法构建镜面魔法，法师的魔法无情的轰击在你的身上，你仿佛碎片一般随风飘去。"), buildBuff(BUFF.DEATH, 'dead-1')]],
         )
     ));
 
@@ -284,12 +282,12 @@ function createEvents() {
         new EventV2("27", "商人", CHARA_IMGS["商人"], "(打盹中)", null, null, null, EventType.NORMAL, "摸摸他身上有啥。", "想想还是不要吧。"),
         new StartCondition(1, null, null),
         new AdvancedEventAttrs(
-            () =>player.agility >= 20,
-            () =>player.intelligence>=0,
+            () => player.agility >= 20,
+            () => player.intelligence >= 0,
             [[0, 50, 0, 0, 0, -20], null],
             [null, null],
-            [[buildBuff(BUFF.title, "偷窃者")], [buildBuff(BUFF.NEXT, "27-1")]],
-            [[buildBuff(BUFF.MESSAGE, "你放弃了偷窃")]]
+            [[buildBuff(BUFF.TITLE, "偷窃者|你在冒险过程中偷了别人的东西")], [buildBuff(BUFF.NEXT, "27-1")]],
+            [[buildBuff(BUFF.MESSAGE, "不行。。|你放弃了偷窃")]]
         )
     ));
 
@@ -297,12 +295,12 @@ function createEvents() {
         new EventV2("27-1", "商人", CHARA_IMGS["商人"], "你个小毛贼竟然敢偷我的钱！", null, null, null, EventType.NORMAL, "揍他一顿！", "乖乖送还。"),
         new StartCondition(1, "65-2", null),
         new AdvancedEventAttrs(
-            () =>player.power >= 30,
-            () =>player.intelligence >= 0,
+            () => player.power >= 30,
+            () => player.intelligence >= 0,
             [[-10, 50, 0, 0, 0, -50], [-20, -50, 0, 0, 0, -50]],
             [[10, -50, 0, 0, 0, 10]],
-            [[buildBuff(BUFF.MESSAGE, "你轻易的暴打了商人一顿，并且又搜出了一堆金币。"),buildBuff(BUFF.title, "欺负弱小")], [buildBuff(BUFF.MESSAGE, "没想到商人的力量出奇的大，你被商人暴打了一顿。")]],
-            [[buildBuff(BUFF.MESSAGE, "你乖乖把钱还给了商人。")],null],
+            [[buildBuff(BUFF.MESSAGE, "抢夺成功|你轻易的暴打了商人一顿，并且又搜出了一堆金币。"), buildBuff(BUFF.TITLE, "欺负弱小")], [buildBuff(BUFF.MESSAGE, "抢夺失败|没想到商人的力量出奇的大，你被商人暴打了一顿。")]],
+            [[buildBuff(BUFF.MESSAGE, "还是算了|你乖乖把钱还给了商人。")], null],
         )
     ));
 
@@ -316,7 +314,7 @@ function createEvents() {
     // allEvents.push(createStatsChangeEvent("18-1", "僧侣", CHARA_IMGS["僧侣"], "。。。", "受死吧。", "受死吧。", "1", EventType.NORMAL,
     //     [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "18-1"), [buildBuff(BUFF.MESSAGE, "你杀死了僧侣")],null));
     // allEvents.push(createStatsChangeEvent("19-1", "巫妖", CHARA_IMGS["巫妖"], "有没有见过一个僧侣", "出卖僧侣。", "我并没有见过。", "1", EventType.NORMAL,
-    //     [-1, -1], [-10, 0, 0, 0, 0, -50], [-10, 10, 10, 10, 10, 20], buildBuff(BUFF.BUFF, "19-1"),null,[buildBuff(BUFF.title, "守口如瓶")]));
+    //     [-1, -1], [-10, 0, 0, 0, 0, -50], [-10, 10, 10, 10, 10, 20], buildBuff(BUFF.BUFF, "19-1"),null,[buildBuff(BUFF.TITLE, "守口如瓶")]));
     // allEvents.push(createStatsChangeEvent("65-1", "法师", CHARA_IMGS["法师"], "(打盹中)", "趁机头文件。", "想想还是不要吧。", "1", EventType.NORMAL,
     //     [-1, -1], [-10, 20, 0, 0, 0, -50], [10, 0, 0, 0, 0, 0], buildBuff(BUFF.BUFF, "65-1"),null,null));
 
@@ -412,8 +410,8 @@ function createEvents() {
     //TODO: 商人有几率卖过关的东西（这里有什么？）
     allEvents.push(createStatsChangeEvent("44", "商人", CHARA_IMGS["商人"], "我这里有两个上古的圣物，你选一个吧。", "腐朽的巨剑。", "泛黄的魔法书。", "1", EventType.NORMAL,
         [-1, -1], [0, 0, 10, 0, 0, 0], [0, 0, 0, 0, 10, 0], null,
-        [buildBuff(BUFF.BUFF, "腐朽的巨剑"), buildBuff(BUFF.MESSAGE, "获得物品,腐朽的巨剑"), buildBuff(BUFF.COMPLETE, "44")],
-        [buildBuff(BUFF.BUFF, "泛黄的魔法书"), buildBuff(BUFF.MESSAGE, "获得物品,泛黄的魔法书"), buildBuff(BUFF.COMPLETE, "44")]));
+        [buildBuff(BUFF.BUFF, "腐朽的巨剑"), buildBuff(BUFF.MESSAGE, "获得物品|腐朽的巨剑"), buildBuff(BUFF.COMPLETE, "44")],
+        [buildBuff(BUFF.BUFF, "泛黄的魔法书"), buildBuff(BUFF.MESSAGE, "获得物品|泛黄的魔法书"), buildBuff(BUFF.COMPLETE, "44")]));
 
     allEvents.push(createStatsChangeEvent(28, "巫妖", CHARA_IMGS["巫妖"], "亡灵国度是容不得活人的。", "人类世界就容得下活人吗？", "这不过是亡灵虚假的谎言。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10]));
     //TODO: pending
@@ -437,7 +435,7 @@ function createEvents() {
             null,
             [[10, 10, 10, 10, 10, 0], null],
             [[0, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, 10]],
-            [[buildBuff(BUFF.TITLE, "江湖侠盗,成功通过了盗贼试炼")], [buildBuff(BUFF.DEATH, "600")]],
+            [[buildBuff(BUFF.TITLE, "江湖侠盗|成功通过了盗贼试炼")], [buildBuff(BUFF.DEATH, "600")]],
             [null, null]
         )
     ));
@@ -453,7 +451,7 @@ function createEvents() {
             null,
             [[10, 10, 0, 0, 30, 0], null],
             [[0, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, 10]],
-            [[buildBuff(BUFF.TITLE, "法海无边,你通过了法师塔的试炼")], [buildBuff(BUFF.DEATH)]],
+            [[buildBuff(BUFF.TITLE, "法海无边|你通过了法师塔的试炼")], [buildBuff(BUFF.DEATH, 'dead-1')]],
             [null, null]
         )
     ));
@@ -488,17 +486,17 @@ function createEvents() {
     //TODO: 和过关有关
     allEvents.push(createStatsChangeEvent("50", "酒馆老板", CHARA_IMGS["酒馆老板"], "上次旅行的法师落下了个法杖，你需要吗？", "看起来很不错，买了！。", "刚好手边有点紧。", "1", EventType.NORMAL,
         [-1, -1], [0, -10, 0, 0, 10, 0], [5, 0, 0, 0, 0, 0], null,
-        [buildBuff(BUFF.BUFF, "法师的长杖"), buildBuff(BUFF.MESSAGE, "获得物品,法师的长杖"), buildBuff(BUFF.COMPLETE, "50")],
+        [buildBuff(BUFF.BUFF, "法师的长杖"), buildBuff(BUFF.MESSAGE, "获得物品|法师的长杖"), buildBuff(BUFF.COMPLETE, "50")],
         null));
     //TODO: 和过关有关
     allEvents.push(createStatsChangeEvent("51", "酒馆老板", CHARA_IMGS["酒馆老板"], "上次旅行的战士落下了个巨剑，你需要吗？", "看起来很不错，买了！。", "刚好手边有点紧。", "1", EventType.NORMAL,
         [-1, -1], [0, -10, 0, 0, 10, 0], [5, 0, 0, 0, 0, 0], null,
-        [buildBuff(BUFF.BUFF, "战士的巨剑"), buildBuff(BUFF.MESSAGE, "获得物品,战士的巨剑"), buildBuff(BUFF.COMPLETE, "51")],
+        [buildBuff(BUFF.BUFF, "战士的巨剑"), buildBuff(BUFF.MESSAGE, "获得物品|战士的巨剑"), buildBuff(BUFF.COMPLETE, "51")],
         null));
     //TODO: 和过关有关
     allEvents.push(createStatsChangeEvent("52", "酒馆老板", CHARA_IMGS["酒馆老板"], "上次旅行的盗贼落下了个匕首，你需要吗？", "看起来很不错，买了！。", "刚好手边有点紧。", "1", EventType.NORMAL,
         [-1, -1], [0, -10, 0, 0, 10, 0], [5, 0, 0, 0, 0, 0], null,
-        [buildBuff(BUFF.BUFF, "盗贼的匕首"), buildBuff(BUFF.MESSAGE, "获得物品,盗贼的匕首"), buildBuff(BUFF.COMPLETE, "52")],
+        [buildBuff(BUFF.BUFF, "盗贼的匕首"), buildBuff(BUFF.MESSAGE, "获得物品|盗贼的匕首"), buildBuff(BUFF.COMPLETE, "52")],
         null));
 
     // allEvents.push(createStatsChangeEvent(50, "酒馆老板", CHARA_IMGS["酒馆老板"], "上次旅行的法师落下了个法杖，你需要吗？", "看起来很不错，买了！", "刚好手边有点紧。", "1", EventType.NORMAL, [-1, -1], [0, -10, 0, 0, 10, 0], [5, 0, 0, 0, 0, 0]));
@@ -565,11 +563,11 @@ function createEvents() {
         new EventV2(78, "石中剑", CHARA_IMGS["石中剑"], "石头上插着一把荆棘缠绕的圣剑。", null, null, null, EventType.NORMAL, "拔出圣剑，我自为王。", "王者的使命过于沉重。"),
         new StartCondition(1, null, null),
         new AdvancedEventAttrs(
-            () => (player.agility + player.power +player.intelligence) >= 200,
+            () => (player.agility + player.power + player.intelligence) >= 200,
             null,
-            [[20, 20, 20, 20, 20, 20], [-10,0,0,0,0,0]],
-            [null,null],
-            [[buildBuff(BUFF.TITLE, "命中王者,拔出者为王")], [buildBuff(BUFF.MESSAGE, "石中剑纹丝不动")]],
+            [[20, 20, 20, 20, 20, 20], [-10, 0, 0, 0, 0, 0]],
+            [null, null],
+            [[buildBuff(BUFF.TITLE, "命中王者|拔出者为王")], [buildBuff(BUFF.MESSAGE, "没有效果|石中剑纹丝不动")]],
             [null, null]
         )
     ));
@@ -578,11 +576,11 @@ function createEvents() {
         new EventV2(79, "朗格努斯", CHARA_IMGS["朗格努斯"], "枪身血红，似乎滴血一般。", null, null, null, EventType.NORMAL, "让我来用着魔枪结束乱世。", "王者的使命过于沉重。"),
         new StartCondition(1, null, null),
         new AdvancedEventAttrs(
-            () => (player.agility + player.power +player.intelligence) >= 0,
+            () => (player.agility + player.power + player.intelligence) >= 0,
             null,
             [[0, 0, 0, 0, 0, 0], null],
-            [null,null],
-            [[buildBuff(BUFF.NEXT, "79-1")],  null],
+            [null, null],
+            [[buildBuff(BUFF.NEXT, "79-1")], null],
             [null, null]
         )
     ));
@@ -591,12 +589,12 @@ function createEvents() {
         new EventV2("79-1", "朗格努斯", CHARA_IMGS["朗格努斯"], "朗格努斯仿佛活过来一般，不断吞噬着你的精力。", null, null, null, EventType.NORMAL, "。。。", "。。。"),
         new StartCondition(1, "79-1", null),
         new AdvancedEventAttrs(
-            () => (player.agility + player.power +player.intelligence) >= 200,
-            () => (player.agility + player.power +player.intelligence) >= 200,
+            () => (player.agility + player.power + player.intelligence) >= 200,
+            () => (player.agility + player.power + player.intelligence) >= 200,
             [[20, 20, 20, 20, 20, 20], null],
             [[20, 20, 20, 20, 20, 20], null],
-            [[buildBuff(BUFF.MESSAGE, "你凭借强大的精神力抵御住了朗格努斯的吞噬。"),buildBuff(BUFF.title, "魔枪之主")], [buildBuff(BUFF.DEATH, "902")]],
-            [[buildBuff(BUFF.MESSAGE, "你凭借强大的精神力抵御住了朗格努斯的吞噬。"),buildBuff(BUFF.title, "魔枪之主")], [buildBuff(BUFF.DEATH, "902")]]
+            [[buildBuff(BUFF.MESSAGE, "坚强的意志|你凭借强大的精神力抵御住了朗格努斯的吞噬。"), buildBuff(BUFF.TITLE, "魔枪之主|你成为了魔枪的主人")], [buildBuff(BUFF.DEATH, "902")]],
+            [[buildBuff(BUFF.MESSAGE, "坚强的意志|你凭借强大的精神力抵御住了朗格努斯的吞噬。"), buildBuff(BUFF.TITLE, "魔枪之主|你成为了魔枪的主人")], [buildBuff(BUFF.DEATH, "902")]]
         )
     ));
 
@@ -617,12 +615,12 @@ function createEvents() {
         new EventV2("80-1", "雷沃汀", CHARA_IMGS["雷沃汀"], "雷沃汀熊熊的火焰不断吞噬着你。", null, null, null, EventType.NORMAL, "。。。", "。。。？"),
         new StartCondition(1, "80-1", null),
         new AdvancedEventAttrs(
-            () => (player.agility + player.power +player.intelligence) >= 200,
-            () => (player.agility + player.power +player.intelligence) >= 200,
+            () => (player.agility + player.power + player.intelligence) >= 200,
+            () => (player.agility + player.power + player.intelligence) >= 200,
             [[20, 20, 20, 20, 20, 20], [-20, -20, -20, -20, -20, -20]],
-            [null,null],
-            [[buildBuff(BUFF.MESSAGE, "你凭借强大的实力抵御了火焰的吞噬"),buildBuff(BUFF.title, "火焰魔剑，永远燃烧的火焰之剑。")],  [buildBuff(BUFF.MESSAGE, "雷沃汀的熊熊火焰灼伤了你！")]],
-            [[buildBuff(BUFF.MESSAGE, "你凭借强大的实力抵御了火焰的吞噬"),buildBuff(BUFF.title, "火焰魔剑，永远燃烧的火焰之剑。")],  [buildBuff(BUFF.MESSAGE, "雷沃汀的熊熊火焰灼伤了你！")]]
+            [null, null],
+            [[buildBuff(BUFF.MESSAGE, "强大的力量|你凭借强大的实力抵御了火焰的吞噬"), buildBuff(BUFF.TITLE, "火焰魔剑|你在冒险中得到了永远燃烧的火焰之剑。")], [buildBuff(BUFF.MESSAGE, "不够强大|雷沃汀的熊熊火焰灼伤了你！")]],
+            [[buildBuff(BUFF.MESSAGE, "强大的力量|你凭借强大的实力抵御了火焰的吞噬"), buildBuff(BUFF.TITLE, "火焰魔剑|你在冒险中得到了永远燃烧的火焰之剑。")], [buildBuff(BUFF.MESSAGE, "不够强大|雷沃汀的熊熊火焰灼伤了你！")]]
         )
     ));
 
@@ -633,7 +631,7 @@ function createEvents() {
     // allEvents.push(createStatsChangeEvent("78-1", "石中剑", CHARA_IMGS["石中剑"], "石中剑似乎纹丝不动。", "。。。", "。。。", "1", EventType.NORMAL,
     //     [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "78"), [buildBuff(BUFF.MESSAGE, "你尝试了许久放弃了！")],[buildBuff(BUFF.MESSAGE, "你尝试了许久放弃了！")]));
     // allEvents.push(createStatsChangeEvent("78-2", "石中剑", CHARA_IMGS["石中剑"], "你凭借强大的精神力抵御住了朗格努斯的吞噬。", "。。。", "。。。", "1", EventType.NORMAL,
-    //     [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "78"), [buildBuff(BUFF.title, "石中剑")],[buildBuff(BUFF.title, "石中剑")]));
+    //     [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "78"), [buildBuff(BUFF.TITLE, "石中剑")],[buildBuff(BUFF.TITLE, "石中剑")]));
 
 
     // allEvents.push(createStatsChangeEvent(79, "朗格努斯", CHARA_IMGS["朗格努斯"], "枪身血红，似乎滴血一般。", "让我来用着魔枪结束乱世。", "王者的使命过于沉重", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10]));
@@ -648,7 +646,7 @@ function createEvents() {
     // allEvents.push(createStatsChangeEvent("79-1", "朗格努斯", CHARA_IMGS["朗格努斯"], "朗格努斯仿佛活过来一般，不断吞噬着你的精力。", "。。。", "。。。", "1", EventType.NORMAL,
     //     [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "79"), [buildBuff(BUFF.MESSAGE, "朗格努斯疯狂的吞噬了你")],[buildBuff(BUFF.MESSAGE, "朗格努斯疯狂的吞噬了你！")]));
     // allEvents.push(createStatsChangeEvent("79-1", "朗格努斯", CHARA_IMGS["朗格努斯"], "你凭借强大的精神力抵御住了朗格努斯的吞噬。", "。。。", "。。。", "1", EventType.NORMAL,
-    //     [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "79"), [buildBuff(BUFF.title, "魔枪之主")],[buildBuff(BUFF.title, "魔枪之主")]));
+    //     [-1, -1], [-10, 20, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.BUFF, "79"), [buildBuff(BUFF.TITLE, "魔枪之主")],[buildBuff(BUFF.TITLE, "魔枪之主")]));
 
     // allEvents.push(createStatsChangeEvent(80, "雷沃汀", CHARA_IMGS["雷沃汀"], "永远燃烧的火焰之剑。", "我能承受火焰之魂。", "冒火的剑怎么可能能拿得起来？", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10]));
     // allEvents.push(createStatsChangeEvent("80", "雷沃汀", CHARA_IMGS["雷沃汀"], "永远燃烧的火焰之剑。", "我能承受火焰之魂。", "冒火的剑怎么可能能拿得起来？", "1",
@@ -662,7 +660,6 @@ function createEvents() {
 
     // allEvents.push(createStatsChangeEvent(213, "雷沃汀", CHARA_IMGS["朗格努斯"], "雷沃汀的熊熊火焰灼伤了你。", "。。。", "。。。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10]));
     // allEvents.push(createStatsChangeEvent(213, "朗格努斯", CHARA_IMGS["朗格努斯"], "你凭借强大的精神力抵御住了朗格努斯的吞噬。", "。。。", "。。。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10]));
-
 
 
     allEvents.push(createStatsChangeEvent(87, "闪闪的金币", CHARA_IMGS["钱币"], "地上有一枚闪闪发光金币。", "不关我的事。", "捡起来看看", "1", EventType.NORMAL, [-1, -1], [5, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0]));
@@ -703,33 +700,33 @@ function createEvents() {
             null,
             [[10, 10, 0, 0, 30, 0], null],
             [[0, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, 10]],
-            [[buildBuff(BUFF.MESSAGE, "王的手收到")], [buildBuff(BUFF.DEATH)]],
+            [[buildBuff(BUFF.MESSAGE, "入手|王之手")], [buildBuff(BUFF.DEATH, 'dead-1')]],
             [null, null]
         )
     ));
 
     allEvents.push(createAdvancedEvent(
         new EventV2("502-2", "502-2", CHARA_IMGS["善良的王"], "王迅速的挥动长剑，向你袭来。", null, null, null, EventType.NORMAL, "靠力量挡住这次攻击。", "赶紧闪避这次攻击。"),
-        new StartCondition(1, 502-1, null),
+        new StartCondition(1, 502 - 1, null),
         new AdvancedEventAttrs(
             () => player.intelligence >= 50 && player.spirit >= 50,
             null,
             [[10, 10, 0, 0, 30, 0], null],
             [[0, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, 10]],
-            [[buildBuff(BUFF.NEXT, "502-1")], [buildBuff(BUFF.DEATH)]],
+            [[buildBuff(BUFF.NEXT, "502-1")], [buildBuff(BUFF.DEATH, 'dead-1')]],
             [null, null]
         )
     ));
 
     allEvents.push(createAdvancedEvent(
         new EventV2("502-3", "502-3", CHARA_IMGS["善良的王"], "王用手抓向你的武器。", null, null, null, EventType.NORMAL, "迅速打断他的技能。", "用魔力优先构建魔法盾。"),
-        new StartCondition(1, 502-1, null),
+        new StartCondition(1, 502 - 1, null),
         new AdvancedEventAttrs(
             () => player.intelligence >= 50 && player.spirit >= 50,
             null,
             [[10, 10, 0, 0, 30, 0], null],
             [[0, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, 10]],
-            [[buildBuff(BUFF.NEXT, "502-1")], [buildBuff(BUFF.DEATH)]],
+            [[buildBuff(BUFF.NEXT, "502-1")], [buildBuff(BUFF.DEATH, 'dead-1')]],
             [null, null]
         )
     ));
@@ -950,7 +947,7 @@ const BUFF = Object.freeze({
     BUFF: "BUFF",
     NEXT: "NEXT", // NEXT EVENT
     DEATH: "DEATH",
-    TITLE: "DEATH",
+    TITLE: "TITLE",
     COMPLETE: "COM",
     MESSAGE: "MESSAGE"
 });
@@ -993,7 +990,8 @@ function createLevel1BossEvents(allEvents, level) {
     };
 
     //Do nothing
-    const rightCallback = () => {};
+    const rightCallback = () => {
+    };
     const winCheck = () => {
         return player.power >= boss.power;
     };
@@ -1007,7 +1005,7 @@ function createLevel1BossEvents(allEvents, level) {
     allEvents.push(createStatsChangeEvent(id + "-win", "", CHARA_IMGS["亚当"], "（微笑）你赢了，你的力量比我强大，不过后面更难的试炼在等待着你。。。", "好吧", "。。。", "1", EventType.SUBSEQUENT, null,
         [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, STAGE_IDS[level])], [buildBuff(BUFF.NEXT, STAGE_IDS[level])]));
     allEvents.push(createStatsChangeEvent(id + "-loss", "", CHARA_IMGS["亚当"], "就差一点，或许, 有武器就能赢了。。", "好吧", "", "1", EventType.SUBSEQUENT, null,
-        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.DEATH, '600'), buildBuff(BUFF.TITLE, "出师未捷身先死")], [buildBuff(BUFF.DEATH, '600'), buildBuff(BUFF.TITLE, "出师未捷身先死")]));
+        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第一关的试炼")], [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第一关的试炼")]));
 }
 
 function createLevel9BossEvents(allEvents) {
@@ -1031,7 +1029,8 @@ function createLevel9BossEvents(allEvents) {
     };
 
     //Do nothing
-    const rightCallback = () => {};
+    const rightCallback = () => {
+    };
     const winCheck = () => {
         return player.power >= boss.power;
     };
@@ -1045,7 +1044,7 @@ function createLevel9BossEvents(allEvents) {
     allEvents.push(createStatsChangeEvent(id + "-win", "", CHARA_IMGS["亚当"], "（微笑）你赢了，你的力量比我强大，不过后面更难的试炼在等待着你。。。", "好吧", "。。。", "1", EventType.SUBSEQUENT, null,
         [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, "end-1")], [buildBuff(BUFF.NEXT, "end-1")]));
     allEvents.push(createStatsChangeEvent(id + "-loss", "", CHARA_IMGS["亚当"], "就差一点，或许, 有武器就能赢了。。", "好吧", "", "1", EventType.SUBSEQUENT, null,
-        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.DEATH, 600), buildBuff(BUFF.TITLE, "出师未捷身先死")], [buildBuff(BUFF.DEATH, 600), buildBuff(BUFF.TITLE, "出师未捷身先死")]));
+        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.DEATH, 600), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第一关的试炼")], [buildBuff(BUFF.DEATH, 600), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第一关的试炼")]));
 }
 
 function createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallback, leftWin, leftLoss, rightWin, rightLoss) {
@@ -1518,8 +1517,8 @@ function getBossEvent(level) {
 function initModels() {
     return $.getJSON("ConsecutiveEvents.json").then(
         function (json) {
-            player = initPlayer('Knight III');
 
+            player = initPlayer('Knight III');
             reincarnation = 1;
             currentLevel = START_LEVEL;
 
@@ -1711,7 +1710,7 @@ function postProcessBuff() {
         } else if (buff.startsWith(BUFF.TITLE)) {
             console.log("BUFF.DEATH: " + buff);
             //TODO: all title should be in the format: [DEATH: EXPLANATION]
-            const titleStrs = buff.substring(BUFF.TITLE.length + 1).split(",");
+            const titleStrs = buff.substring(BUFF.TITLE.length + 1).split("|");
             player.achievements.add(buff);
             showTitle(titleStrs[0], titleStrs[1]);
             player.buffSet.delete(buff);
@@ -1721,7 +1720,7 @@ function postProcessBuff() {
             // showTitle(title);
             player.buffSet.delete(buff);
         } else if (buff.startsWith(BUFF.MESSAGE)) {
-            const titleStrs = buff.substring(BUFF.MESSAGE.length + 1).split(",");
+            const titleStrs = buff.substring(BUFF.MESSAGE.length + 1).split("|");
             showMessage(titleStrs[0], titleStrs[1]);
             player.buffSet.delete(buff);
         }
@@ -1761,12 +1760,14 @@ function updateScene() {
 
     if (nextEvent.eventType === EventType.STAGE) {
         currentLevel++;
+        console.error("currentLevel++ :" + currentLevel);
         eventsPlayedThisState.clear();
         //轮回logic
         //TODO: 增加一页
-        if (currentEvent.eventType === EventType.ENDING || EventType.RESULT) {
+        if (currentEvent.eventType === EventType.ENDING || currentEvent.eventType === EventType.RESULT) {
             currentLevel = START_LEVEL;
             reincarnation++;
+            player = initPlayer('Knight III');
         }
     }
 
@@ -1781,22 +1782,22 @@ function updateScene() {
 
 }
 
-function checkDead(nextEventId) {
+function checkDead() {
 
     isEnd = player.gold <= 0 || player.spirit <= 0;
     if (isEnd) {
         if (player.goodness > 80 && player.goodness < 100) {
-            return eventMap[801];
+            return eventMap["dead-3"];
         } else if (player.goodness > 99) {
-            return eventMap[803];
+            return eventMap["dead-4"];
         } else if (player.goodness < 20 && player.goodness > 0) {
-            return eventMap[802];
+            return eventMap["dead-5"];
         } else if (player.goodness < 1) {
-            return eventMap[804];
+            return eventMap["dead-3"];
         } else if (currentPage > 50) {
-            return eventMap[800];
+            return eventMap["dead-2"];
         } else {
-            return eventMap[600];
+            return eventMap["dead-1"];
         }
     }
 
@@ -1827,12 +1828,6 @@ function createPage(event) {
     } else if (event.eventType === EventType.RESULT) {
         console.log("Creating title event");
         //Mocks
-        player.achievements.add(buildBuff(BUFF.TITLE, "称号1,称号1描述"));
-        player.achievements.add(buildBuff(BUFF.TITLE, "称号2,称号2描述"));
-        player.achievements.add(buildBuff(BUFF.TITLE, "称号3,称号3描述"));
-        player.achievements.add(buildBuff(BUFF.TITLE, "称号4,称号4描述"));
-        player.achievements.add(buildBuff(BUFF.TITLE, "称号5,称号5描述"));
-        player.achievements.add(buildBuff(BUFF.TITLE, "称号6,称号6描述"));
         return createResultPageDiv();
     } else if (event.eventType === EventType.ENDING) {
         console.log("Creating ending event");
@@ -1970,7 +1965,7 @@ function createResultPageDiv() {
     const achievementsStrList = [];
     player.getAllTitles().forEach(
         ach => {
-            achievementsStrList.push(ach.substring(ach.lastIndexOf(':') + 1).split(',')[0]);
+            achievementsStrList.push(ach.substring(ach.lastIndexOf(':') + 1).split('|')[0]);
         }
     );
 
@@ -2058,7 +2053,7 @@ function addDummyPage(turn) {
 function showTitle(title, explanation) {
     iziToast.show({
         theme: 'light',
-        title: '获得称号<' + title + '>',
+        title: '获得称号 <' + title + '>',
         message: explanation,
         position: 'topCenter',
         color: 'green'
@@ -2088,8 +2083,12 @@ function animateElems() {
     player.getAllTitles().forEach(
         (title) => {
             console.warn(title);
-            const titleStrs = title.substring(BUFF.TITLE + 1).split(":")[1].split(",");
-            sequence.push({e: $(`#achievement${i}`), p: {opacity: 0.8}, o: {duration: 600, delay: 200, easing: "swing"}});
+            const titleStrs = title.substring(BUFF.TITLE + 1).split(":")[1].split("|");
+            sequence.push({
+                e: $(`#achievement${i}`),
+                p: {opacity: 0.8},
+                o: {duration: 600, delay: 200, easing: "swing"}
+            });
             tippy(`#achievement${i}`, {
                 content: titleStrs[1],
                 delay: 100,
