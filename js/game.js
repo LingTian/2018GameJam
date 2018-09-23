@@ -264,7 +264,7 @@ function createEvents() {
     ));
 
     allEvents.push(createAdvancedEvent(
-        new EventV2("65-1", "法师", CHARA_IMGS["法师"], "法师挥舞起了法杖，在准备施法。", null, null, null, EventType.NORMAL, "赶紧打断他！", "构建个镜面魔法。"),
+        new EventV2("65-1", "法师", CHARA_IMGS["法师"], "没想到的法师并没有深睡，他挥舞起了法杖，在准备施法。", null, null, null, EventType.NORMAL, "赶紧打断他！", "构建个镜面魔法。"),
         new StartCondition(1, "65-2", null),
         new AdvancedEventAttrs(
             () => player.agility >= 50,
