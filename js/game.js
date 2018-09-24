@@ -5583,8 +5583,9 @@ $(window).ready(function () {
         //     console.warn("Res of getCharacterNo:");
         //     console.warn(res);
         // });
-        //
-        // getCharaDetails((res) => {
+
+        // 1 is Adam0
+        // getCharaDetails(1, (res) => {
         //     console.warn("Res of getCharaDetails:");
         //     console.warn(res);
         // });
