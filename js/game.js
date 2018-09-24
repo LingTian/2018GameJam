@@ -5529,7 +5529,7 @@ async function getCharaDetails(charaId, callback){
     callback && callback(res);
 }
 
-async function insertCharacter(charaToInsert) {
+async function insertCharacter(charaToInsert, callback) {
     if (!window.contract) {
         console.error("Contract is not set!");
         return;
@@ -5578,6 +5578,17 @@ $(window).ready(function () {
     $(".button").click(function () {
         console.error("Clicked...");
         // animateElems();
+
+        // getCharacterNo((res) => {
+        //     console.warn("Res of getCharacterNo:");
+        //     console.warn(res);
+        // });
+        //
+        // getCharaDetails((res) => {
+        //     console.warn("Res of getCharaDetails:");
+        //     console.warn(res);
+        // });
+
         insertCharacter(new Player("TestPlayer"), (res) => {
             console.warn("Res of insert player:");
             console.warn(res);
