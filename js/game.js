@@ -383,10 +383,23 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent("4-2", "黑骑士", CHARA_IMGS["黑骑士"], "我早已忘记XXX了。", "嗯。。。", "嗯。。。", "1", EventType.SUBSEQUENT, [-1, -1], [-10, 0, 0, 0, 0, 20], [-10, 0, 0, 0, 0, -20]));
 
     allEvents.push(createStatsChangeEvent(5, "修女", CHARA_IMGS["修女"], "听闻东方有种神奇的草药，我这里有它标示的地图，现在免费赠送给您。", "修女的话似乎可信，值得尝试。", "此去不知归途，还是休息休息吧。", "2",
-        EventType.NORMAL, [-1, -1], [-20, 0, 0, 0, 0, 0], [10, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.BUFF, "5")], null));
+        EventType.NORMAL, [-1, -1], [-20, 0, 0, 0, 0, 0], [10, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.BUFF, "5-1")], null));
     //TODO: 加入草药任务 需要解锁 需要比较敏捷 图片TODO
     allEvents.push(createStatsChangeEvent("5-1", "修女", CHARA_IMGS["修女"], "你在孤零零的悬崖上看到一株特别的草药。", "这就是修女说的草药吗？", "感觉上去采摘有点危险。", "3", EventType.NORMAL,
         [-1, -1], [-10, 0, 0, 0, 0, 20], [-10, 0, 0, 0, 0, -20]));
+
+    allEvents.push(createAdvancedEvent(
+        new EventV2("5-1", "修女", CHARA_IMGS["修女"], "你在孤零零的悬崖上看到一株特别的草药。", null, null, null, EventType.NORMAL, "这就是修女说的草药吗？", "感觉上去采摘有点危险。"),
+        new StartCondition(1, "5-1", null),
+        new AdvancedEventAttrs(
+            () => player.agility >= 30 ,
+            () => player.agility >= 0 ,
+            [[-10, 10, 0, 0, 0, 20], buildBuff(BUFF.DEATH, 'dead-1')],
+            [[-10, 0, 0, 0, 0, 0], null],
+            [[buildBuff(BUFF.TITLE, "乐于助人|你热心的帮助身边的人。"),buildBuff(BUFF.MESSAGE, "修女的草药|你帮助修女获得了一株神奇的草药。")], buildBuff(BUFF.MESSAGE, "摔落悬崖|你为了采摘草药，但不够敏捷，一不小心跌落了悬崖。")]],
+            [[buildBuff(BUFF.TITLE, "小命要紧|你在危险的地方谨慎行事。")], null]
+        )
+    ));
 
     allEvents.push(createStatsChangeEvent(6, "修女", CHARA_IMGS["修女"], "西边悬崖上有把勇者之剑，快去拿回来吧～", "赶紧去取一下。", "悬崖上真的只有宝剑嘛？", "5", EventType.NORMAL,
         [600, 500], [0, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10], buildBuff(BUFF.NEXT, "600"), buildBuff(BUFF.NEXT, "500")));
@@ -446,6 +459,20 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(68, "黑骑士", CHARA_IMGS["黑骑士"], "若人生只如初见 倾一世也必定恪然执守。", "人生没有重来的机会。", "你是后悔你的选择吗？", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 0, 10], [-10, 0, 10, 10, 0, -10]));
 
     allEvents.push(createStatsChangeEvent(24, "蒙面的旅人", CHARA_IMGS["蒙面的旅人"], "朋友，你见到过大海吗？", "大海是什么。", "我并不想去做无谓的冒险。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
+    allEvents.push(createAdvancedEvent(
+        new EventV2("24", "蒙面的旅人", CHARA_IMGS["蒙面的旅人"], "朋友，你见到过大海吗？", null, null, null, EventType.NORMAL, "大海是什么，我想去看看？", "我并不想去做无谓的冒险。"),
+        new StartCondition(1, null, null),
+        new AdvancedEventAttrs(
+            () => player.power >= 30 ,
+            () => player.agility >= 0 ,
+            [[-10, 10, 10, 10, 10, 20], buildBuff(BUFF.DEATH, 'dead-1')],
+            [[-10, 0, 0, 0, 0, 0], null],
+            [[buildBuff(BUFF.TITLE, "星辰大海|你在璀璨的星空下见到了此生难忘的美景。"),buildBuff(BUFF.MESSAGE, "海浪滔滔|海浪一浪接着一浪，你奋力挣扎，摆脱了危险。")], [buildBuff(BUFF.MESSAGE, "海浪滔滔|海浪一浪接着一浪，你因精疲力尽，淹没在了海里。")]],
+            [[buildBuff(BUFF.TITLE, "小命要紧|你在危险的地方谨慎行事。")], null]
+        )
+    ));
+
+
     allEvents.push(createStatsChangeEvent(25, "蒙面的旅人", CHARA_IMGS["蒙面的旅人"], "人生的轨迹纵横交错，就是世界上最美的一幅图。", "交错的命运是为了什么呢？", "我对你没有任何所求。", "3", EventType.NORMAL, [620, 606], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
     allEvents.push(createStatsChangeEvent(58, "蒙面的旅人", CHARA_IMGS["蒙面的旅人"], "是否要跟我学习下偷窃技术？", "我正好想跟您学习？", "并不是很感兴趣？", "1", EventType.NORMAL, [-1, -1], [-10, -10, 0, 10, 0, 0], [0, 0, 0, 0, 0, 0]));
     allEvents.push(createStatsChangeEvent(60, "蒙面的旅人", CHARA_IMGS["蒙面的旅人"], "是否要跟我学习下法术？", "我正好想跟您学习？", "并不是很感兴趣？", "1", EventType.NORMAL, [-1, -1], [-10, -10, 0, 0, 10, 0], [0, 0, 0, 0, 0, 0]));
@@ -513,6 +540,18 @@ function createEvents() {
     //TODO: 不够就挂了
     allEvents.push(createStatsChangeEvent(32, "法师", CHARA_IMGS["法师"], "知识才是一个魔法师最虔诚的信仰。", "知识也是我的信仰。", "我并不信仰知识。", "1", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 10, 10], [0, 0, 0, 0, -10, -10]));
     allEvents.push(createStatsChangeEvent(45, "法师", CHARA_IMGS["法师"], "我这里有两个法器暂时不用，送你一个吧", "发光的魔法球。", "充满魔力的法杖。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 10, 0], [-10, 0, 0, 0, 20, 0]));
+    allEvents.push(createAdvancedEvent(
+        new EventV2(45, "法师", CHARA_IMGS["法师"], "我这里有两个法器暂时不用，送你一个吧。", null, null, null, EventType.NORMAL, "发光的魔法球。", "充满魔力的法杖。"),
+        new StartCondition(1, null, null),
+        new AdvancedEventAttrs(
+            () => player.agility >= 0 && player.power >= 0,
+            () => player.agility >= 0 && player.power >= 0,
+            [[-10, 0, 0, 0, 10, 0], null],
+            [[-10, 0, 0, 0, 20, 0], null],
+            [[buildBuff(BUFF.MESSAGE, "魔法球|你获得一个发光的魔法球。")], ],
+            [[buildBuff(BUFF.MESSAGE, "法杖|你获得一个充满魔力的法杖。")], null]
+        )
+    ));
     //TODO: 和过关有关
     allEvents.push(createStatsChangeEvent(103, "法师", CHARA_IMGS["法师"], "想要金钱，还是想要智慧呢？", "金钱。", "智慧。", "1", EventType.NORMAL, [-1, -1], [-20, 20, 0, 0, 0, 0], [-20, 0, 0, 0, 20, 0]));
     allEvents.push(createStatsChangeEvent(106, "法师", CHARA_IMGS["法师"], "我的法杖掉了，帮我去买一个吧？", "懒得做。", "帮他买一下把。", "1", EventType.NORMAL, [-1, -1], [5, 0, 0, 0, 0, 0], [-10, 0, 0, 0, 10, 10]));
@@ -568,7 +607,12 @@ function createEvents() {
 
     allEvents.push(createStatsChangeEvent(55, "亚当", CHARA_IMGS["亚当"], "世间万物皆有两面性，灵魂亦亦不能跳出规则。", "你是在说灵魂的反转吗？", "具体的规则是？", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 0], [-10, 0, 0, 0, 0, 0]));
     allEvents.push(createStatsChangeEvent(56, "矮人", CHARA_IMGS["矮人"], "需要矮人的烈酒吗？", "真有此意？", "手边没钱了？", "1", EventType.NORMAL, [-1, -1], [20, -10, 0, 0, 0, 0], [5, 0, 0, 0, 0, 0]));
-    allEvents.push(createStatsChangeEvent(57, "矮人", CHARA_IMGS["矮人"], "需要跟我学矮人优秀的战斗技巧吗？", "我正好想跟您学习？", "并不是很感兴趣？", "1", EventType.NORMAL, [-1, -1], [-10, -10, 25, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
+
+    allEvents.push(createStatsChangeEvent("57", "矮人", CHARA_IMGS["矮人"], "需要跟我学矮人优秀的战斗技巧吗？", "我正好想跟您学习?。", "并不是很感兴趣。", "1", EventType.NORMAL,
+        [-1, -1], [-10, -10, 25, 0, 0, 0], [0, 0, 0, 0, 0, 0], null,
+        [buildBuff(BUFF.MESSAGE, "矮人的战斗技巧|你学习了精湛的矮人的战斗方法")],
+        null));
+
 
     //TODO: 第一转：面目可憎的狗
     allEvents.push(createStatsChangeEvent(59, "地狱犬", "img/8.png", "狗爱他们的朋友,咬他们的敌人,和人不同。", "看招吧恶魔", "似乎也有道理", "1", EventType.NORMAL, [-1, -1], [-20, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, -10]));
