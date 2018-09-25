@@ -135,6 +135,8 @@ const CHARA_IMGS = {
     "士兵": "img/chara/solider.png",
     "石中剑": "img/chara/stonesword.png",
     "野鬼": "img/chara/ghost.png",
+    "史莱姆": "img/chara/slime.png",
+    "僵尸": "img/chara/zombie.png",
     "村落": "img/stage/village.png",
     "城镇": "img/stage/town.png",
     "城堡": "img/stage/castle.png",
@@ -144,6 +146,7 @@ const CHARA_IMGS = {
     "沼泽": "img/stage/swamp.png",
     "冰原": "img/stage/iceland-1.png",
     "岩浆": "img/stage/volcano.png",
+
 };
 
 // function convertToImmutableGenesisCharacter() {
@@ -250,6 +253,21 @@ function createEvents() {
             [[buildBuff(BUFF.MESSAGE, "放弃|你放过了弱小的史莱姆。")], null]
         )
     ));
+
+
+    allEvents.push(createAdvancedEvent(
+        new EventV2("slime-1", "史莱姆", CHARA_IMGS["史莱姆"], "呜噜呜噜呜噜?##!!", null, null, null, EventType.NORMAL, "邪恶的史莱姆，接招吧！", "没想到看上去还挺可爱，就放过它吧。"),
+        new StartCondition(1, null, null),
+        new AdvancedEventAttrs(
+            () => player.power >= 20,
+            null,
+            [[10, 10, 1, 1, 1, 0], null],
+            [[0, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, 10]],
+            [[buildBuff(BUFF.MESSAGE, "讨伐史莱姆|你消灭了邪恶的史莱姆！")], [buildBuff(BUFF.MESSAGE, "惨败史莱姆|你被史莱姆轻易打倒。"),buildBuff(BUFF.DEATH, 'dead-1')]],
+            [[buildBuff(BUFF.MESSAGE, "放弃|你放过了弱小的史莱姆。")], null]
+        )
+    ));
+
 
     allEvents.push(createAdvancedEvent(
         new EventV2("8-1", "僵尸", CHARA_IMGS["僵尸"], "呜噜呜噜?##!!", null, null, null, EventType.NORMAL, "邪恶的僵尸，接招吧！", "想想还是放过他吧。"),
@@ -396,7 +414,7 @@ function createEvents() {
             () => player.agility >= 0 ,
             [[-10, 10, 0, 0, 0, 20], buildBuff(BUFF.DEATH, 'dead-1')],
             [[-10, 0, 0, 0, 0, 0], null],
-            [[buildBuff(BUFF.TITLE, "乐于助人|你热心的帮助身边的人。"),buildBuff(BUFF.MESSAGE, "修女的草药|你帮助修女获得了一株神奇的草药。")], buildBuff(BUFF.MESSAGE, "摔落悬崖|你为了采摘草药，但不够敏捷，一不小心跌落了悬崖。")]],
+            [[buildBuff(BUFF.TITLE, "乐于助人|你热心的帮助身边的人。"),buildBuff(BUFF.MESSAGE, "修女的草药|你帮助修女获得了一株神奇的草药。")], buildBuff(BUFF.MESSAGE, "摔落悬崖|你为了采摘草药，但不够敏捷，一不小心跌落了悬崖。")],
             [[buildBuff(BUFF.TITLE, "小命要紧|你在危险的地方谨慎行事。")], null]
         )
     ));
