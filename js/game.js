@@ -9,6 +9,7 @@ let eventsByLevel = {};
 let eventMap = {};
 let currentLevel;
 let reincarnation;
+let numEvent;
 let currentEvent;
 let player;
 let currentMaxPage;
@@ -1713,6 +1714,7 @@ function initModels() {
 
             player = initPlayer('Knight III');
             reincarnation = 1;
+            numEvent = 0;
             currentLevel = START_LEVEL;
 
             let allEvents = convertConsecutiveEventJsonToEvents(json);
@@ -1929,6 +1931,7 @@ function updateScene() {
 
     if (currentEvent !== null && currentEvent !== undefined) {
         if (currentEvent.eventType !== EventType.STAGE) {
+            numEvent++;
             const lastChoice = choiceId === 0 ? currentEvent.choice1 : currentEvent.choice2;
             const lastEffect = lastChoice.effect;
             console.warn("lastEffect: ");
@@ -1969,6 +1972,7 @@ function updateScene() {
         //TODO: 增加一页
         if (currentEvent.eventType === EventType.ENDING || currentEvent.eventType === EventType.UPLOAD) {
             currentLevel = START_LEVEL;
+            numEvent = 0;
             reincarnation++;
             player = initPlayer('Knight III');
         }
@@ -2203,13 +2207,13 @@ function createResultPageDiv() {
         <div class="pages-background"></div>
         <div class="content-inner">
               <h1>${player.name} 的旅途</h1>
-              <h3>轮回次数：<span id="reincarnation">100</span></h3>
-              <h3>经历事件：<span id="num-events">100</span></h3>
+              <h3>轮回次数：<span id="reincarnation">${reincarnation}</span></h3>
+              <h3>经历事件：<span id="num-events">${numEvent}</span></h3>
               <h3>获得称号：</h3>
               <div class="achievements">
               ${achievementHTML}
               </div>
-              <h3>善恶值：<span id="goodness">100</span></h3>
+              <h3>善恶值：<span id="goodness">${player.goodness}</span></h3>
         </div>
     </div>`;
     return div;
