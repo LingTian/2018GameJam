@@ -497,7 +497,7 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(61, "蒙面的旅人", CHARA_IMGS["蒙面的旅人"], "是否要跟我学习下战斗技巧？", "我正好想跟您学习？", "并不是很感兴趣？", "1", EventType.NORMAL, [-1, -1], [-10, -10, 10, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
     allEvents.push(createMajorRandomEvent(102, "蒙面的旅人", CHARA_IMGS["蒙面的旅人"], "长路漫漫，是选择前进还是后退呢？", "朝前走吧。", "走回头路也不错。", "1", EventType.RANDOM, [-1, -1]));
 
-    allEvents.push(createStatsChangeEvent(26, "商人", CHARA_IMGS["商人"], "我这里正需要人手，要不要来打零工换些金钱。", "我真有此意。", "没什么时间。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
+    allEvents.push(createStatsChangeEvent(26, "商人", CHARA_IMGS["商人"], "我这里正需要人手，要不要来打零工换些金钱。", "我正有此意。", "没什么时间。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
     // allEvents.push(createStatsChangeEvent(27, "商人", CHARA_IMGS["商人"], "（打盹）", "摸摸看他身上有啥？", "还是不打扰他了。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10]));
     //TODO: 有几率跟他干 几率打  打输了死
     // allEvents.push(createStatsChangeEvent(27, "法师", CHARA_IMGS["法师"], "(打盹中)", "摸摸看他身上有啥。", "还是不打扰他了。", "1", EventType.NORMAL,
@@ -628,7 +628,7 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(55, "亚当", CHARA_IMGS["亚当"], "善良的王和黑暗的王都是由迷途的灵魂幻化而成？", "你知道白色的王的具体消息吗？", "你知道黑色的王的的具体消息吗？", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 0], [-10, 0, 0, 0, 0, 0]));
     //TODO: 触发王:buff
 
-    allEvents.push(createStatsChangeEvent(55, "亚当", CHARA_IMGS["亚当"], "世间万物皆有两面性，灵魂亦亦不能跳出规则。", "你是在说灵魂的反转吗？", "具体的规则是？", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 0], [-10, 0, 0, 0, 0, 0]));
+    allEvents.push(createStatsChangeEvent(55, "亚当", CHARA_IMGS["亚当"], "世间万物皆有两面性，灵魂亦不能跳出规则。", "你是在说灵魂的反转吗？", "具体的规则是？", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 0], [-10, 0, 0, 0, 0, 0]));
     allEvents.push(createStatsChangeEvent(56, "矮人", CHARA_IMGS["矮人"], "需要矮人的烈酒吗？", "真有此意？", "手边没钱了？", "1", EventType.NORMAL, [-1, -1], [20, -10, 0, 0, 0, 0], [5, 0, 0, 0, 0, 0]));
 
     allEvents.push(createStatsChangeEvent("57", "矮人", CHARA_IMGS["矮人"], "需要跟我学矮人优秀的战斗技巧吗？", "我正好想跟您学习?。", "并不是很感兴趣。", "1", EventType.NORMAL,
