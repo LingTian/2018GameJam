@@ -137,6 +137,8 @@ const CHARA_IMGS = {
     "野鬼": "img/chara/ghost.png",
     "史莱姆": "img/chara/slime.png",
     "僵尸": "img/chara/zombie.png",
+    "七彩泉": "img/chara/spring.png",
+    "不老泉": "img/chara/spring.png",
     "村落": "img/stage/village.png",
     "城镇": "img/stage/town.png",
     "城堡": "img/stage/castle.png",
@@ -145,8 +147,7 @@ const CHARA_IMGS = {
     "悬崖": "img/stage/cliff.png",
     "沼泽": "img/stage/swamp.png",
     "冰原": "img/stage/iceland-1.png",
-    "岩浆": "img/stage/volcano.png",
-
+    "岩浆": "img/stage/volcano.png"
 };
 
 // function convertToImmutableGenesisCharacter() {
