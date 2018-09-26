@@ -183,7 +183,7 @@ const CHARA_IMGS = {
 //         listener: cbCallDapp
 //     });
 // }
-//
+
 // function cbCallDapp(resp) {
 //     console.log("Callback Resp: " + JSON.stringify(resp))
 // }
@@ -885,6 +885,8 @@ function createEvents() {
     createLevel9BossEvents(allEvents);
 
     allEvents.push(createStatsChangeEvent("result", "称号", "1.png", "法海无边", "Pass。", "Pass.", "1", EventType.RESULT,
+        [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, "upload")], [buildBuff(BUFF.NEXT, "upload")]));
+    allEvents.push(createStatsChangeEvent("upload", "称号", "1.png", "法海无边", "Pass。", "Pass.", "1", EventType.UPLOAD,
         [-1, -1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, STAGE_IDS[0])], [buildBuff(BUFF.NEXT, STAGE_IDS[0])]));
     return allEvents;
 }
@@ -940,6 +942,7 @@ const EventType = Object.freeze({
     BOSS: "BOSS",
     STAGE: "STAGE",
     DEATH: "DEATH",
+    UPLOAD: "UPLOAD",
     RESULT: "RESULT",
     SUBSEQUENT: "SUBSEQUENT",
     ENDING: "ENDING",
@@ -1788,15 +1791,25 @@ function updateScene() {
     console.error("updateScene: ");
     console.error(currentEvent);
 
-    if (currentEvent !== null && currentEvent.eventType !== EventType.STAGE) {
-        const lastChoice = choiceId === 0 ? currentEvent.choice1 : currentEvent.choice2;
-        const lastEffect = lastChoice.effect;
-        console.warn("lastEffect: ");
-        console.warn(lastEffect);
-        console.warn("callBack: ");
-        console.warn(lastEffect.callBack);
-        console.warn(typeof lastEffect.callBack);
-        lastEffect.callBack();
+    if (currentEvent !== null && currentEvent !== undefined) {
+        if (currentEvent.eventType !== EventType.STAGE) {
+            const lastChoice = choiceId === 0 ? currentEvent.choice1 : currentEvent.choice2;
+            const lastEffect = lastChoice.effect;
+            console.warn("lastEffect: ");
+            console.warn(lastEffect);
+            console.warn("callBack: ");
+            console.warn(lastEffect.callBack);
+            console.warn(typeof lastEffect.callBack);
+            lastEffect.callBack();
+            if (currentEvent.eventType === EventType.UPLOAD) {
+                insertCharacter(player, (res) => {
+                    console.warn("Res of insert player:");
+                    console.warn(res);
+                });
+            }
+        }
+    } else {
+        log.error("Current Event is null or undefined");
     }
 
     updatePlayerStatus();
@@ -1818,7 +1831,7 @@ function updateScene() {
         eventsPlayedThisState.clear();
         //轮回logic
         //TODO: 增加一页
-        if (currentEvent.eventType === EventType.ENDING || currentEvent.eventType === EventType.RESULT) {
+        if (currentEvent.eventType === EventType.ENDING || currentEvent.eventType === EventType.UPLOAD) {
             currentLevel = START_LEVEL;
             reincarnation++;
             player = initPlayer('Knight III');
@@ -1879,14 +1892,32 @@ function createPage(event) {
     } else if (event.eventType === EventType.DEATH) {
         console.log("Creating DEATH event");
         return createDeathPage(event);
+    } else if (event.eventType === EventType.UPLOAD) {
+        console.log("Creating UPLOAD event");
+        return createUploadPage();
     } else if (event.eventType === EventType.RESULT) {
         console.log("Creating title event");
-        //Mocks
         return createResultPageDiv();
     } else if (event.eventType === EventType.ENDING) {
         console.log("Creating ending event");
         return createEndingTransitionPageDiv(event);
     }
+}
+
+function createUploadPage() {
+    const div = document.createElement('div');
+    currentMaxPage++;
+    div.className = `page-num-${currentMaxPage}`;
+    div.innerHTML =
+        `<div class="pages-content">
+            <div class="pages-background"></div>
+            <div class="content-inner">
+              <h1>你想把这段经历写进书里吗？</h1>s
+              <h2 class="pos-line">写入</h2>
+              <h2 class="neg-line">算了</h2>
+            </div>
+          </div>`;
+    return div;
 }
 
 function createStagePageDiv(event) {
@@ -5535,18 +5566,6 @@ async function insertCharacter(charaToInsert, callback) {
         return;
     }
 
-    // this.id = id;
-    // this.name = name;
-    // this.fatigue = MAX_VAL;
-    // this.spirit = MAX_VAL;
-    // this.gold = MAX_VAL;
-    // this.power = MAX_VAL;
-    // this.agility = MAX_VAL;
-    // this.intelligence = MAX_VAL;
-    // this.goodness = MAX_VAL;
-    // this.buffSet = new Set();
-    // this.achievements = new Set();
-
     console.error(charaToInsert.name);
     console.error(parseInt(charaToInsert.spirit));
     console.error(parseInt(charaToInsert.gold));
@@ -5567,7 +5586,7 @@ async function insertCharacter(charaToInsert, callback) {
         parseInt(charaToInsert.intelligence),
         parseInt(charaToInsert.goodness),
         parseInt(charaToInsert.fatigue),
-        parseInt(charaToInsert.fatigue),
+        0
     ).send();
     callback && callback(res);
 }
@@ -5584,8 +5603,7 @@ $(window).ready(function () {
         //     console.warn(res);
         // });
 
-        // 1 is Adam0
-        // getCharaDetails(1, (res) => {
+        // getCharaDetails(3, (res) => {
         //     console.warn("Res of getCharaDetails:");
         //     console.warn(res);
         // });
