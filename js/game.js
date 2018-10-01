@@ -340,7 +340,7 @@ function createEvents() {
 
     allEvents.push(createAdvancedEvent(
         new EventV2("65-1", "法师", CHARA_IMGS["法师"], "(打盹中)", null, null, null, EventType.NORMAL, "趁机偷文件。", "想想还是不要吧。"),
-        new StartCondition(1, "65-1", null),
+        new StartCondition(1, null, null),
         new AdvancedEventAttrs(
             () => player.agility >= 20,
             () => player.intelligence >= 0,
@@ -352,8 +352,21 @@ function createEvents() {
     ));
 
     allEvents.push(createAdvancedEvent(
-        new EventV2("65-1", "法师", CHARA_IMGS["法师"], "没想到的法师并没有深睡，他挥舞起了法杖，在准备施法。", null, null, null, EventType.NORMAL, "赶紧打断他！", "构建个镜面魔法。"),
-        new StartCondition(1, "65-2", null),
+        new EventV2("65-2", "法师", CHARA_IMGS["法师"], "没想到的法师并没有深睡。法师：住手小偷！", null, null, null, EventType.NORMAL, "什么？", "什么？"),
+        new StartCondition(1, "65-1", null),
+        new AdvancedEventAttrs(
+            () => player.agility >= 0,
+            () => player.intelligence >= 0,
+            [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
+            [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
+            [[buildBuff(BUFF.MESSAGE, "恍惚间法师已经跟你拉开了距离")], [buildBuff(BUFF.NEXT, "65-3")]],
+            [[buildBuff(BUFF.MESSAGE, "恍惚间法师已经跟你拉开了距离")], [buildBuff(BUFF.NEXT, "65-3")]]
+        )
+    ));
+
+    allEvents.push(createAdvancedEvent(
+        new EventV2("65-3", "法师", CHARA_IMGS["法师"], "法师挥舞起了法杖，在准备施法。", null, null, null, EventType.NORMAL, "赶紧打断他！", "构建个镜面魔法。"),
+        new StartCondition(1, "65-3", null),
         new AdvancedEventAttrs(
             () => player.agility >= 50,
             () => player.intelligence >= 50,
@@ -458,8 +471,17 @@ function createEvents() {
 
     //与连续事件重复
     //allEvents.push(createStatsChangeEvent(15, "医生", CHARA_IMGS["医生"], "医者仁心，王子病重而亡。王却因此处死我，能否帮我复仇。", "公正与怜悯，我会帮助你！", "你将带着怨恨长眠于此。。", "1", EventType.NORMAL, [615, -1], [-10, 0, 10, 10, 10, 20], [10, 0, 0, 0, 0, -20]));
-    allEvents.push(createStatsChangeEvent(16, "僧侣", CHARA_IMGS["僧侣"], "需要学习下武技嘛?", "当然愿意。", "还不如休息一下。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 0, 0, 0], [10, 0, 0, 0, 0, 0]));
+    //  allEvents.push(createStatsChangeEvent(16, "僧侣", CHARA_IMGS["僧侣"], "需要学习下武技嘛?", "当然愿意。", "还不如休息一下。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 0, 0, 0], [10, 0, 0, 0, 0, 0]));
+
+
+    allEvents.push(createStatsChangeEvent("16", "僧侣", CHARA_IMGS["僧侣"], "需要学习下武技嘛？", "当然愿意?。", "还不如休息一下。", "1", EventType.NORMAL,
+        [-1, -1], [-10, 0, 20, 0, 0, 0], [10, 0, 0, 0, 0, 0], null,
+        [buildBuff(BUFF.MESSAGE, "僧侣的神秘武技|你学习了僧侣精湛的武艺。")],
+        null));
+
+
     allEvents.push(createStatsChangeEvent(17, "僧侣", CHARA_IMGS["僧侣"], "年轻的冒险家需要治疗吗?", "感谢你的帮助。", "我并不信任你。", "1", EventType.NORMAL, [-1, -1], [20, 0, 0, 0, 0, 0], [-10, 0, 0, 0, 0, 0]));
+
     // allEvents.push(createStatsChangeEvent(18, "僧侣", CHARA_IMGS["僧侣"], "我有一本武技的密卷，想要购买吗?", "如果不交出密卷，你只有死路一条。", "好的，我买下来了。", "1", EventType.NORMAL, [607, -1], [-10, 0, 20, 0, 0, -20], [0, -10, 20, 0, 0, 0]));
     //TODO: 跟僧侣比较属性 208
     // allEvents.push(createStatsChangeEvent(208, "僧侣", CHARA_IMGS["僧侣"], "。。。", "受死吧。", "受死吧", "1", EventType.NORMAL, [-1, -1], [0, 10, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10]));
@@ -566,14 +588,14 @@ function createEvents() {
             null,
             [[10, 10, 0, 0, 30, 0], null],
             [[0, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, 10]],
-            [[buildBuff(BUFF.TITLE, "法海无边|你通过了法师塔的试炼")], [buildBuff(BUFF.DEATH, 'dead-1')]],
+            [[buildBuff(BUFF.TITLE, "法海无边|你通过了法师塔的试炼")], [buildBuff(BUFF.MESSAGE, "法术陷阱|你在试炼中掉进了法术陷阱中，你贫瘠的法力瞬间就被抽干，瘫倒在深坑中。"),buildBuff(BUFF.DEATH, 'dead-1')]],
             [null, null]
         )
     ));
 
     //TODO: 不够就挂了
     allEvents.push(createStatsChangeEvent(32, "法师", CHARA_IMGS["法师"], "知识才是一个魔法师最虔诚的信仰。", "知识也是我的信仰。", "我并不信仰知识。", "1", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 10, 10], [0, 0, 0, 0, -10, -10]));
-    allEvents.push(createStatsChangeEvent(45, "法师", CHARA_IMGS["法师"], "我这里有两个法器暂时不用，送你一个吧", "发光的魔法球。", "充满魔力的法杖。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 10, 0], [-10, 0, 0, 0, 20, 0]));
+    // allEvents.push(createStatsChangeEvent(45, "法师", CHARA_IMGS["法师"], "我这里有两个法器暂时不用，送你一个吧", "发光的魔法球。", "充满魔力的法杖。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 10, 0], [-10, 0, 0, 0, 20, 0]));
     allEvents.push(createAdvancedEvent(
         new EventV2(45, "法师", CHARA_IMGS["法师"], "我这里有两个法器暂时不用，送你一个吧。", null, null, null, EventType.NORMAL, "发光的魔法球。", "充满魔力的法杖。"),
         new StartCondition(1, null, null),
@@ -582,7 +604,7 @@ function createEvents() {
             () => player.agility >= 0 && player.power >= 0,
             [[-10, 0, 0, 0, 10, 0], null],
             [[-10, 0, 0, 0, 20, 0], null],
-            [[buildBuff(BUFF.MESSAGE, "魔法球|你获得一个发光的魔法球。")], ],
+            [[buildBuff(BUFF.MESSAGE, "魔法球|你获得一个发光的魔法球。")], null],
             [[buildBuff(BUFF.MESSAGE, "法杖|你获得一个充满魔力的法杖。")], null]
         )
     ));
@@ -608,7 +630,13 @@ function createEvents() {
     // allEvents.push(createStatsChangeEvent(65, "密探", CHARA_IMGS["密探"], "能帮我去偷份文件吗？。", "如果有钱的话。", "这种事情我可不干。", "1", EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10]));
     //TODO: 跟人干，敏捷 （法师正在打盹，要窃取法师的文件吗？）
 
-    allEvents.push(createStatsChangeEvent(38, "士兵", CHARA_IMGS["士兵"], "我是一名现役的军官，是否需要我传授你一些武艺？？", "我想听听。", "我没有多余的金币。", "1", EventType.NORMAL, [-1, -1], [-10, -10, 10, 10, 0, 1], [0, 0, 0, 0, 0, 0]));
+    // allEvents.push(createStatsChangeEvent(38, "士兵", CHARA_IMGS["士兵"], "我是一名现役的军官，是否需要我传授你一些武艺？？", "我想听听。", "我没有多余的金币。", "1", EventType.NORMAL, [-1, -1], [-10, -10, 10, 10, 0, 1], [0, 0, 0, 0, 0, 0]));
+
+    allEvents.push(createStatsChangeEvent("38", "士兵", CHARA_IMGS["士兵"], "我是一名现役的军官，是否需要我传授你一些武艺？", "我想听听?。", "我没有多余的金币。", "1", EventType.NORMAL,
+        [-1, -1], [-10, -10, 10, 10, 0, 10], [0, 0, 0, 0, 0, 0], null,
+        [buildBuff(BUFF.MESSAGE, "士兵的武艺|你跟士兵学习了战斗方法，但是大多是入门的武艺。")],
+        null));
+
 
     allEvents.push(createStatsChangeEvent(46, "酒馆老板", CHARA_IMGS["酒馆老板"], "需要休息吗？", "正有此意。", "手边没钱。", "1", EventType.NORMAL, [-1, -1], [30, -15, 0, 0, 0, 0], [-5, 0, 0, 0, 0, 0]));
     allEvents.push(createStatsChangeEvent(47, "酒馆老板", CHARA_IMGS["酒馆老板"], "来吃顿好的吧。", "正有此意。", "手边没钱。", "1", EventType.NORMAL, [-1, -1], [20, -10, 0, 0, 0, 0], [-5, 0, 0, 0, 0, 0]));
@@ -736,6 +764,7 @@ function createEvents() {
         )
     ));
 
+
     // allEvents.push(createAdvancedEvent(
     //     new EventV2("80", "雷沃汀", CHARA_IMGS["雷沃汀"], "永远燃烧的火焰之剑。", null, null, null, EventType.NORMAL, "我能承受火焰之魂。", "冒火的剑怎么可能能拿得起来？"),
     //     new StartCondition(1, null, null),
@@ -811,6 +840,7 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(101, "商人", CHARA_IMGS["雷沃汀"], "一个街边的小贩似乎在贩卖着一把长剑。", "这个长剑一看就不是什么值钱的武器。", "看上去是个宝贝，买来看看。", "1", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 0], [0, -10, 0, 0, 0, 0]));
 
     allEvents.push(createStatsChangeEvent(104, "士兵", CHARA_IMGS["士兵"], "能否帮我买把长剑？", "懒得做", "帮他买一下把。", "1", EventType.NORMAL, [-1, -1], [5, 0, 0, 0, 0, -10], [0, -10, 10, 0, 0, 10]));
+
     allEvents.push(createStatsChangeEvent(105, "盗贼", CHARA_IMGS["盗贼"], "能否帮我买个靴子？", "懒得做", "帮他买一下把。", "1", EventType.NORMAL, [-1, -1], [5, 0, 0, 0, 0, -10], [0, -10, 0, 10, 0, 10]));
     allEvents.push(createStatsChangeEvent(107, "密探", CHARA_IMGS["密探"], "我这里有大量的金币，如果告诉我情报那这些钱都是你的？。", "我对这桩买卖并不感兴趣。", "知无不答。", "1", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 20], [0, 50, 0, 0, 0, -50]));
     //TODO: 有称号“守口如瓶”
