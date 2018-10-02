@@ -5778,6 +5778,18 @@ async function insertCharacter(charaToInsert, callback) {
 
 $(window).ready(function () {
 
+    setTimeout(function(){
+        $('.foreground').addClass('slide-out-fwd-center');
+    }, 2000);
+
+    setTimeout(function(){
+        $('.foreground').css('display', 'none');
+    }, 4000);
+
+    setTimeout(function(){
+        $('.book-wrapper').addClass('slide-in-elliptic-top-fwd');
+    }, 4000);
+
     $(".button").click(function () {
         console.error("Clicked...");
         // animateElems();
@@ -5820,12 +5832,13 @@ $(window).ready(function () {
             width: width,
             height: height,
             // acceleration: true,
-            //  display: 'single',
+            // display: 'double',
             autoCenter: true,
             turnCorners: "bl, br",
             elevation: 300,
             when: {
                 turned: function (e, page) {
+                    this.duration(3000)
                     // let lastEvent = null;
                     // if (currentPage > 1 && currentEvents.length > 0) {
                     //     lastEvent = currentEvents.shift();
