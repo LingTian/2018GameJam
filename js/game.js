@@ -498,11 +498,11 @@ function createEvents() {
     allEvents.push(createStatsChangeEvent(74, "奇怪的白骑士", CHARA_IMGS["白骑士"], "昨夜，美酒入喉，我心欢畅。", "今朝，酒冷香落，徒留荒凉。", "今朝，酒盏花枝，伊人依旧。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10]));
     allEvents.push(createStatsChangeEvent(75, "奇怪的白骑士", CHARA_IMGS["白骑士"], "幸福感这种东西，会沉在悲哀的河底，隐隐发光，仿佛砂金一般。", "不是应该更加珍惜吗？", "终究是沉没在悲伤的河底吗？", "1", EventType.NORMAL, [-1, -1], [-10, 0, 10, 10, 10, -10], [-10, 0, 10, 10, 10, 10]));
 
-    allEvents.push(createStatsChangeEvent(20, "黑骑士", CHARA_IMGS["黑骑士"], "曾经的天真，帮助愚蠢的我长大。", "这不是你堕落的理由。", "也许他是个真正的骑士。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [-10, 0, 0, 0, 0, -10]));
+    allEvents.push(createStatsChangeEvent(301, "黑骑士", CHARA_IMGS["黑骑士"], "曾经的天真，帮助愚蠢的我长大。", "这不是你堕落的理由。", "也许他是个真正的骑士。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 0, 0, 10], [-10, 0, 0, 0, 0, -10]));
     //TODO: 这段再考虑一下
-    allEvents.push(createStatsChangeEvent(21, "黑骑士", CHARA_IMGS["黑骑士"], "大众总喜欢将真相扭曲到自己可以接受的程度，这就是一种充满惰性的思维方式。", "这个人思维很独特，我想跟他学习一下。", "我并不认为他很强大。", "1", EventType.NORMAL, [-1, 610], [0, 0, 10, 0, 0, -10], [0, 0, 0, 0, 0, 0]));
+    allEvents.push(createStatsChangeEvent(302, "黑骑士", CHARA_IMGS["黑骑士"], "大众总喜欢将真相扭曲到自己可以接受的程度，这就是一种充满惰性的思维方式。", "这个人思维很独特，我想跟他学习一下。", "我并不认为他很强大。", "1", EventType.NORMAL, [-1, 610], [0, 0, 10, 0, 0, -10], [0, 0, 0, 0, 0, 0]));
     //TODO: 和关底有互动 209
-    allEvents.push(createStatsChangeEvent(22, "黑骑士", CHARA_IMGS["黑骑士"], "在现实里，王子和公主可能不会在一起，因为他们都以为自己是骑士，只会默默的等待。", "非常悲哀的存在呢。", "那么王子和公主都是谁呢？", "1", EventType.NORMAL, [-1, -1], [10, 0, 10, 10, 10, 10], [-10, 0, -10, -10, -10, -10]));
+    allEvents.push(createStatsChangeEvent(303, "黑骑士", CHARA_IMGS["黑骑士"], "在现实里，王子和公主可能不会在一起，因为他们都以为自己是骑士，只会默默的等待。", "非常悲哀的存在呢。", "那么王子和公主都是谁呢？", "1", EventType.NORMAL, [-1, -1], [10, 0, 10, 10, 10, 10], [-10, 0, -10, -10, -10, -10]));
     //TODO: 和修女互动 title 这个我没想好怎么互动
 
     allEvents.push(createStatsChangeEvent(23, "黑骑士", CHARA_IMGS["黑骑士"], "有人需要真皮，所以才有了猎人去虐杀动物， 最终被捕的是猎人，那么披着真皮的人呢？", "这就是堕落的借口吗？", "也许错的不是他。", "1", EventType.NORMAL, [-1, -1], [0, 0, 0, 0, 0, 10], [10, 0, 10, 10, 10, -10]));
@@ -530,12 +530,32 @@ function createEvents() {
 
 
     allEvents.push(createStatsChangeEvent(25, "蒙面的旅人", CHARA_IMGS["蒙面的旅人"], "人生的轨迹纵横交错，就是世界上最美的一幅图。", "交错的命运是为了什么呢？", "我对你没有任何所求。", "3", EventType.NORMAL, [620, 606], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
+
     allEvents.push(createStatsChangeEvent(58, "蒙面的旅人", CHARA_IMGS["蒙面的旅人"], "是否要跟我学习下偷窃技术？", "我正好想跟您学习？", "并不是很感兴趣？", "1", EventType.NORMAL, [-1, -1], [-10, -10, 0, 10, 0, 0], [0, 0, 0, 0, 0, 0]));
+
     allEvents.push(createStatsChangeEvent(60, "蒙面的旅人", CHARA_IMGS["蒙面的旅人"], "是否要跟我学习下法术？", "我正好想跟您学习？", "并不是很感兴趣？", "1", EventType.NORMAL, [-1, -1], [-10, -10, 0, 0, 10, 0], [0, 0, 0, 0, 0, 0]));
+
     allEvents.push(createStatsChangeEvent(61, "蒙面的旅人", CHARA_IMGS["蒙面的旅人"], "是否要跟我学习下战斗技巧？", "我正好想跟您学习？", "并不是很感兴趣？", "1", EventType.NORMAL, [-1, -1], [-10, -10, 10, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
     allEvents.push(createMajorRandomEvent(102, "蒙面的旅人", CHARA_IMGS["蒙面的旅人"], "长路漫漫，是选择前进还是后退呢？", "朝前走吧。", "走回头路也不错。", "1", EventType.RANDOM, [-1, -1]));
 
-    allEvents.push(createStatsChangeEvent(26, "商人", CHARA_IMGS["商人"], "我这里正需要人手，要不要来打零工换些金钱。", "我正有此意。", "没什么时间。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
+    // allEvents.push(createStatsChangeEvent(26, "商人", CHARA_IMGS["商人"], "我这里正需要人手，要不要来打零工换些金钱。", "我正有此意。", "没什么时间。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]));
+
+    allEvents.push(createStatsChangeEvent("26-1", "商人", CHARA_IMGS["商人"], "我这里正需要人手，要不要来打零工换些金钱?", "我正有此意！。", "没什么时间。", "1", EventType.NORMAL,
+        [-1, -1], [-10, 10, 0, 0, 0, 0], [5, 0, 0, 0, 0, 0], null,
+        [buildBuff(BUFF.MESSAGE, "辛苦工作|你辛苦的帮商人打工，老板如约的付给你了钱。"), buildBuff(BUFF.COMPLETE, "50")],
+        null));
+
+
+    allEvents.push(createStatsChangeEvent("26-2", "商人", CHARA_IMGS["商人"], "要不要来打工赚点钱?", "刚好手边有点紧！。", "没时间浪费精力了。", "1", EventType.NORMAL,
+        [-1, -1], [-10, 20, 0, 0, 0, 0], [5, 0, 0, 0, 0, 0], null,
+        [buildBuff(BUFF.MESSAGE, "辛苦工作|你辛苦的帮商人打工，老板非常高兴，给你了不菲的回报。"), buildBuff(BUFF.COMPLETE, "50")],
+        null));
+
+    allEvents.push(createStatsChangeEvent("26-3", "商人", CHARA_IMGS["商人"], "要不要来打工赚点钱?", "刚好手边有点紧！。", "没时间浪费精力了。", "1", EventType.NORMAL,
+        [-1, -1], [-10, 5, 0, 0, 0, 0], [5, 0, 0, 0, 0, 0], null,
+        [buildBuff(BUFF.MESSAGE, "辛苦工作|你辛苦的帮商人打工，没想到小气的老板竟然克扣了你的工资。"), buildBuff(BUFF.COMPLETE, "50")],
+        null));
+
     // allEvents.push(createStatsChangeEvent(27, "商人", CHARA_IMGS["商人"], "（打盹）", "摸摸看他身上有啥？", "还是不打扰他了。", "1", EventType.NORMAL, [-1, -1], [-10, 10, 0, 0, 0, -10], [0, 0, 0, 0, 0, 10]));
     //TODO: 有几率跟他干 几率打  打输了死
     // allEvents.push(createStatsChangeEvent(27, "法师", CHARA_IMGS["法师"], "(打盹中)", "摸摸看他身上有啥。", "还是不打扰他了。", "1", EventType.NORMAL,
@@ -578,6 +598,8 @@ function createEvents() {
     ));
 
 
+
+
     allEvents.push(createStatsChangeEvent(30, "法师", CHARA_IMGS["法师"], "要么安于现状，要么改变现状，改变的总是要付出。", "我愿意跟你修炼。", "要钱还是算了吧。", "1", EventType.NORMAL, [-1, -1], [-10, -10, 0, 0, 30, 0], [0, 0, 0, 0, 0, 0]));
     // allEvents.push(createStatsChangeEvent(31, "法师", CHARA_IMGS["法师"], "听说过法师塔吗？", "我想进入学习。", "我会保护好自己。", "1", EventType.NORMAL, [-1, -1], [-10, 0, 0, 30, 0, 0], [0, 0, 0, 0, 0, -10]));
     allEvents.push(createAdvancedEvent(
@@ -606,6 +628,19 @@ function createEvents() {
             [[-10, 0, 0, 0, 20, 0], null],
             [[buildBuff(BUFF.MESSAGE, "魔法球|你获得一个发光的魔法球。")], null],
             [[buildBuff(BUFF.MESSAGE, "法杖|你获得一个充满魔力的法杖。")], null]
+        )
+    ));
+
+    allEvents.push(createAdvancedEvent(
+        new EventV2("310-1", "蒙面的旅人", CHARA_IMGS["蒙面的旅人"], "想要来玩一把骰子嘛？", null, null, null, EventType.NORMAL, "听起来很有意思。", "想想还是不要玩了。"),
+        new StartCondition(1, null, null),
+        new AdvancedEventAttrs(
+            () => Math.floor(Math.random()*10+1) >= 5 ,
+            () => player.agility >= 0 && player.power >= 0,
+            [[0, 10, 0, 0, 10, 0], [0, -10, 0, 0, 10, 0]],
+            [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
+            [[buildBuff(BUFF.MESSAGE, "骰子|骰子飞快的旋转着，最后平稳下来你的点数轻易的赢取了赌局。")], [buildBuff(BUFF.MESSAGE, "骰子|骰子飞快的旋转着，最后平稳下来你的点数差点赢了赌局。")]],
+            [[buildBuff(BUFF.MESSAGE, "克己|你克制了自己赌博的欲望。")], null]
         )
     ));
     //TODO: 和过关有关
@@ -640,8 +675,24 @@ function createEvents() {
 
     allEvents.push(createStatsChangeEvent(46, "酒馆老板", CHARA_IMGS["酒馆老板"], "需要休息吗？", "正有此意。", "手边没钱。", "1", EventType.NORMAL, [-1, -1], [30, -15, 0, 0, 0, 0], [-5, 0, 0, 0, 0, 0]));
     allEvents.push(createStatsChangeEvent(47, "酒馆老板", CHARA_IMGS["酒馆老板"], "来吃顿好的吧。", "正有此意。", "手边没钱。", "1", EventType.NORMAL, [-1, -1], [20, -10, 0, 0, 0, 0], [-5, 0, 0, 0, 0, 0]));
-    allEvents.push(createStatsChangeEvent(48, "酒馆老板", CHARA_IMGS["酒馆老板"], "要不要来喝一杯。", "正有此意。", "手边没钱。", "1", EventType.NORMAL, [-1, -1], [10, -10, 0, 0, 0, 0], [-5, 0, 0, 0, 0, 0]));
-    allEvents.push(createStatsChangeEvent(49, "酒馆老板", CHARA_IMGS["酒馆老板"], "要不要来打工赚点钱。", "刚好手边有点紧。", "没时间浪费精力了。", "1", EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 0], [5, 0, 0, 0, 0, 0]));
+    // allEvents.push(createStatsChangeEvent(48, "酒馆老板", CHARA_IMGS["酒馆老板"], "要不要来喝一杯。", "正有此意。", "手边没钱。", "1", EventType.NORMAL, [-1, -1], [10, -10, 0, 0, 0, 0], [-5, 0, 0, 0, 0, 0]));
+    // allEvents.push(createStatsChangeEvent(49, "酒馆老板", CHARA_IMGS["酒馆老板"], "要不要来打工赚点钱。", "刚好手边有点紧。", "没时间浪费精力了。", "1", EventType.NORMAL, [-1, -1], [-10, 20, 0, 0, 0, 0], [5, 0, 0, 0, 0, 0]));
+
+    allEvents.push(createStatsChangeEvent("49-1", "酒馆老板", CHARA_IMGS["酒馆老板"], "要不要来打工赚点钱?", "刚好手边有点紧！。", "没时间浪费精力了。", "1", EventType.NORMAL,
+        [-1, -1], [-10, 20, 0, 0, 0, 0], [5, 0, 0, 0, 0, 0], null,
+        [buildBuff(BUFF.MESSAGE, "辛苦工作|你辛苦的帮酒馆老板打工，老板如约的付给你了钱。"), buildBuff(BUFF.COMPLETE, "50")],
+        null));
+
+
+    allEvents.push(createStatsChangeEvent("49-2", "酒馆老板", CHARA_IMGS["酒馆老板"], "要不要来打工赚点钱?", "刚好手边有点紧！。", "没时间浪费精力了。", "1", EventType.NORMAL,
+        [-1, -1], [-10, 30, 0, 0, 0, 0], [5, 0, 0, 0, 0, 0], null,
+        [buildBuff(BUFF.MESSAGE, "辛苦工作|你辛苦的帮酒馆老板打工，老板非常高兴，给你了不菲的回报。"), buildBuff(BUFF.COMPLETE, "50")],
+        null));
+
+    allEvents.push(createStatsChangeEvent("49-3", "酒馆老板", CHARA_IMGS["酒馆老板"], "要不要来打工赚点钱?", "刚好手边有点紧！。", "没时间浪费精力了。", "1", EventType.NORMAL,
+        [-1, -1], [-10, 10, 0, 0, 0, 0], [5, 0, 0, 0, 0, 0], null,
+        [buildBuff(BUFF.MESSAGE, "辛苦工作|你辛苦的帮酒馆老板打工，没想到小气的老板竟然克扣了你的工资。"), buildBuff(BUFF.COMPLETE, "50")],
+        null));
 
     //TODO: 和过关有关
     allEvents.push(createStatsChangeEvent("50", "酒馆老板", CHARA_IMGS["酒馆老板"], "上次旅行的法师落下了个法杖，你需要吗？", "看起来很不错，买了！。", "刚好手边有点紧。", "1", EventType.NORMAL,
