@@ -279,11 +279,63 @@ function createEvents() {
             null,
             [[10, 10, 1, 1, 1, 0], null],
             [[0, 0, 0, 0, 0, 10], [0, 0, 0, 0, 0, 10]],
-            [[buildBuff(BUFF.MESSAGE, "讨伐史莱姆|你消灭了邪恶的史莱姆！")], [buildBuff(BUFF.MESSAGE, "惨败史莱姆|你被史莱姆轻易打倒。"),buildBuff(BUFF.DEATH, 'dead-1')]],
+            [[buildBuff(BUFF.MESSAGE, "讨伐史莱姆|你消灭了邪恶的史莱姆！"),buildBuff(BUFF.TITLE, "欺负弱小|你在冒险中欺凌了弱小的史莱姆")], [buildBuff(BUFF.MESSAGE, "惨败史莱姆|你被史莱姆轻易打倒。"),buildBuff(BUFF.DEATH, 'dead-1')]],
             [[buildBuff(BUFF.MESSAGE, "放弃|你放过了弱小的史莱姆。")], null]
         )
     ));
 
+    allEvents.push(createAdvancedEvent(
+        new EventV2("311", "史莱姆", CHARA_IMGS["史莱姆"], "你发现了一个弱小的史莱姆！", null, null, null, EventType.NORMAL, "看上去有点弱小，放过它吧", "讨伐史莱姆！"),
+        new StartCondition(1, null, null),
+        new AdvancedEventAttrs(
+            () => player.power >= 0,
+            () => player.power >= 20,
+            [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
+            [[10, 10, 1, 1, 1, 0],null],
+            [[buildBuff(BUFF.MESSAGE, "放弃|你放过了弱小的史莱姆"),[buildBuff(BUFF.BUFF, "311-1")], null],
+            [[buildBuff(BUFF.MESSAGE, "讨伐史莱姆|你消灭了邪恶的史莱姆！"),buildBuff(BUFF.TITLE, "欺负弱小|你在冒险中欺凌了弱小的史莱姆")], [buildBuff(BUFF.MESSAGE, "惨败史莱姆|你被史莱姆轻易打倒。"),buildBuff(BUFF.DEATH, 'dead-1')]],
+        )
+    ));
+
+    allEvents.push(createAdvancedEvent(
+        new EventV2("311-1", "史莱姆", CHARA_IMGS["史莱姆"], "你发现了一个不怎么强的史莱姆！从它的眼中你似乎看到了求助的意味。", null, null, null, EventType.NORMAL, "帮助它。", "讨伐史莱姆！"),
+        new StartCondition(1, "311-1", null),
+        new AdvancedEventAttrs(
+            () => player.power >= 0,
+            () => player.power >= 30,
+            [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
+            [[10, 10, 1, 1, 1, 0],null],
+            [[buildBuff(BUFF.MESSAGE, "助人为乐|你选择帮助弱小的史莱姆"),[buildBuff(BUFF.NEXT, "311-2")], null]],
+                [[buildBuff(BUFF.MESSAGE, "讨伐史莱姆|你消灭了邪恶的史莱姆！"),buildBuff(BUFF.TITLE, "欺负弱小|你在冒险中欺凌了弱小的史莱姆")], [buildBuff(BUFF.MESSAGE, "惨败史莱姆|你被史莱姆轻易打倒。"),buildBuff(BUFF.DEATH, 'dead-1')]],
+        )
+    ));
+
+
+    allEvents.push(createAdvancedEvent(
+        new EventV2("311-2", "僵尸", CHARA_IMGS["僵尸"], "僵尸：呜噜呜噜?##!!你发现一群僵尸正在围攻史莱姆。", null, null, null, EventType.NORMAL, "邪恶的僵尸，接招吧！", "想想还是不要插手。"),
+        new StartCondition(1, "311-2", null),
+        new AdvancedEventAttrs(
+            () => player.agility >= 20 && player.power >= 20,
+            () => player.agility >= 5 && player.power >= 10,
+            [[20, 20, 5, 5, 5, 0], null],
+            [[-20, 20, 5, 5, 5, 0], [0, 0, 0, 0, 0, 10]],
+            [[buildBuff(BUFF.MESSAGE, "讨伐僵尸|你消灭了邪恶的僵尸！")], [buildBuff(BUFF.DEATH, 'dead-1')]],
+            [[buildBuff(BUFF.MESSAGE, "放弃|放弃攻击僵尸，但是它反身咬向你的脖子，你被匆忙迎敌,最终战胜了僵尸。"),buildBuff(BUFF.TITLE, "史莱姆之友|你是史莱姆的好朋友。"),buildBuff(BUFF.BUFF, "311-3")], [buildBuff(BUFF.MESSAGE, "放弃|你放弃攻击僵尸，但是它反身咬向你的脖子。"), buildBuff(BUFF.DEATH, 'dead-1')]]
+        )
+    ));
+
+    allEvents.push(createAdvancedEvent(
+        new EventV2("311-3", "史莱姆", CHARA_IMGS["史莱姆"], "史莱姆：呜噜呜噜?##!!你发现一个巨大的史莱姆王，从它的眼中你似乎看到了友情与信任。它似乎想让你选择什么？", null, null, null, EventType.NORMAL, "左边？", "右边？"),
+        new StartCondition(1, "311-3", null),
+        new AdvancedEventAttrs(
+            () => player.agility >= 0 && player.power >= 0,
+            () => player.agility >= 0 && player.power >= 0,
+            [[10, 10, 10, 10, 10, 10], null],
+            [[10, 10, 10, 10, 10, 10], null],
+            [[buildBuff(BUFF.MESSAGE, "石中圣剑|史莱姆引你到了一个遍布青苔的石头，上面插着一把闪光的圣剑！"),buildBuff(BUFF.NEXT, "78")], [buildBuff(BUFF.DEATH, 'dead-1')]],
+            [[buildBuff(BUFF.MESSAGE, "血色魔枪|史莱姆引你到了一个洞窟，里面有着一把奇异的长枪"),buildBuff(BUFF.NEXT, "79")], null]
+        )
+    ));
 
     allEvents.push(createAdvancedEvent(
         new EventV2("8-1", "僵尸", CHARA_IMGS["僵尸"], "呜噜呜噜?##!!", null, null, null, EventType.NORMAL, "邪恶的僵尸，接招吧！", "想想还是放过他吧。"),
