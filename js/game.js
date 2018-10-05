@@ -22,6 +22,24 @@ let soundMap = {};
 
 window.onload = function() {
 
+    // https://joaopereirawd.github.io/animatedModal.js/
+    $("#demo01").animatedModal({
+        animatedIn:'fadeIn',
+        animatedOut:'fadeOut',
+        animationDuration: '1.5s',
+        beforeOpen: function() {
+            console.log("The animation was called");
+        },
+        afterOpen: function() {
+            console.log("The animation is completed");
+        },
+        beforeClose: function() {
+            console.log("The animation was called");
+        },
+        afterClose: function() {
+            console.log("The animation is completed");
+        }
+    });
     initTronWeb();
     soundMap["page"] = new Howl({
         src: ['sound/page.webm', 'sound/page.wav'],
@@ -293,7 +311,7 @@ function createEvents() {
             [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
             [[10, 10, 1, 1, 1, 0],null],
             [[buildBuff(BUFF.MESSAGE, "放弃|你放过了弱小的史莱姆"),[buildBuff(BUFF.BUFF, "311-1")], null],
-            [[buildBuff(BUFF.MESSAGE, "讨伐史莱姆|你消灭了邪恶的史莱姆！"),buildBuff(BUFF.TITLE, "欺负弱小|你在冒险中欺凌了弱小的史莱姆")], [buildBuff(BUFF.MESSAGE, "惨败史莱姆|你被史莱姆轻易打倒。"),buildBuff(BUFF.DEATH, 'dead-1')]],
+            [[buildBuff(BUFF.MESSAGE, "讨伐史莱姆|你消灭了邪恶的史莱姆！"),buildBuff(BUFF.TITLE, "欺负弱小|你在冒险中欺凌了弱小的史莱姆")], [buildBuff(BUFF.MESSAGE, "惨败史莱姆|你被史莱姆轻易打倒。"),buildBuff(BUFF.DEATH, 'dead-1')]]]
         )
     ));
 

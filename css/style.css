@@ -814,3 +814,16 @@ p {
         opacity: 0;
     }
 }
+
+#animatedModal {
+    width: 100vw;
+    height: 100vh;
+    background: url("http://theartmad.com/wp-content/uploads/Dark-Grey-Texture-Wallpaper-5.jpg") no-repeat transparent center center fixed;
+    background-size: cover;
+    font-family: helvetica neue, helvetica, arial, sans-serif;
+    font-weight: 200;
+}
+/*.close-animatedModal {*/
+    /*width: 100vw;*/
+    /*height: 100vh;*/
+/*}*/

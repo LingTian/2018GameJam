@@ -7,6 +7,7 @@
     <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animsition/4.0.2/css/animsition.css">
     <link rel="stylesheet" href="node_modules/izitoast/dist/css/iziToast.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.0/animate.min.css">
     <link rel="stylesheet" href="css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -25,6 +26,21 @@
 
 <div class="notification-bot">
     Bot Notification
+</div>
+
+<!--Call your modal-->
+<a id="demo01" href="#animatedModal">DEMO01</a>
+
+<!--DEMO01-->
+<div id="animatedModal">
+    <!--THIS IS IMPORTANT! to close the modal, the class name has to match the name given on the ID  class="close-animatedModal" -->
+    <button class="close-animatedModal">
+        CLOSE MODAL
+    </button>
+
+    <div class="modal-content">
+        <!--Your modal content goes here-->
+    </div>
 </div>
 
 <div class="foreground">
@@ -83,6 +99,7 @@
 <script src='js/jquery.animate-colors-min.js'></script>
 <script src="node_modules/izitoast/dist/js/iziToast.js" type="text/javascript"></script>
 <script src="node_modules/howler/dist/howler.js" type="text/javascript"></script>
+<script src="js/animatedModal.min.js"></script>
 <script src="js/nebPay.js"></script>
 <script src="js/nebulas.js"></script>
 <script src="js/Genesis.js"></script>
