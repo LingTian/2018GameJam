@@ -310,8 +310,9 @@ function createEvents() {
             () => player.power >= 20,
             [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
             [[10, 10, 1, 1, 1, 0],null],
-            [[buildBuff(BUFF.MESSAGE, "放弃|你放过了弱小的史莱姆"),[buildBuff(BUFF.BUFF, "311-1")], null],
-            [[buildBuff(BUFF.MESSAGE, "讨伐史莱姆|你消灭了邪恶的史莱姆！"),buildBuff(BUFF.TITLE, "欺负弱小|你在冒险中欺凌了弱小的史莱姆")], [buildBuff(BUFF.MESSAGE, "惨败史莱姆|你被史莱姆轻易打倒。"),buildBuff(BUFF.DEATH, 'dead-1')]]]
+            [[buildBuff(BUFF.MESSAGE, "放弃|你放过了弱小的史莱姆"), buildBuff(BUFF.BUFF, "311-1")], null],
+            [[buildBuff(BUFF.MESSAGE, "讨伐史莱姆|你消灭了邪恶的史莱姆！"),buildBuff(BUFF.TITLE, "欺负弱小|你在冒险中欺凌了弱小的史莱姆")],
+                [buildBuff(BUFF.MESSAGE, "惨败史莱姆|你被史莱姆轻易打倒。"),buildBuff(BUFF.DEATH, 'dead-1')]]
         )
     ));
 
@@ -323,8 +324,8 @@ function createEvents() {
             () => player.power >= 30,
             [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
             [[10, 10, 1, 1, 1, 0],null],
-            [[buildBuff(BUFF.MESSAGE, "助人为乐|你选择帮助弱小的史莱姆"),[buildBuff(BUFF.NEXT, "311-2")], null]],
-                [[buildBuff(BUFF.MESSAGE, "讨伐史莱姆|你消灭了邪恶的史莱姆！"),buildBuff(BUFF.TITLE, "欺负弱小|你在冒险中欺凌了弱小的史莱姆")], [buildBuff(BUFF.MESSAGE, "惨败史莱姆|你被史莱姆轻易打倒。"),buildBuff(BUFF.DEATH, 'dead-1')]],
+            [[buildBuff(BUFF.MESSAGE, "助人为乐|你选择帮助弱小的史莱姆"),buildBuff(BUFF.NEXT, "311-2")], null],
+            [[buildBuff(BUFF.MESSAGE, "讨伐史莱姆|你消灭了邪恶的史莱姆！"),buildBuff(BUFF.TITLE, "欺负弱小|你在冒险中欺凌了弱小的史莱姆")], [buildBuff(BUFF.MESSAGE, "惨败史莱姆|你被史莱姆轻易打倒。"),buildBuff(BUFF.DEATH, 'dead-1')]],
         )
     ));
 
@@ -338,7 +339,8 @@ function createEvents() {
             [[20, 20, 5, 5, 5, 0], null],
             [[-20, 20, 5, 5, 5, 0], [0, 0, 0, 0, 0, 10]],
             [[buildBuff(BUFF.MESSAGE, "讨伐僵尸|你消灭了邪恶的僵尸！")], [buildBuff(BUFF.DEATH, 'dead-1')]],
-            [[buildBuff(BUFF.MESSAGE, "放弃|放弃攻击僵尸，但是它反身咬向你的脖子，你被匆忙迎敌,最终战胜了僵尸。"),buildBuff(BUFF.TITLE, "史莱姆之友|你是史莱姆的好朋友。"),buildBuff(BUFF.BUFF, "311-3")], [buildBuff(BUFF.MESSAGE, "放弃|你放弃攻击僵尸，但是它反身咬向你的脖子。"), buildBuff(BUFF.DEATH, 'dead-1')]]
+            [[buildBuff(BUFF.MESSAGE, "放弃|放弃攻击僵尸，但是它反身咬向你的脖子，你被匆忙迎敌,最终战胜了僵尸。"),buildBuff(BUFF.TITLE, "史莱姆之友|你是史莱姆的好朋友。"),buildBuff(BUFF.BUFF, "311-3")],
+                [buildBuff(BUFF.MESSAGE, "放弃|你放弃攻击僵尸，但是它反身咬向你的脖子。"), buildBuff(BUFF.DEATH, 'dead-1')]]
         )
     ));
 
@@ -458,7 +460,7 @@ function createEvents() {
             [[0, 50, 0, 0, 0, -20], null],
             [null, null],
             [[buildBuff(BUFF.TITLE, "偷窃者|你在冒险过程中偷了别人的东西")], [buildBuff(BUFF.NEXT, "27-1")]],
-            [[buildBuff(BUFF.MESSAGE, "不行。。|你放弃了偷窃")]]
+            [[buildBuff(BUFF.MESSAGE, "不行。。|你放弃了偷窃")], null]
         )
     ));
 
@@ -471,7 +473,7 @@ function createEvents() {
             [[-10, 50, 0, 0, 0, -50], [-20, -50, 0, 0, 0, -50]],
             [[10, -50, 0, 0, 0, 10]],
             [[buildBuff(BUFF.MESSAGE, "抢夺成功|你轻易的暴打了商人一顿，并且又搜出了一堆金币。"), buildBuff(BUFF.TITLE, "欺负弱小|你在冒险中欺凌了别人")], [buildBuff(BUFF.MESSAGE, "抢夺失败|没想到商人的力量出奇的大，你被商人暴打了一顿。")]],
-            [[buildBuff(BUFF.MESSAGE, "还是算了|你乖乖把钱还给了商人。")], null],
+            [[buildBuff(BUFF.MESSAGE, "还是算了|你乖乖把钱还给了商人。")], null]
         )
     ));
 
@@ -5959,7 +5961,6 @@ $(window).ready(function () {
             elevation: 300,
             when: {
                 turned: function (e, page) {
-                    this.duration(3000)
                     // let lastEvent = null;
                     // if (currentPage > 1 && currentEvents.length > 0) {
                     //     lastEvent = currentEvents.shift();
