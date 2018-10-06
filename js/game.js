@@ -180,7 +180,16 @@ const CHARA_IMGS = {
     "悬崖": "img/stage/cliff.png",
     "沼泽": "img/stage/swamp.png",
     "冰原": "img/stage/iceland-1.png",
-    "岩浆": "img/stage/volcano.png"
+    "岩浆": "img/stage/volcano.png",
+    "阿努比斯": "img/stage/boss-anubis.png",
+    "暗影牧师":"img/stage/boss-darkprist.png",
+    "炎魔":"img/stage/boss-firedeamon.png",
+    "九头蛇":"img/stage/boss-hydra.png",
+    "美杜莎":"img/stage/boss-medusa.png",
+    "女王":"img/stage/boss-queen.png",
+    "间谍":"img/stage/boss-spy.png",
+    "树魔":"img/stage/boss-tree.png",
+    "恶狼":"img/stage/boss-wolf.png"
 };
 
 // function convertToImmutableGenesisCharacter() {
