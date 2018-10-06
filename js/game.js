@@ -181,15 +181,15 @@ const CHARA_IMGS = {
     "沼泽": "img/stage/swamp.png",
     "冰原": "img/stage/iceland-1.png",
     "岩浆": "img/stage/volcano.png",
-    "阿努比斯": "img/stage/boss-anubis.png",
-    "暗影牧师":"img/stage/boss-darkprist.png",
-    "炎魔":"img/stage/boss-firedeamon.png",
-    "九头蛇":"img/stage/boss-hydra.png",
-    "美杜莎":"img/stage/boss-medusa.png",
-    "女王":"img/stage/boss-queen.png",
-    "间谍":"img/stage/boss-spy.png",
-    "树魔":"img/stage/boss-tree.png",
-    "恶狼":"img/stage/boss-wolf.png"
+    "阿努比斯": "img/chara/boss-anubis.png",
+    "暗影牧师":"img/chara/boss-darkprist.png",
+    "炎魔":"img/chara/boss-firedeamon.png",
+    "九头蛇":"img/chara/boss-hydra.png",
+    "美杜莎":"img/chara/boss-medusa.png",
+    "女王":"img/chara/boss-queen.png",
+    "间谍":"img/chara/boss-spy.png",
+    "树魔":"img/chara/boss-tree.png",
+    "恶狼":"img/chara/boss-wolf.png"
 };
 
 // function convertToImmutableGenesisCharacter() {
@@ -1188,8 +1188,8 @@ function createEvents() {
 
     //boss event
     createLevel1BossEvents(allEvents, 1);
-    createLevel1BossEvents(allEvents, 2);
-    createLevel1BossEvents(allEvents, 3);
+    createLevel2BossEvents(allEvents, 2);
+    createLevel3BossEvents(allEvents, 3);
     createLevel1BossEvents(allEvents, 4);
     createLevel1BossEvents(allEvents, 5);
     createLevel1BossEvents(allEvents, 6);
@@ -1342,9 +1342,9 @@ function createLevel1BossEvents(allEvents, level) {
 
     //boss example
     const id = "boss-" + level;
-    const name = "亚当(84757)";
+    const name = "阴影中的间谍";
     const boss = new Player(name, id);
-    const baseEvent = new EventV2(id, boss.name, CHARA_IMGS["亚当"], "看不清面孔的人向这边袭来。。", 1, null, null, EventType.BOSS, "赤手空拳搏斗", "力有不逮，暂时撤退。");
+    const baseEvent = new EventV2(id, boss.name, CHARA_IMGS["间谍"], "看不清面孔的人向这边袭来。。", 1, null, null, EventType.BOSS, "赤手空拳搏斗", "力有不逮，暂时撤退。");
 
     //TODO: 这个logic是错的= =！
     const preLogic = function (baseEvent) {
@@ -1372,10 +1372,93 @@ function createLevel1BossEvents(allEvents, level) {
     const rightLoss = id + "-loss";
 
     allEvents.push(createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallback, leftWin, leftLoss, rightWin, rightLoss));
-    allEvents.push(createStatsChangeEvent(id + "-win", "", CHARA_IMGS["亚当"], "（微笑）你赢了，你的力量比我强大，不过后面更难的试炼在等待着你。。。", "好吧", "。。。", "1", EventType.SUBSEQUENT, null,
+    allEvents.push(createStatsChangeEvent(id + "-win", "", CHARA_IMGS["间谍"], "（微笑）你醒了吗，你的力量比我强大，不过后面更难的试炼在等待着你。。。", "好吧", "。。。", "1", EventType.SUBSEQUENT, null,
         [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, STAGE_IDS[level])], [buildBuff(BUFF.NEXT, STAGE_IDS[level])]));
-    allEvents.push(createStatsChangeEvent(id + "-loss", "", CHARA_IMGS["亚当"], "就差一点，或许, 有武器就能赢了。。", "好吧", "", "1", EventType.SUBSEQUENT, null,
+    allEvents.push(createStatsChangeEvent(id + "-loss", "", CHARA_IMGS["间谍"], "就差一点，你还是继续沉睡吧。。", "好吧", "", "1", EventType.SUBSEQUENT, null,
         [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第一关的试炼")], [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第一关的试炼")]));
+}
+
+
+function createLevel2BossEvents(allEvents, level) {
+
+    //boss example
+    const id = "boss-" + level;
+    const name = "恶狼";
+    const boss = new Player(name, id);
+    const baseEvent = new EventV2(id, boss.name, CHARA_IMGS["恶狼"], "一个黑影猛的袭来。。", 1, null, null, EventType.BOSS, "赤手空拳搏斗", "力有不逮，暂时撤退。");
+
+    //TODO: 这个logic是错的= =！
+    const preLogic = function (baseEvent) {
+        if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
+            baseEvent.choice1 = "使用不知何时得到的巨剑";
+        }
+    };
+
+    const leftCallback = () => {
+        if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
+            boss.power -= 50;
+        }
+    };
+
+    //Do nothing
+    const rightCallback = () => {
+    };
+    const winCheck = () => {
+        return player.power >= boss.power;
+    };
+
+    const leftWin = id + "-win";
+    const rightWin = id + "-win";
+    const leftLoss = id + "-loss";
+    const rightLoss = id + "-loss";
+
+    allEvents.push(createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallback, leftWin, leftLoss, rightWin, rightLoss));
+    allEvents.push(createStatsChangeEvent(id + "-win", "", CHARA_IMGS["恶狼"], "没想到你又醒了，亦或你一直是醒着的。。。", "好吧", "。。。", "1", EventType.SUBSEQUENT, null,
+        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, STAGE_IDS[level])], [buildBuff(BUFF.NEXT, STAGE_IDS[level])]));
+    allEvents.push(createStatsChangeEvent(id + "-loss", "", CHARA_IMGS["恶狼"], "就差一点，不过就此沉睡吧。。", "好吧", "", "1", EventType.SUBSEQUENT, null,
+        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第二关的试炼")], [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第一关的试炼")]));
+}
+
+
+
+function createLevel3BossEvents(allEvents, level) {
+
+    //boss example
+    const id = "boss-" + level;
+    const name = "暗影牧师";
+    const boss = new Player(name, id);
+    const baseEvent = new EventV2(id, boss.name, CHARA_IMGS["暗影牧师"], "城堡的尽头，一个黑暗中的身影伫立着。。", 1, null, null, EventType.BOSS, "赤手空拳搏斗", "力有不逮，暂时撤退。");
+
+    //TODO: 这个logic是错的= =！
+    const preLogic = function (baseEvent) {
+        if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
+            baseEvent.choice1 = "使用不知何时得到的巨剑";
+        }
+    };
+
+    const leftCallback = () => {
+        if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
+            boss.power -= 50;
+        }
+    };
+
+    //Do nothing
+    const rightCallback = () => {
+    };
+    const winCheck = () => {
+        return player.power >= boss.power;
+    };
+
+    const leftWin = id + "-win";
+    const rightWin = id + "-win";
+    const leftLoss = id + "-loss";
+    const rightLoss = id + "-loss";
+
+    allEvents.push(createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallback, leftWin, leftLoss, rightWin, rightLoss));
+    allEvents.push(createStatsChangeEvent(id + "-win", "", CHARA_IMGS["暗影牧师"], "没想到你又醒了，亦或你一直是醒着的。。。", "好吧", "。。。", "1", EventType.SUBSEQUENT, null,
+        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, STAGE_IDS[level])], [buildBuff(BUFF.NEXT, STAGE_IDS[level])]));
+    allEvents.push(createStatsChangeEvent(id + "-loss", "", CHARA_IMGS["暗影牧师"], "就差一点，不过就此沉睡吧。。", "好吧", "", "1", EventType.SUBSEQUENT, null,
+        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第三关的试炼")], [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第一关的试炼")]));
 }
 
 function createLevel9BossEvents(allEvents) {
