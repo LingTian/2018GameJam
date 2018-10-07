@@ -1368,40 +1368,122 @@ function createLevel1BossEvents(allEvents, level) {
 
     //boss example
     const id = "boss-" + level;
-    const name = "阴影中的间谍";
-    const boss = new Player(name, id);
-    const baseEvent = new EventV2(id, boss.name, CHARA_IMGS["间谍"], "看不清面孔的人向这边袭来。。", 1, null, null, EventType.BOSS, "赤手空拳搏斗", "力有不逮，暂时撤退。");
+    const name = "阴影中的神秘人";
+    allEvents.push(createAdvancedEvent(
+        new EventV2(id, "阴影中的神秘人", CHARA_IMGS["间谍"], "阴影中走出一个神秘人，他在黑暗之中凝视着你。", null, null, null, EventType.NORMAL, "朝他点头示意。", "低头走开。"),
+        new StartCondition(1, null, null),
+        new AdvancedEventAttrs(
+            null,
+            null,
+            [[0, 0, 0, 0, 0, 0], null],
+            [[0, 0, 0, 0, 0, 0], null],
+            [[buildBuff(BUFF.MESSAGE, "点头示意|你朝着神秘人轻轻点了一下头"),buildBuff(BUFF.NEXT, "boss1-1")], null],
+            [[buildBuff(BUFF.MESSAGE, "低头走开|你你漠视了神秘人低头走开"),buildBuff(BUFF.NEXT, "boss1-1")], null]
+        )
+    ));
 
-    //TODO: 这个logic是错的= =！
-    const preLogic = function (baseEvent) {
-        if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
-            baseEvent.choice1 = "使用不知何时得到的巨剑";
-        }
-    };
+    allEvents.push(createAdvancedEvent(
+        new EventV2('boss1-1', "阴影中的神秘人", CHARA_IMGS["间谍"], "神秘人声音低沉地说到：没想到你又苏醒了。", null, null, null, EventType.NORMAL, "你是不是认错人了？", "我沉睡了很久吗？"),
+        new StartCondition(1, 'boss1-1', null),
+        new AdvancedEventAttrs(
+            null,
+            null,
+            [[0, 0, 0, 0, 10, 0], null],
+            [[10, 0, 0, 0, 0, 0], null],
+            [[buildBuff(BUFF.MESSAGE, "思考|你思考着神秘人的话，但是并不相信他。"),buildBuff(BUFF.NEXT, "boss1-2")], null],
+            [[buildBuff(BUFF.MESSAGE, "探索|你想要从知道更多之前的故事。"),buildBuff(BUFF.NEXT, "boss1-2")], null]
+        )
+    ));
 
-    const leftCallback = () => {
-        if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
-            boss.power -= 50;
-        }
-    };
+    allEvents.push(createAdvancedEvent(
+        new EventV2('boss1-2', "阴影中的神秘人", CHARA_IMGS["间谍"], "神秘人仿佛笑了一下，说道：我不会认错你的。你还记得故事是怎么开始的吗？", null, null, null, EventType.NORMAL, "记得。", "忘记了。"),
+        new StartCondition(1, 'boss1-2', null),
+        new AdvancedEventAttrs(
+            null,
+            null,
+            [[0, 0, 10, 10, 10, 0], null],
+            [[20, 0, 0, 0, 0, 0], null],
+            [[buildBuff(BUFF.MESSAGE, "坚信|你的语气坚定，回忆起了很多之前的事情。"),buildBuff(BUFF.NEXT, "boss1-3")], null],
+            [[buildBuff(BUFF.MESSAGE, "迷惘|你并不记得之前发生了什么，似乎有些迷惘。"),buildBuff(BUFF.NEXT, "boss2-1")], null]
+        )
+    ));
 
-    //Do nothing
-    const rightCallback = () => {
-    };
-    const winCheck = () => {
-        return player.power >= boss.power;
-    };
+    allEvents.push(createAdvancedEvent(
+        new EventV2('boss1-3', "阴影中的神秘人", CHARA_IMGS["间谍"], "神秘人递过来一把黝黑的匕首。神秘人：这是你的东西，希望这次它能帮上你。", null, null, null, EventType.NORMAL, "谢谢。", "谢谢。"),
+        new StartCondition(1, 'boss1-3', null),
+        new AdvancedEventAttrs(
+            null,
+            null,
+            [[10, 0, 0, 0, 0, 0], null],
+            [[10, 0, 0, 0, 0, 0], null],
+            [[buildBuff(BUFF.MESSAGE, "神秘的匕首|匕首通体黝黑，仿佛在黑夜之中的勾魂使者。"),buildBuff(BUFF.BUFF, 'dagger'),buildBuff(BUFF.NEXT, STAGE_IDS[level])], null],
+            [[buildBuff(BUFF.MESSAGE, "神秘的匕首|匕首通体黝黑，仿佛在黑夜之中的勾魂使者。"),buildBuff(BUFF.BUFF, 'dagger'),buildBuff(BUFF.NEXT, STAGE_IDS[level])], null]
+        )
+    ));
 
-    const leftWin = id + "-win";
-    const rightWin = id + "-win";
-    const leftLoss = id + "-loss";
-    const rightLoss = id + "-loss";
 
-    allEvents.push(createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallback, leftWin, leftLoss, rightWin, rightLoss));
-    allEvents.push(createStatsChangeEvent(id + "-win", "", CHARA_IMGS["间谍"], "（微笑）你醒了吗，你的力量比我强大，不过后面更难的试炼在等待着你。。。", "好吧", "。。。", "1", EventType.SUBSEQUENT, null,
-        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, STAGE_IDS[level])], [buildBuff(BUFF.NEXT, STAGE_IDS[level])]));
-    allEvents.push(createStatsChangeEvent(id + "-loss", "", CHARA_IMGS["间谍"], "就差一点，你还是继续沉睡吧。。", "好吧", "", "1", EventType.SUBSEQUENT, null,
-        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第一关的试炼")], [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第一关的试炼")]));
+    allEvents.push(createAdvancedEvent(
+        new EventV2('boss2-1', "阴影中的神秘人", CHARA_IMGS["间谍"], "神秘人叹了口气：又是一次新的开始。", null, null, null, EventType.NORMAL, "什么开始？", "我是谁？"),
+        new StartCondition(1, 'boss2-1', null),
+        new AdvancedEventAttrs(
+            null,
+            null,
+            [[0, 0, 0, 0, 0, 0], null],
+            [[0, 0, 0, 0, 0, 0], null],
+            [[buildBuff(BUFF.MESSAGE, "轮回的故事|这也许是个轮回的故事。"),buildBuff(BUFF.NEXT, "boss2-2")], null],
+            [[buildBuff(BUFF.MESSAGE, "我是谁|是终结，是开始，亦或是一场新生？"),buildBuff(BUFF.NEXT, "boss2-2")], null]
+        )
+    ));
+
+    allEvents.push(createAdvancedEvent(
+        new EventV2('boss2-2', "阴影中的神秘人", CHARA_IMGS["间谍"], "神秘人：我只说一次，希望这次你能明白。这是一个交织的世界，无数的故事，文化，宗教编织而成，而观看这个世界的你我，亦不过是被观察者。那么这次你会如何选择呢？", null, null, null, EventType.NORMAL, "什么？", "什么？"),
+        new StartCondition(1, 'boss2-2', null),
+        new AdvancedEventAttrs(
+            null,
+            null,
+            [[0, 0, 0, 0, 0, 0], null],
+            [[0, 0, 0, 0, 0, 0], null],
+            [[buildBuff(BUFF.MESSAGE, "离去|身影渐行渐远，直到消失在阴影中。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])], null],
+            [[buildBuff(BUFF.MESSAGE, "离去|身影渐行渐远，直到消失在阴影中。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])], null]
+        )
+    ));
+
+    // const boss = new Player(name, id);
+    // const baseEvent = new EventV2(id, boss.name, CHARA_IMGS["神秘人"], "看不清面孔的人向这边袭来。。", 1, null, null, EventType.BOSS, "赤手空拳搏斗", "力有不逮，暂时撤退。");
+    //
+    // //TODO: 这个logic是错的= =！
+    // const preLogic = function (baseEvent) {
+    //     if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
+    //         baseEvent.choice1 = "使用不知何时得到的巨剑";
+    //     }
+    // };
+    //
+    // const leftCallback = () => {
+    //     if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
+    //         boss.power -= 50;
+    //     }
+    // };
+    //
+    // //Do nothing
+    // const rightCallback = () => {
+    // };
+    // const winCheck = () => {
+    //     return player.power >= boss.power;
+    // };
+    //
+    // const leftWin = id + "-win";
+    // const rightWin = id + "-win";
+    // const leftLoss = id + "-loss";
+    // const rightLoss = id + "-loss";
+    //
+    // allEvents.push(createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallback, leftWin, leftLoss, rightWin, rightLoss));
+    // allEvents.push(createStatsChangeEvent(id + "-win", "", CHARA_IMGS["间谍"], "（微笑）你醒了吗，你的力量比我强大，不过后面更难的试炼在等待着你。。。", "好吧", "。。。", "1", EventType.SUBSEQUENT, null,
+    //     [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, STAGE_IDS[level])], [buildBuff(BUFF.NEXT, STAGE_IDS[level])]));
+    // allEvents.push(createStatsChangeEvent(id + "-loss", "", CHARA_IMGS["间谍"], "就差一点，你还是继续沉睡吧。。", "好吧", "", "1", EventType.SUBSEQUENT, null,
+    //     [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第一关的试炼")], [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第一关的试炼")]));
+
+
+
 }
 
 
