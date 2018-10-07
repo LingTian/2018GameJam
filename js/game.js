@@ -1499,47 +1499,107 @@ function createLevel1BossEvents(allEvents) {
     //     [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第一关的试炼")], [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第一关的试炼")]));
 }
 
-
 function createLevel2BossEvents(allEvents) {
 
-    const level = "2";
-    const id = "boss-" + level;
+    //boss example
+    const level = "1";
+    const id = "boss-wolf-" + level;
     const name = "恶狼";
-    const boss = new Player(name, id);
-    const baseEvent = new EventV2(id, boss.name, CHARA_IMGS["恶狼"], "一个黑影猛的袭来。。", 1, null, null, EventType.BOSS, "赤手空拳搏斗", "力有不逮，暂时撤退。");
+    allEvents.push(createAdvancedEvent(
+        new EventV2(id, "恶狼", CHARA_IMGS["恶狼"], "地窖中深处一双猩红色的眼睛，骤然出现。", null, null, null, EventType.NORMAL, "那是什么？", "那是什么？"),
+        new StartCondition(1, null, null),
+        new AdvancedEventAttrs(
+            null,
+            null,
+            [[-20, 0, 0, 0, 0, 0], null],
+            [[-20, 0, 0, 0, 0, 0], null],
+            [[buildBuff(BUFF.MESSAGE, "电光石火|猩红色的眼睛突然拉近距离，转瞬间你被扑倒在地。"),buildBuff(BUFF.NEXT, "boss-wolf-1-1")], null],
+            [[buildBuff(BUFF.MESSAGE, "电光石火|猩红色的眼睛突然拉近距离，转瞬间你被扑倒在地。"),buildBuff(BUFF.NEXT, "boss-wolf-1-1")], null]
+        )
+    ));
 
-    //TODO: 这个logic是错的= =！
-    const preLogic = function (baseEvent) {
-        if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
-            baseEvent.choice1 = "使用不知何时得到的巨剑";
-        }
-    };
+    allEvents.push(createAdvancedEvent(
+        new EventV2('boss-wolf-1-1', "血色双眼的恶狼", CHARA_IMGS["恶狼"], "恶狼把你扑倒在地，你只感觉闷热的吐息不断涌向脸上。", null, null, null, EventType.SUBSEQUENT, "努力挣脱。", "掀翻恶狼。"),
+        new StartCondition(1, "boss-wolf-1-1", null),
+        new AdvancedEventAttrs(
+            () => player.agility >= 50,
+            () => player.power >= 50,
+            [[0, 0, 0, 0, 0, 0], null],
+            [[0, 0, 0, 0, 0, 0], null],
+            [[buildBuff(BUFF.MESSAGE, "身手敏捷|你机敏的闪过了恶狼的撕咬，一个翻身就与恶狼拉开了距离。"),buildBuff(BUFF.NEXT, "boss-wolf-1-2")], [buildBuff(BUFF.MESSAGE, "难逃一死|你尝试躲过恶狼的撕咬，但是恶狼迅速的咬住了你的脖子。"),buildBuff(BUFF.DEATH, 'dead-1')]],
+            [[buildBuff(BUFF.MESSAGE, "以力破巧|你凭着过人的臂力，钳制住恶狼的脖子，一把把他甩飞出去。"),buildBuff(BUFF.NEXT, "boss-wolf-1-2")], [buildBuff(BUFF.MESSAGE, "难逃一死|你尝试掀翻恶狼，但是恶狼硬扭过了身子，狠狠地咬住了你的脖子。"),buildBuff(BUFF.DEATH, 'dead-1')]]
+        )
+    ));
 
-    const leftCallback = () => {
-        if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
-            boss.power -= 50;
-        }
-    };
+    allEvents.push(createAdvancedEvent(
+        new EventV2('boss-wolf-1-2', "恶狼", CHARA_IMGS["恶狼"], "恶狼徘徊在远处的阴影间。", null, null, null, EventType.SUBSEQUENT, "使用武技。", "施展法术。"),
+        new StartCondition(1, null, null),
+        new AdvancedEventAttrs(
+            () => player.power >= 50,
+            () => player.intelligence >= 50,
+            [[-20, 0, 0, 0, 0, 0], null],
+            [[-20, 0, 0, 0, 0, 0], null],
+            [[buildBuff(BUFF.MESSAGE, "冲锋|你瞄准恶狼，使用出了冲锋。"),buildBuff(BUFF.NEXT, "boss-wolf-2-1")], [buildBuff(BUFF.MESSAGE, "难逃一死|你尝试冲锋，但是羸弱的冲击并没有造成什么伤害，恶狼狠狠地咬住了你的脖子。"),buildBuff(BUFF.DEATH, 'dead-1')]],
+            [[buildBuff(BUFF.MESSAGE, "奥术|你瞄准恶狼，开始施展魔法。"),buildBuff(BUFF.NEXT, "boss-wolf-2-2")], [buildBuff(BUFF.MESSAGE, "难逃一死|你尝试施展法术，但是匮乏的法力值并没有吟唱出法术，恶狼迅速的咬住了你的脖子。"),buildBuff(BUFF.DEATH, 'dead-1')]]
+        )
+    ));
 
-    //Do nothing
-    const rightCallback = () => {
-    };
-    const winCheck = () => {
-        return player.power >= boss.power;
-    };
 
-    const leftWin = id + "-win";
-    const rightWin = id + "-win";
-    const leftLoss = id + "-loss";
-    const rightLoss = id + "-loss";
+    allEvents.push(createAdvancedEvent(
+        new EventV2('boss-wolf-2-1', "恶狼", CHARA_IMGS["恶狼"], "恶狼左右摇摆，想要躲避你的冲锋。", null, null, null, EventType.SUBSEQUENT, "屏气凝神。", "屏气凝神。"),
+        new StartCondition(1, null, null),
+        new AdvancedEventAttrs(
+            () => player.agility >= 50,
+            () => player.agility >= 50,
+            [[0, 0, 0, 0, 0, 0], null],
+            [[0, 0, 0, 0, 0, 0], null],
+            [[buildBuff(BUFF.MESSAGE, "正中靶心|你精准的撞击到了恶狼，直接把它轰飞了出去。"),buildBuff(BUFF.NEXT,"boss-wolf-3-1")], [buildBuff(BUFF.MESSAGE, "痛失良机|恶狼躲过了你的攻击，并且趁机咬住了你的脖子。"),buildBuff(BUFF.DEATH, 'dead-1')]],
+            [[buildBuff(BUFF.MESSAGE, "正中靶心|你精准的撞击到了恶狼，直接把它轰飞了出去。"),buildBuff(BUFF.NEXT,"boss-wolf-3-1")], [buildBuff(BUFF.MESSAGE, "痛失良机|恶狼躲过了你的攻击，并且趁机咬住了你的脖子。"),buildBuff(BUFF.DEATH, 'dead-1')]]
+        )
+    ));
 
-    allEvents.push(createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallback, leftWin, leftLoss, rightWin, rightLoss));
-    allEvents.push(createStatsChangeEvent(id + "-win", "", CHARA_IMGS["恶狼"], "没想到你又醒了，亦或你一直是醒着的。。。", "好吧", "。。。", "1", EventType.SUBSEQUENT, null,
-        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, STAGE_IDS[level])], [buildBuff(BUFF.NEXT, STAGE_IDS[level])]));
-    allEvents.push(createStatsChangeEvent(id + "-loss", "", CHARA_IMGS["恶狼"], "就差一点，不过就此沉睡吧。。", "好吧", "", "1", EventType.SUBSEQUENT, null,
-        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第二关的试炼")], [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第一关的试炼")]));
+    allEvents.push(createAdvancedEvent(
+        new EventV2('boss-wolf-3-1', "恶狼", CHARA_IMGS["恶狼"], "恶狼在远处喘息着，似乎受伤了。", null, null, null, EventType.SUBSEQUENT, "趁胜追击。", "慢慢退去。"),
+        new StartCondition(1, null, null),
+        new AdvancedEventAttrs(
+            null,
+            null,
+            [[0, 0, 0, 0, 0, 0], null],
+            [[0, 0, 0, 0, 0, 0], null],
+            [[buildBuff(BUFF.MESSAGE, "正中靶心|你精准的撞击到了恶狼，直接把它轰飞了出去。"),buildBuff(BUFF.NEXT,"boss-wolf-3-1")], [buildBuff(BUFF.MESSAGE, "痛失良机|恶狼躲过了你的攻击，并且趁机咬住了你的脖子。"),buildBuff(BUFF.DEATH, 'dead-1')]],
+            [[buildBuff(BUFF.MESSAGE, "正中靶心|你精准的撞击到了恶狼，直接把它轰飞了出去。"),buildBuff(BUFF.NEXT,"boss-wolf-3-1")], [buildBuff(BUFF.MESSAGE, "痛失良机|恶狼躲过了你的攻击，并且趁机咬住了你的脖子。"),buildBuff(BUFF.DEATH, 'dead-1')]]
+        )
+    ));
+
+
+
+    // allEvents.push(createAdvancedEvent(
+    //     new EventV2('boss2-1', "阴影中的神秘人", CHARA_IMGS["间谍"], "神秘人叹了口气：又是一次新的开始。", null, null, null, EventType.SUBSEQUENT, "什么开始？", "我是谁？"),
+    //     new StartCondition(1, null, null),
+    //     new AdvancedEventAttrs(
+    //         null,
+    //         null,
+    //         [[0, 0, 0, 0, 0, 0], null],
+    //         [[0, 0, 0, 0, 0, 0], null],
+    //         [[buildBuff(BUFF.MESSAGE, "轮回的故事|这也许是个轮回的故事。"),buildBuff(BUFF.NEXT, "boss2-2")], null],
+    //         [[buildBuff(BUFF.MESSAGE, "我是谁|是终结，是开始，亦或是一场新生？"),buildBuff(BUFF.NEXT, "boss2-2")], null]
+    //     )
+    // ));
+
+    // allEvents.push(createAdvancedEvent(
+    //     new EventV2('boss2-2', "阴影中的神秘人", CHARA_IMGS["间谍"],
+    //         "神秘人：我只说一次，希望这次你能明白。这是一个交织的世界，无数的故事，文化，宗教编织而成，而观看这个世界的你我，亦不过是被观察者。那么这次你会如何选择呢？", null, null, null, EventType.SUBSEQUENT, "什么？", "什么？"),
+    //     new StartCondition(1, null, null),
+    //     new AdvancedEventAttrs(
+    //         null,
+    //         null,
+    //         [[0, 0, 0, 0, 0, 0], null],
+    //         [[0, 0, 0, 0, 0, 0], null],
+    //         [[buildBuff(BUFF.MESSAGE, "离去|身影渐行渐远，直到消失在阴影中。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])], null],
+    //         [[buildBuff(BUFF.MESSAGE, "离去|身影渐行渐远，直到消失在阴影中。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])], null]
+    //     )
+    // ));
 }
-
 
 
 function createLevel3BossEvents(allEvents) {
