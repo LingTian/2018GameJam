@@ -189,6 +189,7 @@ const CHARA_IMGS = {
     "女王":"img/chara/boss-queen.png",
     "间谍":"img/chara/boss-spy.png",
     "古树之神":"img/chara/boss-tree.png",
+    "树人小兵":"img/chara/samllTree.png",
     "恶狼":"img/chara/boss-wolf.png"
 };
 
@@ -1718,83 +1719,204 @@ function createLevel5BossEvents(allEvents) {
         new StartCondition(2, null, null),
         new AdvancedEventAttrsV2(
             () => {
-                if (player.goodness <= 25) return 0;
+                if (player.goodness <= 25) return 2;
                 if (player.goodness <= 50) return 1;
-                if (player.goodness <= 75) return 2;
-                if (player.goodness <= 100) return 3;
+                if (player.goodness <= 100) return 0;
             },
             [
-                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-1-1`)])],
-                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-1-2`)])],
-                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-1-3`)])],
-                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-1-4`)])]
+                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-1`)])],
+                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-2`)])],
+                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-3`)])],
             ]
         ),
         new AdvancedEventAttrsV2(
             () => {
-                if (player.goodness <= 25) return 0;
+                if (player.goodness <= 25) return 2;
                 if (player.goodness <= 50) return 1;
-                if (player.goodness <= 75) return 2;
-                if (player.goodness <= 100) return 3;
+                if (player.goodness <= 100) return 0;
             },
             [
-                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-1-1`)])],
-                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-1-2`)])],
-                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-1-3`)])],
-                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-1-4`)])]
+                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-1`)])],
+                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-2`)])],
+                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-3`)])],
             ]
         ))
     );
 
-    allEvents.push(createAdvancedEvent(
-        new EventV2(`${id}-1-1`, "和蔼的大树", CHARA_IMGS["古树之神"], "你是个善良的人，大自然会保佑你。", null, null, null, EventType.NORMAL, "多谢！", "谢谢，不过我独来独往，并不需要。"),
-        new StartCondition(1, null, null),
-        new AdvancedEventAttrs(
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-1`, "和蔼的大树", CHARA_IMGS["古树之神"], "你是个善良的人，大自然会保佑你。", null, null, null, EventType.SUBSEQUENT, "多谢！", "谢谢，不过我独来独往，并不需要。"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
             null,
+            [
+                [randomStageChangeCallback1(50, 50), buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "大自然的祝福|善有善报，你活得了大自然的祝福"), buildBuff(BUFF.MESSAGE, "大自然的祝福|随机属性+50。")])],
+            ]
+        ),
+        new AdvancedEventAttrsV2(
             null,
-            [[10, 0, 0, 0, 10, 0], null],
-            [[10, 0, 0, 0, 0, 0], null],
-            [[buildBuff(BUFF.MESSAGE, "debug|和蔼的大树。"), buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "大自然的祝福|善有善报，你活得了大自然的祝福")], null],
-            [[buildBuff(BUFF.MESSAGE, "debug|和蔼的大树。"), buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "大自然的祝福|善有善报，你活得了大自然的祝福")], null],
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.MESSAGE, "放弃|你放弃了古树给你的祝福。")])],
+            ]
         )
     ));
 
-    allEvents.push(createAdvancedEvent(
-        new EventV2(`${id}-1-2`, "神秘的大树", CHARA_IMGS["古树之神"], "我觉得你并被大奸大恶之人，不过你依旧要经过一个小小的试炼。。。", null, null, null, EventType.NORMAL, "所以呢？", "神秘的大树？"),
-        new StartCondition(1, null, null),
-        new AdvancedEventAttrs(
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-2`, "神秘的大树", CHARA_IMGS["古树之神"], "我觉得你并被大奸大恶之人，不过你依旧要经过一个小小的试炼。。。", null, null, null, EventType.SUBSEQUENT, "什么试炼？", "什么试炼？"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
             null,
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-2-1`)])],
+            ]
+        ),
+        new AdvancedEventAttrsV2(
             null,
-            [[0, 0, 0, 0, 10, 0], null],
-            [[10, 0, 0, 0, 0, 0], null],
-            [[buildBuff(BUFF.MESSAGE, "debug|神秘的大树。"), buildBuff(BUFF.NEXT, STAGE_IDS[level])], null],
-            [[buildBuff(BUFF.MESSAGE, "debug|神秘的大树。"), buildBuff(BUFF.NEXT, STAGE_IDS[level])], null]
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-2-1`)])],
+            ]
         )
     ));
 
-    allEvents.push(createAdvancedEvent(
-        new EventV2(`${id}-1-3`, "不安的大树", CHARA_IMGS["古树之神"], "不安的大树。", null, null, null, EventType.NORMAL, "不安的大树？", "不安的大树？"),
-        new StartCondition(1, null, null),
-        new AdvancedEventAttrs(
-            null,
-            null,
-            [[0, 0, 0, 0, 10, 0], null],
-            [[10, 0, 0, 0, 0, 0], null],
-            [[buildBuff(BUFF.MESSAGE, "debug|不安的大树。"), buildBuff(BUFF.NEXT, STAGE_IDS[level])], null],
-            [[buildBuff(BUFF.MESSAGE, "debug|不安的大树。"), buildBuff(BUFF.NEXT, STAGE_IDS[level])], null]
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-2-1`, "树人小兵", CHARA_IMGS["树人小兵"], "这是大自然对你的试炼, 放马过来吧！", null, null, null, EventType.SUBSEQUENT, "使用魔法", "使用兵器"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (player.intelligence >= 30) return 0;
+                return 1;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-2-2`), buildBuff(BUFF.MESSAGE, "你的魔法击破了树人的防御！")])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-death-1`)])],
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (player.power >= 40) return 0;
+                return 1;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-2-2`), buildBuff(BUFF.MESSAGE, "你的武器击破了树人的防御！")])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-death-1`)])],
+            ]
         )
     ));
 
-    allEvents.push(createAdvancedEvent(
-        new EventV2(`${id}-1-4`, "愤怒的大树", CHARA_IMGS["古树之神"], "愤怒的大树。", null, null, null, EventType.NORMAL, "愤怒的大树？", "愤怒的大树？"),
-        new StartCondition(1, null, null),
-        new AdvancedEventAttrs(
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-2-2`, "神秘的大树", CHARA_IMGS["古树之神"], "你完成了试炼，你可以离开这片森林了。。。", null, null, null, EventType.SUBSEQUENT, "好的。。。", "好的。。。"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
             null,
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "大自然的试炼|完成了大自然的试炼")])],
+            ]
+        ),
+        new AdvancedEventAttrsV2(
             null,
-            [[0, 0, 0, 0, 10, 0], null],
-            [[10, 0, 0, 0, 0, 0], null],
-            [[buildBuff(BUFF.MESSAGE, "debug|愤怒的大树。"), buildBuff(BUFF.NEXT, STAGE_IDS[level])], null],
-            [[buildBuff(BUFF.MESSAGE, "debug|愤怒的大树。"), buildBuff(BUFF.NEXT, STAGE_IDS[level])], null]
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "大自然的试炼|完成了大自然的试炼")])],
+            ]
+        )
+    ));
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-3`, "愤怒的大树", CHARA_IMGS["古树之神"], "我不喜欢你身上的邪气，你不可以离开这片森林，接受大自然的愤怒吧！", null, null, null, EventType.SUBSEQUENT, "什么？", "什么？"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-3-1`)])],
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-3-1`)])],
+            ]
+        )
+    ));
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-3-1`, "树人小兵", CHARA_IMGS["树人小兵"], "接受大自然的制裁吧！", null, null, null, EventType.SUBSEQUENT, "使用魔法", "使用兵器"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (player.intelligence >= 35) return 0;
+                return 1;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-3-2`)])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-death-1`)])],
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (player.power >= 45) return 0;
+                return 1;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-3-2`)])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-death-1`)])],
+            ]
+        )
+    ));
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-death-1`, "自然之怒", CHARA_IMGS["树人小兵"], "你的攻击没有奏效，却被树人的魔法击穿了头颅！", null, null, null, EventType.SUBSEQUENT, "。。。", "。。。"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [buffCallback([buildBuff(BUFF.DEATH, "'dead-1'")])],
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [buffCallback([buildBuff(BUFF.DEATH, "'dead-1'")])],
+            ]
+        )
+    ));
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-3-2`, "愤怒的大树", CHARA_IMGS["古树之神"], "有两下子，不过你是过不了我这一关的！", null, null, null, EventType.SUBSEQUENT, "使用魔法", "使用兵器"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (player.intelligence >= 50) return 0;
+                return 1;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level])])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-death-2`)])],
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (player.power >= 60) return 0;
+                return 1;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level])])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-death-2`)])],
+            ]
+        )
+    ));
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-death-1`, "自然之盛怒", CHARA_IMGS["古树之神"], "大树的枝叶疯狂生长，将你包围起来，你无法动弹。。。", null, null, null, EventType.SUBSEQUENT, "就这样结束了吗？", "就这样结束了吗？"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [buffCallback([buildBuff(BUFF.DEATH, "'dead-4'")])],
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [buffCallback([buildBuff(BUFF.DEATH, "'dead-4'")])],
+            ]
         )
     ));
 }
@@ -2075,6 +2197,18 @@ function statChangeCallback(statsChange) {
         };
     }
     return noop;
+}
+
+function randomStageChangeCallback1(min, max) {
+    return () => {
+        const attr = ATTRS[Math.floor(Math.random() * ATTRS.length)];
+        player[attr] += randomIntFromInterval(min, max);
+    };
+}
+
+function randomIntFromInterval(min, max) // min and max included
+{
+    return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 function buffCallback(buffs) {
