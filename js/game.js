@@ -1545,6 +1545,20 @@ function createLevel2BossEvents(allEvents) {
         )
     ));
 
+    allEvents.push(createAdvancedEvent(
+        new EventV2('boss-wolf-2-2', "恶狼", CHARA_IMGS["恶狼"], "恶狼疾如闪电地扑了上来。", null, null, null, EventType.SUBSEQUENT, "屏气凝神。", "屏气凝神。"),
+        new StartCondition(1, null, null),
+        new AdvancedEventAttrs(
+            //这里想写个随机 如果敏捷低于50 有一半几率miss
+            () => player.agility >= 50,
+            () => player.agility >= 50,
+            [[0, 0, 0, 0, 0, 0], [-20, 0, 0, 0, 0, 0]],
+            [[0, 0, 0, 0, 0, 0], [-20, 0, 0, 0, 0, 0]],
+            [[buildBuff(BUFF.MESSAGE, "快速施法|关键时刻，你的法术仿佛无需吟唱一般直接施展了出来，漫天的火雨照亮了整个地窖。"),buildBuff(BUFF.NEXT,"boss-wolf-3-1")], [buildBuff(BUFF.MESSAGE, "一击毙命|恶狼直接咬断了你的脖子。"),buildBuff(BUFF.DEATH, 'dead-1')]],
+            [[buildBuff(BUFF.MESSAGE, "快速施法|关键时刻，你的法术仿佛无需吟唱一般直接施展了出来，漫天的火雨照亮了整个地窖。"),buildBuff(BUFF.NEXT,"boss-wolf-3-1")], [buildBuff(BUFF.MESSAGE, "一击毙命|恶狼直接咬断了你的脖子。"),buildBuff(BUFF.DEATH, 'dead-1')]]
+        )
+    ));
+
 
     allEvents.push(createAdvancedEvent(
         new EventV2('boss-wolf-2-1', "恶狼", CHARA_IMGS["恶狼"], "恶狼左右摇摆，想要躲避你的冲锋。", null, null, null, EventType.SUBSEQUENT, "屏气凝神。", "屏气凝神。"),
@@ -1582,38 +1596,25 @@ function createLevel2BossEvents(allEvents) {
             () => player.intelligence >= 80 ,
             [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
             [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
-            [[buildBuff(BUFF.TITLE, "长驱直入|你趁精力旺盛，一把把恶狼打倒在地。"),buildBuff(BUFF.NEXT,"boss-wolf-3-1")], [buildBuff(BUFF.TITLE, "见好就收|缓缓退去，明智的选择。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])]],
-            [[buildBuff(BUFF.TITLE, "诱敌深入|你把握机会，追击受伤的敌人。"),buildBuff(BUFF.NEXT,"boss-wolf-3-1")], [buildBuff(BUFF.TITLE, "见好就收|缓缓退去，明智的选择。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])]]
+            [[buildBuff(BUFF.MESSAGE, "长驱直入|你趁精力旺盛，一把把恶狼打倒在地。"),buildBuff(BUFF.NEXT,"boss-wolf-3-1")], [buildBuff(BUFF.MESSAGE, "痛失良机|恶狼躲过了你的攻击，并且趁机咬伤了你的脖子。"),buildBuff(BUFF.NEXT, 'boss-wolf-1-2')]],
+            [[buildBuff(BUFF.MESSAGE, "诱敌深入|你卖了个破绽，躲过了恶狼的攻击，并一把把它砍翻在地上。"),buildBuff(BUFF.NEXT,"boss-wolf-3-1")], [buildBuff(BUFF.MESSAGE, "痛失良机|恶狼没有上当，直接咬伤了你的脖子。"),buildBuff(BUFF.NEXT, 'boss-wolf-1-2')]]
         )
     ));
 
 
-    // allEvents.push(createAdvancedEvent(
-    //     new EventV2('boss2-1', "阴影中的神秘人", CHARA_IMGS["间谍"], "神秘人叹了口气：又是一次新的开始。", null, null, null, EventType.SUBSEQUENT, "什么开始？", "我是谁？"),
-    //     new StartCondition(1, null, null),
-    //     new AdvancedEventAttrs(
-    //         null,
-    //         null,
-    //         [[0, 0, 0, 0, 0, 0], null],
-    //         [[0, 0, 0, 0, 0, 0], null],
-    //         [[buildBuff(BUFF.MESSAGE, "轮回的故事|这也许是个轮回的故事。"),buildBuff(BUFF.NEXT, "boss2-2")], null],
-    //         [[buildBuff(BUFF.MESSAGE, "我是谁|是终结，是开始，亦或是一场新生？"),buildBuff(BUFF.NEXT, "boss2-2")], null]
-    //     )
-    // ));
+    allEvents.push(createAdvancedEvent(
+        new EventV2('boss-wolf-4-1', "恶狼", CHARA_IMGS["恶狼"], "恶狼在地上奄奄一息。", null, null, null, EventType.SUBSEQUENT, "杀死它。", "放过它。"),
+        new StartCondition(1, null, null),
+        new AdvancedEventAttrs(
+            null,
+            null ,
+            [[0, 0, 0, 0, 0, 0], null],
+            [[0, 0, 0, 0, 0, 50], null],
+            [[buildBuff(BUFF.TITLE, "屠杀殆尽|你毫不留情的击杀了恶狼。"),buildBuff(BUFF.BUFF, '狼牙'),buildBuff(BUFF.MESSAGE, '狼牙|你获得了一颗带血的狼牙'),buildBuff(BUFF.NEXT, STAGE_IDS[level])],null],
+            [[buildBuff(BUFF.TITLE, "放下屠刀|你放弃了击杀恶狼，缓缓离去。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])], null]
+        )
+    ));
 
-    // allEvents.push(createAdvancedEvent(
-    //     new EventV2('boss2-2', "阴影中的神秘人", CHARA_IMGS["间谍"],
-    //         "神秘人：我只说一次，希望这次你能明白。这是一个交织的世界，无数的故事，文化，宗教编织而成，而观看这个世界的你我，亦不过是被观察者。那么这次你会如何选择呢？", null, null, null, EventType.SUBSEQUENT, "什么？", "什么？"),
-    //     new StartCondition(1, null, null),
-    //     new AdvancedEventAttrs(
-    //         null,
-    //         null,
-    //         [[0, 0, 0, 0, 0, 0], null],
-    //         [[0, 0, 0, 0, 0, 0], null],
-    //         [[buildBuff(BUFF.MESSAGE, "离去|身影渐行渐远，直到消失在阴影中。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])], null],
-    //         [[buildBuff(BUFF.MESSAGE, "离去|身影渐行渐远，直到消失在阴影中。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])], null]
-    //     )
-    // ));
 }
 
 
