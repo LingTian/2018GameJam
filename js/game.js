@@ -1620,51 +1620,212 @@ function createLevel2BossEvents(allEvents) {
 
 function createLevel3BossEvents(allEvents) {
 
-    //boss example
     const level = "3";
     const id = "boss-" + level;
-    const name = "暗影牧师";
+    const name = "古树之神";
     const boss = new Player(name, id);
-    const baseEvent = new EventV2(id, boss.name, CHARA_IMGS["暗影牧师"], "城堡的尽头，一个黑暗中的身影伫立着。。", 1, null, null, EventType.BOSS, "赤手空拳搏斗", "力有不逮，暂时撤退。");
 
-    //TODO: 这个logic是错的= =！
-    const preLogic = function (baseEvent) {
-        if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
-            baseEvent.choice1 = "使用不知何时得到的巨剑";
-        }
-    };
 
-    const leftCallback = () => {
-        if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
-            boss.power -= 50;
-        }
-    };
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}`, "黑暗中一个身影", CHARA_IMGS["暗影牧师"], "城堡的尽头，一个黑暗中的身影伫立着。。。", null, null, null, EventType.BOSS, "尝试对话。", "趁机偷袭。"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (player.gold <= 25) return 2;
+                if (player.gold <= 50) return 1;
+                if (player.gold <= 100) return 0;
+            },
+            [
+                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-1`)])],
+                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-2`)])],
+                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-3`)])],
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+           null,
+            [
+                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-1-1`)])],
+                ]
+        ))
+    );
 
-    //Do nothing
-    const rightCallback = () => {
-    };
-    const winCheck = () => {
-        return player.power >= boss.power;
-    };
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-1`, "狡猾的暗影牧师", CHARA_IMGS["暗影牧师"], "你看起来没什么钱，如果你答应我从你身上抽取一些力量，我就放你过去。", null, null, null, EventType.SUBSEQUENT, "看上去有点强，要不答应他吧。", "岂有妥协的道理，看招。"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [randomStageChangeCallback2(50, 50), buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "邪恶仪式|你答应了暗影牧师的要求，感觉身上一部分力量被剥夺了"), buildBuff(BUFF.MESSAGE, "邪恶仪式|随机属性-50。")])],
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, '${id}-1-1'), buildBuff(BUFF.MESSAGE, "先发制人|你奋起攻向暗影牧师，抢得了先机。"),buildBuff(BUFF.TITLE, "先发制人|先手优势。")])],
+            ]
+        )
+    ));
 
-    const leftWin = id + "-win";
-    const rightWin = id + "-win";
-    const leftLoss = id + "-loss";
-    const rightLoss = id + "-loss";
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-2`, "狡猾的暗影牧师", CHARA_IMGS["暗影牧师"], "你看起来没什么钱，如果你答应我从你身上抽取一些精力，我就放你过去。。。", null, null, null, EventType.SUBSEQUENT, "看上去有点强，要不答应他吧。", "岂有妥协的道理，看招。"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [statChangeCallback([-50, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "邪恶仪式|你答应了暗影牧师的要求，感觉身上一部分精力被剥夺了"), buildBuff(BUFF.MESSAGE, "邪恶仪式|精力-50。")])],
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, '${id}-1-1'), buildBuff(BUFF.MESSAGE, "先发制人|你奋起攻向暗影牧师，抢得了先机。"),buildBuff(BUFF.TITLE, "先发制人|先手优势。")])],
+            ]
+        )
+    ));
 
-    allEvents.push(createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallback, leftWin, leftLoss, rightWin, rightLoss));
-    allEvents.push(createStatsChangeEvent(id + "-win", "", CHARA_IMGS["暗影牧师"], "没想到你又醒了，亦或你一直是醒着的。。。", "好吧", "。。。", "1", EventType.SUBSEQUENT, null,
-        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, STAGE_IDS[level])], [buildBuff(BUFF.NEXT, STAGE_IDS[level])]));
-    allEvents.push(createStatsChangeEvent(id + "-loss", "", CHARA_IMGS["暗影牧师"], "就差一点，不过就此沉睡吧。。", "好吧", "", "1", EventType.SUBSEQUENT, null,
-        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第三关的试炼")], [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第一关的试炼")]));
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-3`, "狡猾的暗影牧师", CHARA_IMGS["暗影牧师"], "你看起挺富，如果你答应我给我一大笔钱，我就放你过去。。。", null, null, null, EventType.SUBSEQUENT, "看上去有点强，要不答应他吧。", "岂有妥协的道理，看招。"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [statChangeCallback([0, -100, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "用钱开路|有钱能使鬼推磨"), buildBuff(BUFF.MESSAGE, "用钱开路|金钱-50。")])],
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, '${id}-1-1'), buildBuff(BUFF.MESSAGE, "先发制人|你奋起攻向暗影牧师，抢得了先机。"),buildBuff(BUFF.TITLE, "先发制人|先手优势。")])],
+            ]
+        )
+    ));
+
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-1-1`, "受伤的暗影牧师", CHARA_IMGS["暗影牧师"], "被你打得措手不及的暗影牧师狼狈不堪", null, null, null, EventType.SUBSEQUENT, "使用冲锋", "投掷匕首"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            () => {
+                if ((player.power >= 80) && (player.agility>=80)) return 0;
+                if (randomIntFromInterval(0,10)>=5) return 0;
+                return 1;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-2-2`), buildBuff(BUFF.MESSAGE, "正中靶心|你准确的命中暗影牧师，直接把他撞飞出去！")])],
+                [statChangeCallback([-20, 0, 0, 0, 0, 0]),buffCallback([buildBuff(BUFF.NEXT, `${id}-1-1`), buildBuff(BUFF.MESSAGE, "痛失良机|你并没有击中暗影牧师，反而被他邪恶的咒语抽取了部分力量！")])]
+
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            () => {
+                if ((player.power >= 40) && (player.agility>=150) && randomIntFromInterval(0,10)>=5 ) return 0;
+                if ((player.power >= 40) && (player.agility>=120)) return 1;
+                return 2;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]),buildBuff(BUFF.TITLE, "一击毙命|直接斩杀目标"),buildBuff(BUFF.MESSAGE, "一击毙命|你准确的命中暗影牧师的咽喉，直接斩杀了他"),buildBuff(BUFF.MESSAGE, "离去|你收拾完残局后离开了城堡")])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-2-2`), buildBuff(BUFF.MESSAGE, "正中靶心|你准确的命中暗影牧师，刺伤了他的肩膀！")])],
+                [statChangeCallback([-20, 0, 0, 0, 0, 0]),buffCallback([buildBuff(BUFF.NEXT, `${id}-1-1`), buildBuff(BUFF.MESSAGE, "痛失良机|你并没有击中暗影牧师，反而被他邪恶的咒语抽取了部分力量！")])],
+
+            ]
+        )
+    ));
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-2-2`, "受伤的暗影牧师", CHARA_IMGS["暗影牧师"], "暗影牧师努力挣扎起来开始吟唱。", null, null, null, EventType.SUBSEQUENT, "寻找掩体，伺机反击。", "吟唱；反射魔法"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            () => {
+                if ((player.agility>=80)  && randomIntFromInterval(0,10)>=2) return 0;
+                return 1;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-3-3`), buildBuff(BUFF.MESSAGE, "刺杀|你灵巧地躲过暗影牧师的法术，反身犹如闪电一般刺穿了他的喉咙！")])],
+                [statChangeCallback([-50, 0, 0, 0, 0, 0]),buffCallback([buildBuff(BUFF.NEXT, `${id}-1-1`), buildBuff(BUFF.MESSAGE, "躲闪不及|你被法术轰击的连连后退")])]
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            () => {
+                if ((player.intelligence >= 150) && randomIntFromInterval(0,10)>=2 ) return 0;
+                return 1;
+                },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-3-3`),buildBuff(BUFF.TITLE, "反射魔法|反弹了法术的伤害"),buildBuff(BUFF.MESSAGE, "反射魔法|你准确的反弹了暗影牧师的魔法，他被魔法轰击的仿佛破布一般")])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-1-1`), buildBuff(BUFF.MESSAGE, "躲闪不及|你被法术轰击的连连后退")])]
+            ]
+        )
+    ));
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-3-3`, "濒死的暗影牧师", CHARA_IMGS["暗影牧师"], "。。。", null, null, null, EventType.SUBSEQUENT, "搜索一番。。。", "离去。。。"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (randomIntFromInterval(0,10)>=2 ) return 0;
+                return 1;
+            },
+            [
+                [statChangeCallback([-10, 0, 0, 0, 0, 0]),buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "一无所获|你搜索了一番一无所获")])],
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "神秘字条|XXXXX"),buildBuff(BUFF.MESSAGE, "神秘字条|你搜索了到了一串神秘的数字")])],
+            ]
+        )
+    ));
+
 }
+
+//
+// function createLevel3BossEvents(allEvents) {
+//
+//     //boss example
+//     const level = "3";
+//     const id = "boss-" + level;
+//     const name = "暗影牧师";
+//     const boss = new Player(name, id);
+//     const baseEvent = new EventV2(id, boss.name, CHARA_IMGS["暗影牧师"], "城堡的尽头，一个黑暗中的身影伫立着。。", 1, null, null, EventType.BOSS, "赤手空拳搏斗", "力有不逮，暂时撤退。");
+//
+//     //TODO: 这个logic是错的= =！
+//     const preLogic = function (baseEvent) {
+//         if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
+//             baseEvent.choice1 = "使用不知何时得到的巨剑";
+//         }
+//     };
+//
+//     const leftCallback = () => {
+//         if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
+//             boss.power -= 50;
+//         }
+//     };
+//
+//     //Do nothing
+//     const rightCallback = () => {
+//     };
+//     const winCheck = () => {
+//         return player.power >= boss.power;
+//     };
+//
+//     const leftWin = id + "-win";
+//     const rightWin = id + "-win";
+//     const leftLoss = id + "-loss";
+//     const rightLoss = id + "-loss";
+//
+//     allEvents.push(createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallback, leftWin, leftLoss, rightWin, rightLoss));
+//     allEvents.push(createStatsChangeEvent(id + "-win", "", CHARA_IMGS["暗影牧师"], "没想到你又醒了，亦或你一直是醒着的。。。", "好吧", "。。。", "1", EventType.SUBSEQUENT, null,
+//         [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, STAGE_IDS[level])], [buildBuff(BUFF.NEXT, STAGE_IDS[level])]));
+//     allEvents.push(createStatsChangeEvent(id + "-loss", "", CHARA_IMGS["暗影牧师"], "就差一点，不过就此沉睡吧。。", "好吧", "", "1", EventType.SUBSEQUENT, null,
+//         [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第三关的试炼")], [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第一关的试炼")]));
+// }
 
 
 function createLevel4BossEvents(allEvents) {
 
     const level = "4";
     const id = "boss-" + level;
-    const name = "暗影牧师";
+    const name = "阿努比斯";
     const boss = new Player(name, id);
     const baseEvent = new EventV2(id, boss.name, CHARA_IMGS["阿努比斯"], "洞窟的深处，猩红色的眼睛正在凝视着你。。", 1, null, null, EventType.BOSS, "赤手空拳搏斗", "力有不逮，暂时撤退。");
 
@@ -1787,7 +1948,7 @@ function createLevel5BossEvents(allEvents) {
                 return 1;
             },
             [
-                [buffCallback([buildBuff(BUFF.NEXT, `${id}-2-2`), buildBuff(BUFF.MESSAGE, "你的魔法击破了树人的防御！")])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-2-2`), buildBuff(BUFF.MESSAGE, "魔法伤害|你的魔法击破了树人的防御！")])],
                 [buffCallback([buildBuff(BUFF.NEXT, `${id}-death-1`)])],
             ]
         ),
@@ -1797,7 +1958,7 @@ function createLevel5BossEvents(allEvents) {
                 return 1;
             },
             [
-                [buffCallback([buildBuff(BUFF.NEXT, `${id}-2-2`), buildBuff(BUFF.MESSAGE, "你的武器击破了树人的防御！")])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-2-2`), buildBuff(BUFF.MESSAGE, "物理伤害|你的武器击破了树人的防御！")])],
                 [buffCallback([buildBuff(BUFF.NEXT, `${id}-death-1`)])],
             ]
         )
@@ -2199,8 +2360,15 @@ function statChangeCallback(statsChange) {
     }
     return noop;
 }
-
+//random add
 function randomStageChangeCallback1(min, max) {
+    return () => {
+        const attr = ATTRS[Math.floor(Math.random() * ATTRS.length)];
+        player[attr] += randomIntFromInterval(min, max);
+    };
+}
+//random minus
+function randomStageChangeCallback2(min, max) {
     return () => {
         const attr = ATTRS[Math.floor(Math.random() * ATTRS.length)];
         player[attr] += randomIntFromInterval(min, max);
