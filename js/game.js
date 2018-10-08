@@ -1307,9 +1307,9 @@ class AdvancedEventAttrs {
 }
 
 class AdvancedEventAttrsV2 {
-    constructor(condition, changes) {
+    constructor(condition, callBackSeqs) {
         this.condition = condition;
-        this.changes = changes;
+        this.callBackSeqs = callBackSeqs;
     }
 }
 
@@ -1724,10 +1724,10 @@ function createLevel5BossEvents(allEvents) {
                 if (player.goodness <= 100) return 3;
             },
             [
-                new Change([0, 0, 0, 0, 0, 0], [buildBuff(BUFF.NEXT, `${id}-1-1`)]),
-                new Change([0, 0, 0, 0, 0, 0], [buildBuff(BUFF.NEXT, `${id}-1-2`)]),
-                new Change([0, 0, 0, 0, 0, 0], [buildBuff(BUFF.NEXT, `${id}-1-3`)]),
-                new Change([0, 0, 0, 0, 0, 0], [buildBuff(BUFF.NEXT, `${id}-1-4`)])
+                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-1-1`)])],
+                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-1-2`)])],
+                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-1-3`)])],
+                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-1-4`)])]
             ]
         ),
         new AdvancedEventAttrsV2(
@@ -1738,30 +1738,30 @@ function createLevel5BossEvents(allEvents) {
                 if (player.goodness <= 100) return 3;
             },
             [
-                new Change([0, 0, 0, 0, 0, 0], [buildBuff(BUFF.NEXT, `${id}-1-1`)]),
-                new Change([0, 0, 0, 0, 0, 0], [buildBuff(BUFF.NEXT, `${id}-1-2`)]),
-                new Change([0, 0, 0, 0, 0, 0], [buildBuff(BUFF.NEXT, `${id}-1-3`)]),
-                new Change([0, 0, 0, 0, 0, 0], [buildBuff(BUFF.NEXT, `${id}-1-4`)])
+                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-1-1`)])],
+                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-1-2`)])],
+                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-1-3`)])],
+                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-1-4`)])]
             ]
         ))
     );
 
     allEvents.push(createAdvancedEvent(
-        new EventV2(`${id}-1-1`, "和蔼的大树", CHARA_IMGS["古树之神"], "和蔼的大树。", null, null, null, EventType.NORMAL, "和蔼的大树？", "和蔼的大树？"),
-        new StartCondition(1, 'boss1-1', null),
+        new EventV2(`${id}-1-1`, "和蔼的大树", CHARA_IMGS["古树之神"], "你是个善良的人，大自然会保佑你。", null, null, null, EventType.NORMAL, "多谢！", "谢谢，不过我独来独往，并不需要。"),
+        new StartCondition(1, null, null),
         new AdvancedEventAttrs(
             null,
             null,
-            [[0, 0, 0, 0, 10, 0], null],
+            [[10, 0, 0, 0, 10, 0], null],
             [[10, 0, 0, 0, 0, 0], null],
-            [[buildBuff(BUFF.MESSAGE, "debug|和蔼的大树。"), buildBuff(BUFF.NEXT, STAGE_IDS[level])], null],
-            [[buildBuff(BUFF.MESSAGE, "debug|和蔼的大树。"), buildBuff(BUFF.NEXT, STAGE_IDS[level])], null]
+            [[buildBuff(BUFF.MESSAGE, "debug|和蔼的大树。"), buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "大自然的祝福|善有善报，你活得了大自然的祝福")], null],
+            [[buildBuff(BUFF.MESSAGE, "debug|和蔼的大树。"), buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "大自然的祝福|善有善报，你活得了大自然的祝福")], null],
         )
     ));
 
     allEvents.push(createAdvancedEvent(
-        new EventV2(`${id}-1-2`, "神秘的大树", CHARA_IMGS["古树之神"], "神秘的大树。", null, null, null, EventType.NORMAL, "神秘的大树？", "神秘的大树？"),
-        new StartCondition(1, 'boss1-1', null),
+        new EventV2(`${id}-1-2`, "神秘的大树", CHARA_IMGS["古树之神"], "我觉得你并被大奸大恶之人，不过你依旧要经过一个小小的试炼。。。", null, null, null, EventType.NORMAL, "所以呢？", "神秘的大树？"),
+        new StartCondition(1, null, null),
         new AdvancedEventAttrs(
             null,
             null,
@@ -1774,7 +1774,7 @@ function createLevel5BossEvents(allEvents) {
 
     allEvents.push(createAdvancedEvent(
         new EventV2(`${id}-1-3`, "不安的大树", CHARA_IMGS["古树之神"], "不安的大树。", null, null, null, EventType.NORMAL, "不安的大树？", "不安的大树？"),
-        new StartCondition(1, 'boss1-1', null),
+        new StartCondition(1, null, null),
         new AdvancedEventAttrs(
             null,
             null,
@@ -1787,7 +1787,7 @@ function createLevel5BossEvents(allEvents) {
 
     allEvents.push(createAdvancedEvent(
         new EventV2(`${id}-1-4`, "愤怒的大树", CHARA_IMGS["古树之神"], "愤怒的大树。", null, null, null, EventType.NORMAL, "愤怒的大树？", "愤怒的大树？"),
-        new StartCondition(1, 'boss1-1', null),
+        new StartCondition(1, null, null),
         new AdvancedEventAttrs(
             null,
             null,
@@ -2053,16 +2053,43 @@ function createAdvancedEventV2(baseEvent, startCondition, v2AdvancedEventAttrs1,
     return new EventV2(baseEvent.id, baseEvent.name, baseEvent.img, baseEvent.line,
         startCondition.startStage, startCondition.startAchievement, startCondition.startBuff, baseEvent.eventType,
         new Choice(baseEvent.id, baseEvent.choice1,
-            createStatsBuffEffectV2(baseEvent.id, v2AdvancedEventAttrs1.condition, v2AdvancedEventAttrs2.changes)
+            createAdvancedEffect(baseEvent.id, v2AdvancedEventAttrs1.condition, v2AdvancedEventAttrs1.callBackSeqs)
         ),
         new Choice(baseEvent.id, baseEvent.choice2,
-            createStatsBuffEffectV2(baseEvent.id, v2AdvancedEventAttrs2.condition, v2AdvancedEventAttrs2.changes)
+            createAdvancedEffect(baseEvent.id, v2AdvancedEventAttrs2.condition, v2AdvancedEventAttrs2.callBackSeqs)
         ),
         null);
 }
 
-function createStatsBuffEffectV2(eventId, conditionCheck, changeArr) {
-    const callBack = function () {
+function noop(){}
+
+function statChangeCallback(statsChange) {
+    if (statsChange !== undefined && statsChange !== null) {
+        return () => {
+            player.spirit += statsChange[0];
+            player.gold += statsChange[1];
+            player.power += statsChange[2];
+            player.agility += statsChange[3];
+            player.intelligence += statsChange[4];
+            player.goodness += statsChange[5];
+        };
+    }
+    return noop;
+}
+
+function buffCallback(buffs) {
+    if (buffs !== undefined && buffs !== null) {
+        return () => {
+            buffs.forEach((buff) => {
+                player.buffSet.add(buff)
+            });
+        }
+    }
+    return noop;
+}
+
+function createAdvancedEffect(eventId, conditionCheck, callBackSeqs) {
+    const outerCallBack = function () {
 
         let checkPass = 0;
         if (conditionCheck !== null && conditionCheck !== undefined) {
@@ -2070,28 +2097,22 @@ function createStatsBuffEffectV2(eventId, conditionCheck, changeArr) {
         }
 
         let idx = 0;
-        changeArr.forEach(
-            (change) => {
+        callBackSeqs.forEach(
+            (callBackSeq) => {
+                console.error("callBackSeq:");
+                console.error(callBackSeq);
                 if (checkPass === idx) {
-                    if (change.statsChange !== undefined && change.statsChange !== null) {
-                        player.spirit += change.statsChange[0];
-                        player.gold += change.statsChange[1];
-                        player.power += change.statsChange[2];
-                        player.agility += change.statsChange[3];
-                        player.intelligence += change.statsChange[4];
-                        player.goodness += change.statsChange[5];
-                    }
-                    if (change.buffs !== undefined && change.buffs !== null) {
-                        change.buffs.forEach((buff) => {
-                            player.buffSet.add(buff)
-                        });
-                    }
+                    callBackSeq.forEach(
+                        (callBack) => {
+                            callBack();
+                        }
+                    )
                 }
                 idx++;
             }
         );
     };
-    return new EffectV2(eventId, EffectType.STATS_CHANGE, callBack);
+    return new EffectV2(eventId, EffectType.STATS_CHANGE, outerCallBack);
 }
 
 // function to create a event with both effects are stats change event
@@ -2764,6 +2785,9 @@ function updateScene() {
     const winEvent = checkWin();
 
     let nextEvent = nextEventId === null ? getNextEvent() : eventMap[nextEventId];
+
+    console.warn("nextEvent: ");
+    console.warn(nextEvent);
 
     //Resolve the buff of the event
     if (nextEvent.startBuff !== undefined && nextEvent.startBuff !== null) {
