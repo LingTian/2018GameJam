@@ -1549,12 +1549,13 @@ function createLevel2BossEvents(allEvents) {
         new EventV2('boss-wolf-2-1', "恶狼", CHARA_IMGS["恶狼"], "恶狼左右摇摆，想要躲避你的冲锋。", null, null, null, EventType.SUBSEQUENT, "屏气凝神。", "屏气凝神。"),
         new StartCondition(1, null, null),
         new AdvancedEventAttrs(
+            //这里想写个随机 如果敏捷低于50 有一半几率miss
             () => player.agility >= 50,
             () => player.agility >= 50,
-            [[0, 0, 0, 0, 0, 0], null],
-            [[0, 0, 0, 0, 0, 0], null],
-            [[buildBuff(BUFF.MESSAGE, "正中靶心|你精准的撞击到了恶狼，直接把它轰飞了出去。"),buildBuff(BUFF.NEXT,"boss-wolf-3-1")], [buildBuff(BUFF.MESSAGE, "痛失良机|恶狼躲过了你的攻击，并且趁机咬住了你的脖子。"),buildBuff(BUFF.DEATH, 'dead-1')]],
-            [[buildBuff(BUFF.MESSAGE, "正中靶心|你精准的撞击到了恶狼，直接把它轰飞了出去。"),buildBuff(BUFF.NEXT,"boss-wolf-3-1")], [buildBuff(BUFF.MESSAGE, "痛失良机|恶狼躲过了你的攻击，并且趁机咬住了你的脖子。"),buildBuff(BUFF.DEATH, 'dead-1')]]
+            [[0, 0, 0, 0, 0, 0], [-20, 0, 0, 0, 0, 0]],
+            [[0, 0, 0, 0, 0, 0], [-20, 0, 0, 0, 0, 0]],
+            [[buildBuff(BUFF.MESSAGE, "正中靶心|你精准的撞击到了恶狼，直接把它轰飞了出去。"),buildBuff(BUFF.NEXT,"boss-wolf-3-1")], [buildBuff(BUFF.MESSAGE, "痛失良机|恶狼躲过了你的攻击，并且趁机咬伤了你的脖子。"),buildBuff(BUFF.NEXT, 'boss-wolf-1-2')]],
+            [[buildBuff(BUFF.MESSAGE, "正中靶心|你精准的撞击到了恶狼，直接把它轰飞了出去。"),buildBuff(BUFF.NEXT,"boss-wolf-3-1")], [buildBuff(BUFF.MESSAGE, "痛失良机|恶狼躲过了你的攻击，并且趁机咬伤了你的脖子。"),buildBuff(BUFF.NEXT, 'boss-wolf-1-2')]]
         )
     ));
 
@@ -1564,13 +1565,26 @@ function createLevel2BossEvents(allEvents) {
         new AdvancedEventAttrs(
             null,
             null,
-            [[0, 0, 0, 0, 0, 0], null],
-            [[0, 0, 0, 0, 0, 0], null],
-            [[buildBuff(BUFF.MESSAGE, "正中靶心|你精准的撞击到了恶狼，直接把它轰飞了出去。"),buildBuff(BUFF.NEXT,"boss-wolf-3-1")], [buildBuff(BUFF.MESSAGE, "痛失良机|恶狼躲过了你的攻击，并且趁机咬住了你的脖子。"),buildBuff(BUFF.DEATH, 'dead-1')]],
-            [[buildBuff(BUFF.MESSAGE, "正中靶心|你精准的撞击到了恶狼，直接把它轰飞了出去。"),buildBuff(BUFF.NEXT,"boss-wolf-3-1")], [buildBuff(BUFF.MESSAGE, "痛失良机|恶狼躲过了你的攻击，并且趁机咬住了你的脖子。"),buildBuff(BUFF.DEATH, 'dead-1')]]
+            [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
+            [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
+            [[buildBuff(BUFF.TITLE, "趁胜追击|你把握机会，追击受伤的敌人。"),buildBuff(BUFF.NEXT,"boss-wolf-4-1")], [buildBuff(BUFF.TITLE, "见好就收|缓缓退去，明智的选择。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])]],
+            [[buildBuff(BUFF.TITLE, "趁胜追击|你把握机会，追击受伤的敌人。"),buildBuff(BUFF.NEXT,"boss-wolf-4-1")], [buildBuff(BUFF.TITLE, "见好就收|缓缓退去，明智的选择。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])]]
         )
     ));
 
+
+    allEvents.push(createAdvancedEvent(
+        new EventV2('boss-wolf-4-1', "恶狼", CHARA_IMGS["恶狼"], "恶狼猩红色的眼睛凝视着你，似乎做好了殊死一搏的准备。", null, null, null, EventType.SUBSEQUENT, "长驱直入。", "诱敌深入。"),
+        new StartCondition(1, null, null),
+        new AdvancedEventAttrs(
+            () => player.spirit >= 50,
+            () => player.intelligence >= 80 ,
+            [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
+            [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
+            [[buildBuff(BUFF.TITLE, "长驱直入|你趁精力旺盛，一把把恶狼打倒在地。"),buildBuff(BUFF.NEXT,"boss-wolf-3-1")], [buildBuff(BUFF.TITLE, "见好就收|缓缓退去，明智的选择。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])]],
+            [[buildBuff(BUFF.TITLE, "诱敌深入|你把握机会，追击受伤的敌人。"),buildBuff(BUFF.NEXT,"boss-wolf-3-1")], [buildBuff(BUFF.TITLE, "见好就收|缓缓退去，明智的选择。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])]]
+        )
+    ));
 
 
     // allEvents.push(createAdvancedEvent(
