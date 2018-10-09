@@ -1771,7 +1771,7 @@ function createLevel3BossEvents(allEvents) {
         new AdvancedEventAttrsV2(
             null,
             [
-                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "神秘字条|XXXXX"),buildBuff(BUFF.MESSAGE, "神秘字条|你搜索了到了一串神秘的数字")])],
+                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "神秘字条|cluexxx"),buildBuff(BUFF.MESSAGE, "神秘字条|你搜索了到了一串神秘的数字xxxxx")])],
             ]
         )
     ));
@@ -1821,7 +1821,7 @@ function createLevel3BossEvents(allEvents) {
 // }
 
 
-function createLevel5BossEvents(allEvents) {
+function createLevel4BossEvents(allEvents) {
 
     const level = "4";
     const id = "boss-" + level;
@@ -1878,204 +1878,131 @@ function createLevel5BossEvents(allEvents) {
             },
             [
                 [buffCallback([buildBuff(BUFF.TITLE, `身轻如燕|你灵巧的身法躲过了所有攻击。`),buildBuff(BUFF.MESSAGE, `身轻如燕|你在狂风暴雨般的攻击中，找到了完美的闪躲路径。`),buildBuff(BUFF.NEXT, `${id}-2-1`)])],
-                [buffCallback([statChangeCallback([-30, 0, 0, 0, 0, 0]),buildBuff(BUFF.MESSAGE, `负伤|你被阿努比斯的连续攻击打伤。`),buildBuff(BUFF.NEXT, `${id}-2-1`)])],
-                [buffCallback([buildBuff(buildBuff(BUFF.MESSAGE, `负伤|你在狂风暴雨般的攻击中，找到了相对安全的闪躲路径，但是还是被打伤了。`),buildBuff(BUFF.NEXT, `${id}-2-1`)])],
+                [buffCallback([statChangeCallback([-50, 0, 0, 0, 0, 0]),buildBuff(BUFF.MESSAGE, `负伤|你被阿努比斯的连续攻击打伤。`),buildBuff(BUFF.NEXT, `${id}-2-1`)])],
+                [buffCallback([buildBuff(BUFF.MESSAGE, `负伤|你在狂风暴雨般的攻击中，找到了相对安全的闪躲路径，但是还是被打伤了。`),buildBuff(BUFF.NEXT, `${id}-2-1`)])],
 
-            ]
-        ),
-        new AdvancedEventAttrsV2(
-            null,
-            [
-                [buffCallback([buildBuff(BUFF.NEXT, `${id}-2-1`)])],
-            ]
-        )
-    ));
-
-    allEvents.push(createAdvancedEventV2(
-        new EventV2(`${id}-2-1`, "树人小兵", CHARA_IMGS["树人小兵"], "这是大自然对你的试炼, 放马过来吧！", null, null, null, EventType.SUBSEQUENT, "使用魔法", "使用兵器"),
-        new StartCondition(2, null, null),
-        new AdvancedEventAttrsV2(
-            () => {
-                if (player.intelligence >= 30) return 0;
-                return 1;
-            },
-            [
-                [buffCallback([buildBuff(BUFF.NEXT, `${id}-2-2`), buildBuff(BUFF.MESSAGE, "魔法伤害|你的魔法击破了树人的防御！")])],
-                [buffCallback([buildBuff(BUFF.NEXT, `${id}-death-1`)])],
             ]
         ),
         new AdvancedEventAttrsV2(
             () => {
-                if (player.power >= 40) return 0;
+                if ((player.power>=100) && randomIntFromInterval(0,10)>=5) return 0;
+                if (player.power<100 ) return 2;
                 return 1;
             },
             [
-                [buffCallback([buildBuff(BUFF.NEXT, `${id}-2-2`), buildBuff(BUFF.MESSAGE, "物理伤害|你的武器击破了树人的防御！")])],
-                [buffCallback([buildBuff(BUFF.NEXT, `${id}-death-1`)])],
+                [buffCallback([buildBuff(BUFF.TITLE, `以力破巧|蛮力有时候是很有效的。`),buildBuff(BUFF.MESSAGE, `以力破巧|你强大的力量直接把阿努比斯打飞了出去。`),buildBuff(BUFF.NEXT, `${id}-2-1`)])],
+                [buffCallback([statChangeCallback([-50, 0, 0, 0, 0, 0]),buildBuff(BUFF.MESSAGE, `负伤|你被阿努比斯的连续攻击打伤。`),buildBuff(BUFF.NEXT, `${id}-2-1`)])],
+                [buffCallback([buildBuff(BUFF.MESSAGE, `负伤|你在狂风暴雨般的攻击中，与他对拼了几个回合，但是还是被打伤了。`),buildBuff(BUFF.NEXT, `${id}-2-1`)])],
+
             ]
         )
     ));
 
     allEvents.push(createAdvancedEventV2(
-        new EventV2(`${id}-2-2`, "神秘的大树", CHARA_IMGS["古树之神"], "你完成了试炼，你可以离开这片森林了。。。", null, null, null, EventType.SUBSEQUENT, "好的。。。", "好的。。。"),
-        new StartCondition(2, null, null),
-        new AdvancedEventAttrsV2(
-            null,
-            [
-                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "大自然的试炼|完成了大自然的试炼")])],
-            ]
-        ),
-        new AdvancedEventAttrsV2(
-            null,
-            [
-                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "大自然的试炼|完成了大自然的试炼")])],
-            ]
-        )
-    ));
-
-    allEvents.push(createAdvancedEventV2(
-        new EventV2(`${id}-3`, "愤怒的大树", CHARA_IMGS["古树之神"], "我不喜欢你身上的邪气，你不可以离开这片森林，接受大自然的愤怒吧！", null, null, null, EventType.SUBSEQUENT, "什么？", "什么？"),
-        new StartCondition(2, null, null),
-        new AdvancedEventAttrsV2(
-            null,
-            [
-                [buffCallback([buildBuff(BUFF.NEXT, `${id}-3-1`)])],
-            ]
-        ),
-        new AdvancedEventAttrsV2(
-            null,
-            [
-                [buffCallback([buildBuff(BUFF.NEXT, `${id}-3-1`)])],
-            ]
-        )
-    ));
-
-    allEvents.push(createAdvancedEventV2(
-        new EventV2(`${id}-3-1`, "树人小兵", CHARA_IMGS["树人小兵"], "接受大自然的制裁吧！", null, null, null, EventType.SUBSEQUENT, "使用魔法", "使用兵器"),
+        new EventV2(`${id}-2-1`, "阿努比斯", CHARA_IMGS["阿努比斯"], "远处的阿努比斯似乎在谋划着什么。", null, null, null, EventType.SUBSEQUENT, "吟唱魔法。", "速攻。"),
         new StartCondition(2, null, null),
         new AdvancedEventAttrsV2(
             () => {
-                if (player.intelligence >= 35) return 0;
-                return 1;
+                if (player.intelligence >= 130 && randomIntFromInterval(0,10)>=7) return 0;
+                if (player.intelligence >= 130 && randomIntFromInterval(0,10)<4) return 1;
+                return 2;
             },
             [
-                [buffCallback([buildBuff(BUFF.NEXT, `${id}-3-2`)])],
-                [buffCallback([buildBuff(BUFF.NEXT, `${id}-death-1`)])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-2-2`), buildBuff(BUFF.MESSAGE, "流星火雨|你的魔法重创了阿努比斯。"),buildBuff(BUFF.TITLE, "流星火雨|你成功施展了火系魔法流星火雨。")])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-2-2`), buildBuff(BUFF.MESSAGE, "雷霆万钧|你的魔法重创了阿努比斯。"),buildBuff(BUFF.TITLE, "雷霆万钧|你成功施展了雷系魔法雷霆万钧。")])],
+                [buffCallback([buildBuff(BUFF.MESSAGE, "在劫难逃|你没有成功施展魔法，被阿努比斯直接命中，死在了洞窟里。"),buildBuff(BUFF.TITLE, "在劫难逃|危险降临。"),buildBuff(BUFF.DEATH, 'dead-1')])]
             ]
         ),
         new AdvancedEventAttrsV2(
             () => {
-                if (player.power >= 45) return 0;
+                if (player.agility >= 130 && randomIntFromInterval(0,10)>=5) return 0;
                 return 1;
             },
             [
-                [buffCallback([buildBuff(BUFF.NEXT, `${id}-3-2`)])],
-                [buffCallback([buildBuff(BUFF.NEXT, `${id}-death-1`)])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-2-2`), buildBuff(BUFF.MESSAGE, "速攻|你连续攻击阿努比斯，多次命中了他的要害！"),buildBuff(BUFF.MESSAGE, "速攻|你的攻势如同波浪连绵不绝！")])],
+                [buffCallback([buildBuff(BUFF.MESSAGE, "在劫难逃|你的速攻没有奏效，被阿努比斯直接命中，死在了洞窟里。"),buildBuff(BUFF.TITLE, "在劫难逃|危险降临。"),buildBuff(BUFF.DEATH, 'dead-1')])]
             ]
         )
     ));
 
     allEvents.push(createAdvancedEventV2(
-        new EventV2(`${id}-death-1`, "自然之怒", CHARA_IMGS["树人小兵"], "你的攻击没有奏效，却被树人的魔法击穿了头颅！", null, null, null, EventType.SUBSEQUENT, "。。。", "。。。"),
-        new StartCondition(2, null, null),
-        new AdvancedEventAttrsV2(
-            null,
-            [
-                [buffCallback([buildBuff(BUFF.DEATH, "'dead-1'")])],
-            ]
-        ),
-        new AdvancedEventAttrsV2(
-            null,
-            [
-                [buffCallback([buildBuff(BUFF.DEATH, "'dead-1'")])],
-            ]
-        )
-    ));
-
-    allEvents.push(createAdvancedEventV2(
-        new EventV2(`${id}-3-2`, "愤怒的大树", CHARA_IMGS["古树之神"], "有两下子，不过你是过不了我这一关的！", null, null, null, EventType.SUBSEQUENT, "使用魔法", "使用兵器"),
+        new EventV2(`${id}-2-2`, "受伤的阿努比斯", CHARA_IMGS["阿努比斯"], "你要是就此停手，我可以给你个宝物。", null, null, null, EventType.SUBSEQUENT, "见好就收。", "趁胜追击。"),
         new StartCondition(2, null, null),
         new AdvancedEventAttrsV2(
             () => {
-                if (player.intelligence >= 50) return 0;
+                if (randomIntFromInterval(0,100)<2) return 0;
                 return 1;
             },
             [
-                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level])])],
-                [buffCallback([buildBuff(BUFF.NEXT, `${id}-death-2`)])],
+                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "神秘字条|cluexxx"), buildBuff(BUFF.MESSAGE, "神秘字条|阿努比斯给你了一串神秘数字xxx")])],
+                [buffCallback([statChangeCallback([50, 50, 50, 50, 50, 0]),buildBuff(BUFF.MESSAGE, "洞窟秘宝|全属性+50。"),buildBuff(BUFF.TITLE, "洞窟秘宝|你获得了神秘的宝藏。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])])]
+
             ]
         ),
         new AdvancedEventAttrsV2(
-            () => {
-                if (player.power >= 60) return 0;
-                return 1;
-            },
+            null,
             [
-                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level])])],
-                [buffCallback([buildBuff(BUFF.NEXT, `${id}-death-2`)])],
+                [randomStageChangeCallback2(50, 50),buffCallback([buildBuff(BUFF.NEXT, `${id}-3-1`), buildBuff(BUFF.TITLE, "死神凝视|随机属性-50"), buildBuff(BUFF.TITLE, "死神凝视|阿努比斯偷偷的又对你使用了死神凝视。")])],
             ]
         )
     ));
 
     allEvents.push(createAdvancedEventV2(
-        new EventV2(`${id}-death-1`, "自然之盛怒", CHARA_IMGS["古树之神"], "大树的枝叶疯狂生长，将你包围起来，你无法动弹。。。", null, null, null, EventType.SUBSEQUENT, "就这样结束了吗？", "就这样结束了吗？"),
+        new EventV2(`${id}-3-1`, "受伤的阿努比斯", CHARA_IMGS["阿努比斯"], "阿努比斯似乎在蓄力。", null, null, null, EventType.SUBSEQUENT, "速攻。", "蓄力攻击。"),
         new StartCondition(2, null, null),
         new AdvancedEventAttrsV2(
-            null,
+            () => {
+                if (player.agility >= 130 && randomIntFromInterval(0,10)>=1) return 0;
+                return 1;
+            },
             [
-                [buffCallback([buildBuff(BUFF.DEATH, "'dead-4'")])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-4-1`), buildBuff(BUFF.TITLE, "壁画|阿努比斯被你击中后，突然又变成了洞窟里的壁画，仿佛从来没有存在过一般"), buildBuff(BUFF.TITLE, "壁画|真的吗？假的吗？梦境，亦或现实？")])],
+                [buffCallback([buildBuff(BUFF.MESSAGE, "在劫难逃|你的速攻没有奏效，被阿努比斯直接命中，死在了洞窟里。"),buildBuff(BUFF.TITLE, "在劫难逃|危险降临。"),buildBuff(BUFF.DEATH, 'dead-1')])]
+
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (player.power >= 130 && randomIntFromInterval(0,10)>=1) return 0;
+                return 1;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-4-1`), buildBuff(BUFF.TITLE, "壁画|阿努比斯被你击中后，突然又变成了洞窟里的壁画，仿佛从来没有存在过一般"), buildBuff(BUFF.TITLE, "壁画|真的吗？假的吗？梦境，亦或现实？")])],
+                [buffCallback([buildBuff(BUFF.MESSAGE, "在劫难逃|你的蓄力攻击没有奏效，被阿努比斯直接命中，死在了洞窟里。"),buildBuff(BUFF.TITLE, "在劫难逃|危险降临。"),buildBuff(BUFF.DEATH, 'dead-1')])]
+
+            ]
+        )
+    ));
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-4-1`, "洞窟", CHARA_IMGS["洞窟"], "幽暗的洞窟里似乎空荡荡的。", null, null, null, EventType.SUBSEQUENT, "再搜索一番。", "离去。"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (randomIntFromInterval(0,100)<=2) return 0;
+                return 1;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "神秘壁画|cluexxx"), buildBuff(BUFF.MESSAGE, "神秘壁画|你在壁画上找到一串神秘数字xxx")])],
+                [buffCallback([statChangeCallback([-20, 0, 0, 0, 0, 0]),buildBuff(BUFF.TITLE, "一无所获|什么都没有找到。"),buildBuff(BUFF.MESSAGE, "一无所获|你在洞窟里什么都没有找到。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])])]
+
             ]
         ),
         new AdvancedEventAttrsV2(
             null,
             [
-                [buffCallback([buildBuff(BUFF.DEATH, "'dead-4'")])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-4-1`), buildBuff(BUFF.TITLE, "壁画|阿努比斯被你击中后，突然又变成了洞窟里的壁画，仿佛从来没有存在过一般"), buildBuff(BUFF.TITLE, "壁画|真的吗？假的吗？梦境，亦或现实？")])],
+                [buffCallback([buildBuff(BUFF.MESSAGE, "离去|你缓缓离开了洞窟。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])])]
+
             ]
         )
     ));
 }
 
 
-//
-// function createLevel4BossEvents(allEvents) {
-//
-//     const level = "4";
-//     const id = "boss-" + level;
-//     const name = "阿努比斯";
-//     const boss = new Player(name, id);
-//     const baseEvent = new EventV2(id, boss.name, CHARA_IMGS["阿努比斯"], "洞窟的深处，猩红色的眼睛正在凝视着你。。", 1, null, null, EventType.BOSS, "赤手空拳搏斗", "力有不逮，暂时撤退。");
-//
-//     //TODO: 这个logic是错的= =！
-//     const preLogic = function (baseEvent) {
-//         if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
-//             baseEvent.choice1 = "使用不知何时得到的巨剑";
-//         }
-//     };
-//
-//     const leftCallback = () => {
-//         if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
-//             boss.power -= 50;
-//         }
-//     };
-//
-//     //Do nothing
-//     const rightCallback = () => {
-//     };
-//     const winCheck = () => {
-//         return player.power >= boss.power;
-//     };
-//
-//     const leftWin = id + "-win";
-//     const rightWin = id + "-win";
-//     const leftLoss = id + "-loss";
-//     const rightLoss = id + "-loss";
-//
-//     allEvents.push(createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallback, leftWin, leftLoss, rightWin, rightLoss));
-//     allEvents.push(createStatsChangeEvent(id + "-win", "", CHARA_IMGS["阿努比斯"], "没想到你又醒了，亦或你一直是醒着的。。。", "好吧", "。。。", "1", EventType.SUBSEQUENT, null,
-//         [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, STAGE_IDS[level])], [buildBuff(BUFF.NEXT, STAGE_IDS[level])]));
-//     allEvents.push(createStatsChangeEvent(id + "-loss", "", CHARA_IMGS["阿努比斯"], "就差一点，不过就此沉睡吧。。", "好吧", "", "1", EventType.SUBSEQUENT, null,
-//         [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第三关的试炼")], [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第一关的试炼")]));
-// }
+
+
+
 
 
 
@@ -2282,7 +2209,7 @@ function createLevel5BossEvents(allEvents) {
     ));
 
     allEvents.push(createAdvancedEventV2(
-        new EventV2(`${id}-death-1`, "自然之盛怒", CHARA_IMGS["古树之神"], "大树的枝叶疯狂生长，将你包围起来，你无法动弹。。。", null, null, null, EventType.SUBSEQUENT, "就这样结束了吗？", "就这样结束了吗？"),
+        new EventV2(`${id}-death-2`, "自然之盛怒", CHARA_IMGS["古树之神"], "大树的枝叶疯狂生长，将你包围起来，你无法动弹。。。", null, null, null, EventType.SUBSEQUENT, "就这样结束了吗？", "就这样结束了吗？"),
         new StartCondition(2, null, null),
         new AdvancedEventAttrsV2(
             null,
@@ -2300,11 +2227,263 @@ function createLevel5BossEvents(allEvents) {
 }
 
 
+
+
+
+
+function createLevel6BossEvents(allEvents) {
+
+    const level = "6";
+    const id = "boss-" + level;
+    const name = "怨恨的女妖";
+
+    // player.goodness = 20;
+    player.goodness = 40;
+    // player.goodness = 60;
+    // player.goodness = 80;
+    console.error("player.goodness = " + player.goodness);
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}`, "怨恨的女妖", CHARA_IMGS["女王"], "悬崖的巅峰上，你看到了一个傲立的身影。。", null, null, null, EventType.BOSS, "爬上去看看。", "爬上去看看。"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (player.goodness <= 25) return 0;
+                if (player.goodness <= 50) return 1;
+                if (player.goodness <= 100) return 2;
+            },
+            [
+                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-1`)])],
+                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-2`)])],
+                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-3`)])],
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (player.goodness <= 25) return 0;
+                if (player.goodness <= 50) return 1;
+                if (player.goodness <= 100) return 2;
+            },
+            [
+                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-1`)])],
+                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-2`)])],
+                [statChangeCallback([0, 0, 0, 0, 0, 0]), buffCallback([buildBuff(BUFF.NEXT, `${id}-3`)])],
+            ]
+        ))
+    );
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-1`, "怨恨的女妖", CHARA_IMGS["女王"], "你跟那些伪善的冒险家不一样，我可以送你一个宝物。", null, null, null, EventType.SUBSEQUENT, "多谢！", "谢谢，并不需要。"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [statChangeCallback([0, 0, 0, 0, 100, 0]), buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "女妖的魔法书|女妖送你了一本魔法书"), buildBuff(BUFF.MESSAGE, "女妖的魔法书|智力+100。")])],
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (randomIntFromInterval(0,100)<=3) return 0;
+                return 1;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.MESSAGE, "放弃|你放弃了女妖的宝物。"),buildBuff(BUFF.MESSAGE, "神秘的书信|女妖：有意思，这个就给你了。书信上显示着神秘的数字xxx。"),buildBuff(BUFF.MESSAGE, "神秘的书信|cluexxx。")])],
+                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.MESSAGE, "放弃|你放弃了女妖的宝物。")])],
+
+            ]
+        )
+    ));
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-2`, "怨恨的女妖", CHARA_IMGS["女妖"], "亦正亦邪的冒险家，还挺有个个性，不过要是实力不够还是的会长眠于此！", null, null, null, EventType.SUBSEQUENT, "什么？", "什么？"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-2-1`)])],
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-2-1`)])],
+            ]
+        )
+    ));
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-2-1`, "骷髅兵", CHARA_IMGS["女王"], "四周涌上了一批骷髅！", null, null, null, EventType.SUBSEQUENT, "吟唱：暴风雪", "战技：剑刃风暴"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (player.intelligence >= 230) return 0;
+                return 1;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-2-2`), buildBuff(BUFF.MESSAGE, "暴风雪|你的魔法击散了很多骷髅！"),buildBuff(BUFF.TITLE, "暴风雪|强大的冰系魔法，宛如冰龙的咆哮一般！")])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-death-1`),buildBuff(BUFF.MESSAGE, "在劫难逃|你被无数的骷髅团团包围，力竭而死！")])],
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (player.power >= 240) return 0;
+                return 1;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-2-2`), buildBuff(BUFF.MESSAGE, "剑刃风暴|你使用了剑刃风暴，如同秋风扫落叶一般击溃了骷髅！"),buildBuff(BUFF.TITLE, "剑刃风暴|强大的武技擅长对付成片的敌人！")])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-death-1`)])],
+            ]
+        )
+    ));
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-2-2`, "怨恨的女妖", CHARA_IMGS["女王"], "没想到还有点本事，你可以走了。。。", null, null, null, EventType.SUBSEQUENT, "好的。。。", "好的。。。"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "擦肩而过|与女妖擦肩而过")])],
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "擦肩而过|与女妖擦肩而过")])],
+            ]
+        )
+    ));
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-3`, "愤怒的女妖", CHARA_IMGS["女王"], "我最讨厌你们这些伪君子！", null, null, null, EventType.SUBSEQUENT, "什么？", "什么？"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-3-1`)])],
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-3-1`)])],
+            ]
+        )
+    ));
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-3-1`, "骷髅", CHARA_IMGS["女王"], "呜噜呜噜！", null, null, null, EventType.SUBSEQUENT, "使用魔法", "使用兵器"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (player.intelligence >= 135) return 0;
+                return 1;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-3-2`)])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-death-1`)])],
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (player.power >= 145) return 0;
+                return 1;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-3-2`)])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-death-1`)])],
+            ]
+        )
+    ));
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-death-1`, "阴魂不散", CHARA_IMGS["女王"], "你的攻击没有奏效，被骷髅围殴致死！", null, null, null, EventType.SUBSEQUENT, "。。。", "。。。"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [buffCallback([buildBuff(BUFF.DEATH, "'dead-1'")])],
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [buffCallback([buildBuff(BUFF.DEATH, "'dead-1'")])],
+            ]
+        )
+    ));
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-3-2`, "愤怒的女妖", CHARA_IMGS["女王"], "有两下子，不过你是过不了我这一关的！", null, null, null, EventType.SUBSEQUENT, "吟唱：审判", "禁咒：圣光降世"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (player.intelligence >= 250) return 0;
+                return 1;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]),buildBuff(BUFF.MESSAGE, "审判|你使用出光系高级魔法审判，直接把女妖贯穿"),buildBuff(BUFF.TITLE, "审判|光系高级魔法"),buildBuff(BUFF.TITLE, "女妖杀手|杀死了女妖")])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-death-2`)])],
+            ]
+        ),
+        // && randomIntFromInterval(0,100)< 5
+    new AdvancedEventAttrsV2(
+            () => {
+                if (player.intelligence >= 360 ) return 0;
+                return 1;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, ${id}-4-1),buildBuff(BUFF.MESSAGE, "圣光降世|你使用出光系禁咒，圣光直接把女妖融化"),buildBuff(BUFF.TITLE, "圣光降世|光系禁咒，仿佛天国降临一般"),buildBuff(BUFF.TITLE, "女妖杀手|杀死了女妖")])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-death-2`)])],
+            ]
+        )
+    ));
+
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-4-1`, "悬崖", CHARA_IMGS["悬崖"], "空荡荡的悬崖上只有嶙峋的怪石。", null, null, null, EventType.SUBSEQUENT, "四处看看。", "继续前行。"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (randomIntFromInterval(0,100)< 5 ) return 0;
+                return 1;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.MESSAGE, "神秘文字|你在岩石上发现了神秘文字XXX"), buildBuff(BUFF.TITLE, "神秘文字|cluexxx")])],
+                [statChangeCallback([-20, 0, 0, 0, 0, 0]),buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.MESSAGE, "空手而归|你找寻了半天没有发现任何宝物")])],
+
+
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.MESSAGE, "离去|你从悬崖上起身离去。")])],
+            ]
+        )
+    ));
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-death-2`, "亡灵诅咒", CHARA_IMGS["女王"], "你中了女妖的诅咒，感觉浑身软弱无力，被女妖轻易的洞穿了心脏。。。", null, null, null, EventType.SUBSEQUENT, "就这样结束了吗？", "就这样结束了吗？"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [buffCallback([buildBuff(BUFF.DEATH, "'dead-4'")])],
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [buffCallback([buildBuff(BUFF.DEATH, "'dead-4'")])],
+            ]
+        )
+    ));
+}
 function createLevel6BossEvents(allEvents, level) {
 
     //boss example
     const id = "boss-" + level;
-    const name = "暗影牧师";
+    const name = "怨恨的女妖";
     const boss = new Player(name, id);
     const baseEvent = new EventV2(id, boss.name, CHARA_IMGS["女王"], "悬崖的巅峰上，你看到了一个傲立的身影。。", 1, null, null, EventType.BOSS, "赤手空拳搏斗", "力有不逮，暂时撤退。");
 
