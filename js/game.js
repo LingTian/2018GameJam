@@ -1873,12 +1873,12 @@ function createLevel4BossEvents(allEvents) {
         new AdvancedEventAttrsV2(
             () => {
                 if ((player.agility>=100) && randomIntFromInterval(0,10)>=5) return 0;
-                if (player.agility<100 ) return 2;
-                return 1;
+                if (player.agility<100 ) return 1;
+                return 2;
             },
             [
                 [buffCallback([buildBuff(BUFF.TITLE, `身轻如燕|你灵巧的身法躲过了所有攻击。`),buildBuff(BUFF.MESSAGE, `身轻如燕|你在狂风暴雨般的攻击中，找到了完美的闪躲路径。`),buildBuff(BUFF.NEXT, `${id}-2-1`)])],
-                [buffCallback([statChangeCallback([-50, 0, 0, 0, 0, 0]),buildBuff(BUFF.MESSAGE, `负伤|你被阿努比斯的连续攻击打伤。`),buildBuff(BUFF.NEXT, `${id}-2-1`)])],
+                [statChangeCallback([-20, 0, 0, 0, 0, 0]),buffCallback([buildBuff(BUFF.MESSAGE, `负伤|你被阿努比斯的连续攻击打伤。`),buildBuff(BUFF.NEXT, `${id}-2-1`)])],
                 [buffCallback([buildBuff(BUFF.MESSAGE, `负伤|你在狂风暴雨般的攻击中，找到了相对安全的闪躲路径，但是还是被打伤了。`),buildBuff(BUFF.NEXT, `${id}-2-1`)])],
 
             ]
@@ -1886,12 +1886,13 @@ function createLevel4BossEvents(allEvents) {
         new AdvancedEventAttrsV2(
             () => {
                 if ((player.power>=100) && randomIntFromInterval(0,10)>=5) return 0;
-                if (player.power<100 ) return 2;
                 return 1;
+                if (player.power<100 ) return 1;
+                return 2;
             },
             [
                 [buffCallback([buildBuff(BUFF.TITLE, `以力破巧|蛮力有时候是很有效的。`),buildBuff(BUFF.MESSAGE, `以力破巧|你强大的力量直接把阿努比斯打飞了出去。`),buildBuff(BUFF.NEXT, `${id}-2-1`)])],
-                [buffCallback([statChangeCallback([-50, 0, 0, 0, 0, 0]),buildBuff(BUFF.MESSAGE, `负伤|你被阿努比斯的连续攻击打伤。`),buildBuff(BUFF.NEXT, `${id}-2-1`)])],
+                [statChangeCallback([-20, 0, 0, 0, 0, 0]),buffCallback([buildBuff(BUFF.MESSAGE, `负伤|你被阿努比斯的连续攻击打伤。`),buildBuff(BUFF.NEXT, `${id}-2-1`)])],
                 [buffCallback([buildBuff(BUFF.MESSAGE, `负伤|你在狂风暴雨般的攻击中，与他对拼了几个回合，但是还是被打伤了。`),buildBuff(BUFF.NEXT, `${id}-2-1`)])],
 
             ]
@@ -1935,7 +1936,7 @@ function createLevel4BossEvents(allEvents) {
             },
             [
                 [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "神秘字条|cluexxx"), buildBuff(BUFF.MESSAGE, "神秘字条|阿努比斯给你了一串神秘数字xxx")])],
-                [buffCallback([statChangeCallback([50, 50, 50, 50, 50, 0]),buildBuff(BUFF.MESSAGE, "洞窟秘宝|全属性+50。"),buildBuff(BUFF.TITLE, "洞窟秘宝|你获得了神秘的宝藏。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])])]
+                [statChangeCallback([50, 50, 50, 50, 50, 0]),buffCallback([buildBuff(BUFF.MESSAGE, "洞窟秘宝|全属性+50。"),buildBuff(BUFF.TITLE, "洞窟秘宝|你获得了神秘的宝藏。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])])]
 
             ]
         ),
@@ -1984,7 +1985,7 @@ function createLevel4BossEvents(allEvents) {
             },
             [
                 [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "神秘壁画|cluexxx"), buildBuff(BUFF.MESSAGE, "神秘壁画|你在壁画上找到一串神秘数字xxx")])],
-                [buffCallback([statChangeCallback([-20, 0, 0, 0, 0, 0]),buildBuff(BUFF.TITLE, "一无所获|什么都没有找到。"),buildBuff(BUFF.MESSAGE, "一无所获|你在洞窟里什么都没有找到。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])])]
+                [statChangeCallback([-20, 0, 0, 0, 0, 0]),buffCallback([buildBuff(BUFF.TITLE, "一无所获|什么都没有找到。"),buildBuff(BUFF.MESSAGE, "一无所获|你在洞窟里什么都没有找到。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])])]
 
             ]
         ),
@@ -2481,85 +2482,297 @@ function createLevel6BossEvents(allEvents) {
 }
 
 
-function createLevel7BossEvents(allEvents, level) {
 
-    //boss example
+function createLevel7BossEvents(allEvents) {
+
+    const level = "7";
     const id = "boss-" + level;
-    const name = "暗影牧师";
+    const name = "九头蛇";
     const boss = new Player(name, id);
-    const baseEvent = new EventV2(id, boss.name, CHARA_IMGS["九头蛇"], "沼泽的深处，隐藏着远古的魔物。。", 1, null, null, EventType.BOSS, "赤手空拳搏斗", "力有不逮，暂时撤退。");
 
-    //TODO: 这个logic是错的= =！
-    const preLogic = function (baseEvent) {
-        if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
-            baseEvent.choice1 = "使用不知何时得到的巨剑";
-        }
-    };
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}`, "九头蛇", CHARA_IMGS["九头蛇"], "沼泽的深处，隐藏着远古的魔物，黑暗中的眼睛反射出来的寒芒仿佛星星点点。。", null, null, null, EventType.BOSS, "探索一下。", "缓缓退去。"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [statChangeCallback([-30, 0, 0, 0, 0, 0]),buildBuff(BUFF.MESSAGE, `你刚准备走近就被九头蛇咬住拖进了沼泽深处！`), buffCallback([buildBuff(BUFF.NEXT, `${id}-1`)])],
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [statChangeCallback([-30, 0, 0, 0, 0, 0]),buildBuff(BUFF.MESSAGE, `你刚准备离开，就被九头蛇咬住拖进了沼泽深处！`), buffCallback([buildBuff(BUFF.NEXT, `${id}-1`)])],
+            ]
+        ))
+    );
 
-    const leftCallback = () => {
-        if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
-            boss.power -= 50;
-        }
-    };
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-1`, "沼泽", CHARA_IMGS["沼泽"], "你被九头蛇在向沼泽深处拖拽，感觉力量在不断流失！", null, null, null, EventType.SUBSEQUENT, "强行挣脱！", "借力挣脱！"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (randomIntFromInterval(0,10)>=2) return 0;
+                return 1;
+            },
+            [
+                [randomStageChangeCallback2(30, 30), buffCallback([buildBuff(BUFF.NEXT, '${id}-1-1'), buildBuff(BUFF.TITLE, "侥幸|你侥幸挣脱了九头蛇的撕咬。"), buildBuff(BUFF.MESSAGE, "流血|随机属性-30。")])],
+                [buildBuff(BUFF.NEXT, `${id}-death-1`),buildBuff(BUFF.MESSAGE, "在劫难逃|你并没有挣脱九头蛇的攻击，力竭而死！")],
 
-    //Do nothing
-    const rightCallback = () => {
-    };
-    const winCheck = () => {
-        return player.power >= boss.power;
-    };
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (randomIntFromInterval(0,10)>=2) return 0;
+                return 1;
+            },
+            [
+                [randomStageChangeCallback2(30, 30), buffCallback([buildBuff(BUFF.NEXT, '${id}-1-1'), buildBuff(BUFF.TITLE, "侥幸|你侥幸挣脱了九头蛇的撕咬。"), buildBuff(BUFF.MESSAGE, "流血|随机属性-30。")])],
+                [buildBuff(BUFF.NEXT, `${id}-death-1`),buildBuff(BUFF.MESSAGE, "在劫难逃|你并没有挣脱九头蛇的攻击，力竭而死！")],
+            ]
+        )
+    ));
 
-    const leftWin = id + "-win";
-    const rightWin = id + "-win";
-    const leftLoss = id + "-loss";
-    const rightLoss = id + "-loss";
 
-    allEvents.push(createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallback, leftWin, leftLoss, rightWin, rightLoss));
-    allEvents.push(createStatsChangeEvent(id + "-win", "", CHARA_IMGS["九头蛇"], "没想到你又醒了，亦或你一直是醒着的。。。", "好吧", "。。。", "1", EventType.SUBSEQUENT, null,
-        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, STAGE_IDS[level])], [buildBuff(BUFF.NEXT, STAGE_IDS[level])]));
-    allEvents.push(createStatsChangeEvent(id + "-loss", "", CHARA_IMGS["九头蛇"], "就差一点，不过就此沉睡吧。。", "好吧", "", "1", EventType.SUBSEQUENT, null,
-        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第三关的试炼")], [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第一关的试炼")]));
+
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-1-1`, "九头蛇", CHARA_IMGS["九头蛇"], "九头蛇从多个方向向你咬了过来", null, null, null, EventType.SUBSEQUENT, "全力闪躲。", "全力防御。"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            () => {
+                if ((player.agility>=200) && randomIntFromInterval(0,10)>=5) return 0;
+                if (player.agility<200 ) return 1;
+                return 2;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.TITLE, `身轻如燕|你灵巧的身法躲过了所有攻击。`),buildBuff(BUFF.MESSAGE, `身轻如燕|你在狂风暴雨般的攻击中，找到了完美的闪躲路径。`),buildBuff(BUFF.NEXT, `${id}-2-1`)])],
+                [statChangeCallback([-50, 0, 0, 0, 0, 0]),buffCallback([buildBuff(BUFF.MESSAGE, `负伤|你被九头蛇的连续攻击打伤。`),buildBuff(BUFF.NEXT, `${id}-2-1`)])],
+                [statChangeCallback([-10, 0, 0, 0, 0, 0]),buffCallback([buildBuff(BUFF.MESSAGE, `负伤|你在狂风暴雨般的攻击中，找到了相对安全的闪躲路径，但是还是被打伤了。`),buildBuff(BUFF.NEXT, `${id}-2-1`)])],
+
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            () => {
+                if ((player.power>=200) && randomIntFromInterval(0,10)>=5) return 0;
+                if (player.power<200 ) return 1;
+                return 2;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.TITLE, `以力破巧|蛮力有时候是很有效的。`),buildBuff(BUFF.MESSAGE, `铜墙铁壁|你牢牢的防御住了九头蛇所有的攻击。`),buildBuff(BUFF.NEXT, `${id}-2-1`)])],
+                [statChangeCallback([-50, 0, 0, 0, 0, 0]),buffCallback([buildBuff(BUFF.MESSAGE, `负伤|你被九头蛇的连续攻击打伤。`),buildBuff(BUFF.NEXT, `${id}-2-1`)])],
+                [statChangeCallback([-10, 0, 0, 0, 0, 0]),buffCallback([buildBuff(BUFF.MESSAGE, `负伤|你在狂风暴雨般的攻击中，与他对拼了几个回合，但是还是被打伤了。`),buildBuff(BUFF.NEXT, `${id}-2-1`)])],
+
+            ]
+        )
+    ));
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-2-1`, "九头蛇", CHARA_IMGS["九头蛇"], "你好不容易跳出了九头蛇的攻击圈。", null, null, null, EventType.SUBSEQUENT, "吟唱：火系魔法魔法。", "吟唱：冰系魔法。"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (player.intelligence >= 130 && randomIntFromInterval(0,10)>=9) return 0;
+                if (player.intelligence >= 130 && randomIntFromInterval(0,10)<2) return 1;
+                return 2;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-2-2`), buildBuff(BUFF.MESSAGE, "地狱烈炎|你的魔法重创了九头蛇。"),buildBuff(BUFF.TITLE, "地狱烈炎|火系高级魔法，成片的火海。")])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-1-1`), buildBuff(BUFF.MESSAGE, "火球|你的魔法似乎没有造成什么伤害。")])],
+                [buffCallback([buildBuff(BUFF.MESSAGE, "连珠火球|你的魔法击伤了九头蛇。"),buildBuff(BUFF.TITLE, "连珠火球|火系魔法，连续的火球不断攻击。"),buildBuff(BUFF.DEATH, '${id}-1-2')])]
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (player.intelligence >= 130 && randomIntFromInterval(0,10)>=9) return 0;
+                if (player.intelligence >= 130 && randomIntFromInterval(0,10)<2) return 1;
+                return 2;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-1-2`), buildBuff(BUFF.MESSAGE, "暴风雪|你施展了冰系高级魔法，击伤了九头蛇！"),buildBuff(BUFF.TITLE, "暴风雪|强大的冰系魔法，宛如冰龙的咆哮一般！")])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-1-1`), buildBuff(BUFF.MESSAGE, "冰墙|你的魔法似乎没有造成什么伤害！")])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-1-1`), buildBuff(BUFF.MESSAGE, "冰环|你的魔法似乎没有造成什么伤害！")])],
+            ]
+        )
+    ));
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-1-2`, "受伤的九头蛇", CHARA_IMGS["九头蛇"], "九头蛇似乎在吟唱魔法。", null, null, null, EventType.SUBSEQUENT, "技能：。", "趁胜追击。"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (randomIntFromInterval(0,100)<2) return 0;
+                return 1;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "神秘字条|cluexxx"), buildBuff(BUFF.MESSAGE, "神秘字条|阿努比斯给你了一串神秘数字xxx")])],
+                [buffCallback([statChangeCallback([50, 50, 50, 50, 50, 0]),buildBuff(BUFF.MESSAGE, "洞窟秘宝|全属性+50。"),buildBuff(BUFF.TITLE, "洞窟秘宝|你获得了神秘的宝藏。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])])]
+
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [randomStageChangeCallback2(50, 50),buffCallback([buildBuff(BUFF.NEXT, `${id}-3-1`), buildBuff(BUFF.TITLE, "死神凝视|随机属性-50"), buildBuff(BUFF.TITLE, "死神凝视|阿努比斯偷偷的又对你使用了死神凝视。")])],
+            ]
+        )
+    ));
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-1-2`, "受伤的九头蛇", CHARA_IMGS["九头蛇"], "你要是就此停手，我可以给你个宝物。", null, null, null, EventType.SUBSEQUENT, "见好就收。", "趁胜追击。"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (randomIntFromInterval(0,100)<2) return 0;
+                return 1;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "神秘字条|cluexxx"), buildBuff(BUFF.MESSAGE, "神秘字条|阿努比斯给你了一串神秘数字xxx")])],
+                [buffCallback([statChangeCallback([50, 50, 50, 50, 50, 0]),buildBuff(BUFF.MESSAGE, "洞窟秘宝|全属性+50。"),buildBuff(BUFF.TITLE, "洞窟秘宝|你获得了神秘的宝藏。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])])]
+
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [randomStageChangeCallback2(50, 50),buffCallback([buildBuff(BUFF.NEXT, `${id}-3-1`), buildBuff(BUFF.TITLE, "死神凝视|随机属性-50"), buildBuff(BUFF.TITLE, "死神凝视|阿努比斯偷偷的又对你使用了死神凝视。")])],
+            ]
+        )
+    ));
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-3-1`, "受伤的阿努比斯", CHARA_IMGS["阿努比斯"], "阿努比斯似乎在蓄力。", null, null, null, EventType.SUBSEQUENT, "速攻。", "蓄力攻击。"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (player.agility >= 130 && randomIntFromInterval(0,10)>=1) return 0;
+                return 1;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-4-1`), buildBuff(BUFF.TITLE, "壁画|阿努比斯被你击中后，突然又变成了洞窟里的壁画，仿佛从来没有存在过一般"), buildBuff(BUFF.TITLE, "壁画|真的吗？假的吗？梦境，亦或现实？")])],
+                [buffCallback([buildBuff(BUFF.MESSAGE, "在劫难逃|你的速攻没有奏效，被阿努比斯直接命中，死在了洞窟里。"),buildBuff(BUFF.TITLE, "在劫难逃|危险降临。"),buildBuff(BUFF.DEATH, 'dead-1')])]
+
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (player.power >= 130 && randomIntFromInterval(0,10)>=1) return 0;
+                return 1;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-4-1`), buildBuff(BUFF.TITLE, "壁画|阿努比斯被你击中后，突然又变成了洞窟里的壁画，仿佛从来没有存在过一般"), buildBuff(BUFF.TITLE, "壁画|真的吗？假的吗？梦境，亦或现实？")])],
+                [buffCallback([buildBuff(BUFF.MESSAGE, "在劫难逃|你的蓄力攻击没有奏效，被阿努比斯直接命中，死在了洞窟里。"),buildBuff(BUFF.TITLE, "在劫难逃|危险降临。"),buildBuff(BUFF.DEATH, 'dead-1')])]
+
+            ]
+        )
+    ));
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-4-1`, "洞窟", CHARA_IMGS["洞窟"], "幽暗的洞窟里似乎空荡荡的。", null, null, null, EventType.SUBSEQUENT, "再搜索一番。", "离去。"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            () => {
+                if (randomIntFromInterval(0,100)<=2) return 0;
+                return 1;
+            },
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "神秘壁画|cluexxx"), buildBuff(BUFF.MESSAGE, "神秘壁画|你在壁画上找到一串神秘数字xxx")])],
+                [buffCallback([statChangeCallback([-20, 0, 0, 0, 0, 0]),buildBuff(BUFF.TITLE, "一无所获|什么都没有找到。"),buildBuff(BUFF.MESSAGE, "一无所获|你在洞窟里什么都没有找到。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])])]
+
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-4-1`), buildBuff(BUFF.TITLE, "壁画|阿努比斯被你击中后，突然又变成了洞窟里的壁画，仿佛从来没有存在过一般"), buildBuff(BUFF.TITLE, "壁画|真的吗？假的吗？梦境，亦或现实？")])],
+                [buffCallback([buildBuff(BUFF.MESSAGE, "离去|你缓缓离开了洞窟。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])])]
+
+            ]
+        )
+    ));
 }
-
-function createLevel8BossEvents(allEvents, level) {
-
-    //boss example
-    const id = "boss-" + level;
-    const name = "美杜莎";
-    const boss = new Player(name, id);
-    const baseEvent = new EventV2(id, boss.name, CHARA_IMGS["美杜莎"], "光滑的冰壁之中，封印着一个美丽的女子，突然她好像苏醒一般，猛的睁开了眼睛。。", 1, null, null, EventType.BOSS, "赤手空拳搏斗", "力有不逮，暂时撤退。");
-
-    //TODO: 这个logic是错的= =！
-    const preLogic = function (baseEvent) {
-        if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
-            baseEvent.choice1 = "使用不知何时得到的巨剑";
-        }
-    };
-
-    const leftCallback = () => {
-        if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
-            boss.power -= 50;
-        }
-    };
-
-    //Do nothing
-    const rightCallback = () => {
-    };
-    const winCheck = () => {
-        return player.power >= boss.power;
-    };
-
-    const leftWin = id + "-win";
-    const rightWin = id + "-win";
-    const leftLoss = id + "-loss";
-    const rightLoss = id + "-loss";
-
-    allEvents.push(createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallback, leftWin, leftLoss, rightWin, rightLoss));
-    allEvents.push(createStatsChangeEvent(id + "-win", "", CHARA_IMGS["美杜莎"], "没想到你又醒了，亦或你一直是醒着的。。。", "好吧", "。。。", "1", EventType.SUBSEQUENT, null,
-        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, STAGE_IDS[level])], [buildBuff(BUFF.NEXT, STAGE_IDS[level])]));
-    allEvents.push(createStatsChangeEvent(id + "-loss", "", CHARA_IMGS["美杜莎"], "就差一点，不过就此沉睡吧。。", "好吧", "", "1", EventType.SUBSEQUENT, null,
-        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第三关的试炼")], [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第一关的试炼")]));
-}
+//
+//
+//
+// function createLevel7BossEvents(allEvents, level) {
+//
+//     //boss example
+//     const id = "boss-" + level;
+//     const name = "暗影牧师";
+//     const boss = new Player(name, id);
+//     const baseEvent = new EventV2(id, boss.name, CHARA_IMGS["九头蛇"], "沼泽的深处，隐藏着远古的魔物。。", 1, null, null, EventType.BOSS, "赤手空拳搏斗", "力有不逮，暂时撤退。");
+//
+//     //TODO: 这个logic是错的= =！
+//     const preLogic = function (baseEvent) {
+//         if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
+//             baseEvent.choice1 = "使用不知何时得到的巨剑";
+//         }
+//     };
+//
+//     const leftCallback = () => {
+//         if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
+//             boss.power -= 50;
+//         }
+//     };
+//
+//     //Do nothing
+//     const rightCallback = () => {
+//     };
+//     const winCheck = () => {
+//         return player.power >= boss.power;
+//     };
+//
+//     const leftWin = id + "-win";
+//     const rightWin = id + "-win";
+//     const leftLoss = id + "-loss";
+//     const rightLoss = id + "-loss";
+//
+//     allEvents.push(createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallback, leftWin, leftLoss, rightWin, rightLoss));
+//     allEvents.push(createStatsChangeEvent(id + "-win", "", CHARA_IMGS["九头蛇"], "没想到你又醒了，亦或你一直是醒着的。。。", "好吧", "。。。", "1", EventType.SUBSEQUENT, null,
+//         [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, STAGE_IDS[level])], [buildBuff(BUFF.NEXT, STAGE_IDS[level])]));
+//     allEvents.push(createStatsChangeEvent(id + "-loss", "", CHARA_IMGS["九头蛇"], "就差一点，不过就此沉睡吧。。", "好吧", "", "1", EventType.SUBSEQUENT, null,
+//         [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第三关的试炼")], [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第一关的试炼")]));
+// }
+//
+// function createLevel8BossEvents(allEvents, level) {
+//
+//     //boss example
+//     const id = "boss-" + level;
+//     const name = "美杜莎";
+//     const boss = new Player(name, id);
+//     const baseEvent = new EventV2(id, boss.name, CHARA_IMGS["美杜莎"], "光滑的冰壁之中，封印着一个美丽的女子，突然她好像苏醒一般，猛的睁开了眼睛。。", 1, null, null, EventType.BOSS, "赤手空拳搏斗", "力有不逮，暂时撤退。");
+//
+//     //TODO: 这个logic是错的= =！
+//     const preLogic = function (baseEvent) {
+//         if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
+//             baseEvent.choice1 = "使用不知何时得到的巨剑";
+//         }
+//     };
+//
+//     const leftCallback = () => {
+//         if (player.buffSet.has(buildBuff(BUFF.BUFF, "腐朽的巨剑"))) {
+//             boss.power -= 50;
+//         }
+//     };
+//
+//     //Do nothing
+//     const rightCallback = () => {
+//     };
+//     const winCheck = () => {
+//         return player.power >= boss.power;
+//     };
+//
+//     const leftWin = id + "-win";
+//     const rightWin = id + "-win";
+//     const leftLoss = id + "-loss";
+//     const rightLoss = id + "-loss";
+//
+//     allEvents.push(createBossEvent(baseEvent, preLogic, winCheck, leftCallback, rightCallback, leftWin, leftLoss, rightWin, rightLoss));
+//     allEvents.push(createStatsChangeEvent(id + "-win", "", CHARA_IMGS["美杜莎"], "没想到你又醒了，亦或你一直是醒着的。。。", "好吧", "。。。", "1", EventType.SUBSEQUENT, null,
+//         [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.NEXT, STAGE_IDS[level])], [buildBuff(BUFF.NEXT, STAGE_IDS[level])]));
+//     allEvents.push(createStatsChangeEvent(id + "-loss", "", CHARA_IMGS["美杜莎"], "就差一点，不过就此沉睡吧。。", "好吧", "", "1", EventType.SUBSEQUENT, null,
+//         [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], null, [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第三关的试炼")], [buildBuff(BUFF.DEATH, 'dead-1'), buildBuff(BUFF.TITLE, "出师未捷身先死|没有通过第一关的试炼")]));
+// }
 
 
 function createLevel9BossEvents(allEvents, level) {
