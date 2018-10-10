@@ -1886,7 +1886,6 @@ function createLevel4BossEvents(allEvents) {
         new AdvancedEventAttrsV2(
             () => {
                 if ((player.power>=100) && randomIntFromInterval(0,10)>=5) return 0;
-                return 1;
                 if (player.power<100 ) return 1;
                 return 2;
             },
@@ -2577,7 +2576,7 @@ function createLevel7BossEvents(allEvents) {
                 return 2;
             },
             [
-                [buffCallback([buildBuff(BUFF.NEXT, `${id}-2-2`), buildBuff(BUFF.MESSAGE, "地狱烈炎|你的魔法重创了九头蛇。"),buildBuff(BUFF.TITLE, "地狱烈炎|火系高级魔法，成片的火海。")])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-3-1`), buildBuff(BUFF.MESSAGE, "地狱烈炎|你的魔法重创了九头蛇。"),buildBuff(BUFF.TITLE, "地狱烈炎|火系高级魔法，成片的火海。")])],
                 [buffCallback([buildBuff(BUFF.NEXT, `${id}-1-1`), buildBuff(BUFF.MESSAGE, "火球|你的魔法似乎没有造成什么伤害。")])],
                 [buffCallback([buildBuff(BUFF.MESSAGE, "连珠火球|你的魔法击伤了九头蛇。"),buildBuff(BUFF.TITLE, "连珠火球|火系魔法，连续的火球不断攻击。"),buildBuff(BUFF.DEATH, '${id}-1-2')])]
             ]
@@ -2597,99 +2596,76 @@ function createLevel7BossEvents(allEvents) {
     ));
 
     allEvents.push(createAdvancedEventV2(
-        new EventV2(`${id}-1-2`, "受伤的九头蛇", CHARA_IMGS["九头蛇"], "九头蛇似乎在吟唱魔法。", null, null, null, EventType.SUBSEQUENT, "技能：。", "趁胜追击。"),
+        new EventV2(`${id}-1-2`, "受伤的九头蛇", CHARA_IMGS["九头蛇"], "九头蛇似乎在吟唱魔法。", null, null, null, EventType.SUBSEQUENT, "技能：疾风乱舞。", "技能：一闪。"),
         new StartCondition(2, null, null),
         new AdvancedEventAttrsV2(
             () => {
-                if (randomIntFromInterval(0,100)<2) return 0;
+                if ((player.agility>=300)) return 0;
                 return 1;
             },
             [
-                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "神秘字条|cluexxx"), buildBuff(BUFF.MESSAGE, "神秘字条|阿努比斯给你了一串神秘数字xxx")])],
-                [buffCallback([statChangeCallback([50, 50, 50, 50, 50, 0]),buildBuff(BUFF.MESSAGE, "洞窟秘宝|全属性+50。"),buildBuff(BUFF.TITLE, "洞窟秘宝|你获得了神秘的宝藏。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])])]
-
-            ]
-        ),
-        new AdvancedEventAttrsV2(
-            null,
-            [
-                [randomStageChangeCallback2(50, 50),buffCallback([buildBuff(BUFF.NEXT, `${id}-3-1`), buildBuff(BUFF.TITLE, "死神凝视|随机属性-50"), buildBuff(BUFF.TITLE, "死神凝视|阿努比斯偷偷的又对你使用了死神凝视。")])],
-            ]
-        )
-    ));
-
-    allEvents.push(createAdvancedEventV2(
-        new EventV2(`${id}-1-2`, "受伤的九头蛇", CHARA_IMGS["九头蛇"], "你要是就此停手，我可以给你个宝物。", null, null, null, EventType.SUBSEQUENT, "见好就收。", "趁胜追击。"),
-        new StartCondition(2, null, null),
-        new AdvancedEventAttrsV2(
-            () => {
-                if (randomIntFromInterval(0,100)<2) return 0;
-                return 1;
-            },
-            [
-                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "神秘字条|cluexxx"), buildBuff(BUFF.MESSAGE, "神秘字条|阿努比斯给你了一串神秘数字xxx")])],
-                [buffCallback([statChangeCallback([50, 50, 50, 50, 50, 0]),buildBuff(BUFF.MESSAGE, "洞窟秘宝|全属性+50。"),buildBuff(BUFF.TITLE, "洞窟秘宝|你获得了神秘的宝藏。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])])]
-
-            ]
-        ),
-        new AdvancedEventAttrsV2(
-            null,
-            [
-                [randomStageChangeCallback2(50, 50),buffCallback([buildBuff(BUFF.NEXT, `${id}-3-1`), buildBuff(BUFF.TITLE, "死神凝视|随机属性-50"), buildBuff(BUFF.TITLE, "死神凝视|阿努比斯偷偷的又对你使用了死神凝视。")])],
-            ]
-        )
-    ));
-
-    allEvents.push(createAdvancedEventV2(
-        new EventV2(`${id}-3-1`, "受伤的阿努比斯", CHARA_IMGS["阿努比斯"], "阿努比斯似乎在蓄力。", null, null, null, EventType.SUBSEQUENT, "速攻。", "蓄力攻击。"),
-        new StartCondition(2, null, null),
-        new AdvancedEventAttrsV2(
-            () => {
-                if (player.agility >= 130 && randomIntFromInterval(0,10)>=1) return 0;
-                return 1;
-            },
-            [
-                [buffCallback([buildBuff(BUFF.NEXT, `${id}-4-1`), buildBuff(BUFF.TITLE, "壁画|阿努比斯被你击中后，突然又变成了洞窟里的壁画，仿佛从来没有存在过一般"), buildBuff(BUFF.TITLE, "壁画|真的吗？假的吗？梦境，亦或现实？")])],
-                [buffCallback([buildBuff(BUFF.MESSAGE, "在劫难逃|你的速攻没有奏效，被阿努比斯直接命中，死在了洞窟里。"),buildBuff(BUFF.TITLE, "在劫难逃|危险降临。"),buildBuff(BUFF.DEATH, 'dead-1')])]
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-3-1`), buildBuff(BUFF.MESSAGE, "疾风乱舞|你的攻击仿佛疾风一样，把九头蛇打得千疮百孔"), buildBuff(BUFF.TITLE, "疾风乱舞|高级武技，风暴般的连续攻击。")])],
+                [buffCallback([buildBuff(BUFF.MESSAGE, "在劫难逃|你刚要施展疾风乱舞，就被九头蛇的魔法击中，直接变成了碎片"),buildBuff(BUFF.DEATH, '${id}-1-1')])]
 
             ]
         ),
         new AdvancedEventAttrsV2(
             () => {
-                if (player.power >= 130 && randomIntFromInterval(0,10)>=1) return 0;
-                return 1;
+                if ((player.agility>=400) && randomIntFromInterval(0,10)>=3 ) return 0;
+                if ((player.agility>=400) ) return 1;
+                return 2;
+
             },
             [
-                [buffCallback([buildBuff(BUFF.NEXT, `${id}-4-1`), buildBuff(BUFF.TITLE, "壁画|阿努比斯被你击中后，突然又变成了洞窟里的壁画，仿佛从来没有存在过一般"), buildBuff(BUFF.TITLE, "壁画|真的吗？假的吗？梦境，亦或现实？")])],
-                [buffCallback([buildBuff(BUFF.MESSAGE, "在劫难逃|你的蓄力攻击没有奏效，被阿努比斯直接命中，死在了洞窟里。"),buildBuff(BUFF.TITLE, "在劫难逃|危险降临。"),buildBuff(BUFF.DEATH, 'dead-1')])]
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-4-1`), buildBuff(BUFF.MESSAGE, "一闪|你集中精神，使用出一闪，虽是后发，确实先至，直接斩下了九头蛇的所有蛇头！"), buildBuff(BUFF.TITLE, "一闪|终极武技，仿佛天地为之变色的斩击。")])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-3-1`), buildBuff(BUFF.MESSAGE, "一闪|你使用出了一闪，重创了九头蛇"), buildBuff(BUFF.TITLE, "一闪|终极武技，仿佛天地为之变色的斩击。")])],
+                [buffCallback([buildBuff(BUFF.MESSAGE, "在劫难逃|你刚要施展一闪，就被九头蛇的魔法击中，直接变成了碎片"),buildBuff(BUFF.DEATH, '${id}-1-1')])]
 
             ]
         )
     ));
 
     allEvents.push(createAdvancedEventV2(
-        new EventV2(`${id}-4-1`, "洞窟", CHARA_IMGS["洞窟"], "幽暗的洞窟里似乎空荡荡的。", null, null, null, EventType.SUBSEQUENT, "再搜索一番。", "离去。"),
+        new EventV2(`${id}-3-1`, "受伤的九头蛇", CHARA_IMGS["九头蛇"], "九头蛇仓皇而逃，留下空荡荡的沼泽。", null, null, null, EventType.SUBSEQUENT, "搜索一番。", "搜索一番。"),
         new StartCondition(2, null, null),
         new AdvancedEventAttrsV2(
-            () => {
-                if (randomIntFromInterval(0,100)<=2) return 0;
-                return 1;
-            },
+            null,
             [
-                [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]), buildBuff(BUFF.TITLE, "神秘壁画|cluexxx"), buildBuff(BUFF.MESSAGE, "神秘壁画|你在壁画上找到一串神秘数字xxx")])],
-                [buffCallback([statChangeCallback([-20, 0, 0, 0, 0, 0]),buildBuff(BUFF.TITLE, "一无所获|什么都没有找到。"),buildBuff(BUFF.MESSAGE, "一无所获|你在洞窟里什么都没有找到。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])])]
+                [statChangeCallback([50, 50, 50, 50, 50, 0]),buffCallback([buildBuff(BUFF.MESSAGE, "九头蛇的宝藏|全属性+50。"),buildBuff(BUFF.TITLE, "九头蛇的宝藏|你获得了九头蛇的宝藏。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])])]
 
             ]
         ),
         new AdvancedEventAttrsV2(
             null,
             [
-                [buffCallback([buildBuff(BUFF.NEXT, `${id}-4-1`), buildBuff(BUFF.TITLE, "壁画|阿努比斯被你击中后，突然又变成了洞窟里的壁画，仿佛从来没有存在过一般"), buildBuff(BUFF.TITLE, "壁画|真的吗？假的吗？梦境，亦或现实？")])],
-                [buffCallback([buildBuff(BUFF.MESSAGE, "离去|你缓缓离开了洞窟。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])])]
-
+                [statChangeCallback([50, 50, 50, 50, 50, 0]),buffCallback([buildBuff(BUFF.MESSAGE, "九头蛇的宝藏|全属性+50。"),buildBuff(BUFF.TITLE, "九头蛇的宝藏|你获得了九头蛇的宝藏。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])])]
             ]
         )
     ));
+
+    allEvents.push(createAdvancedEventV2(
+        new EventV2(`${id}-4-1`, "沼泽", CHARA_IMGS["沼泽"], "沼泽里似乎空空如也。", null, null, null, EventType.SUBSEQUENT, "搜索一番。", "离去。"),
+        new StartCondition(2, null, null),
+        new AdvancedEventAttrsV2(
+            () => {
+                if ( randomIntFromInterval(0,10)>=2 ) return 0;
+                return 1;
+
+            },
+            [
+                [buffCallback([buildBuff(BUFF.MESSAGE, "神秘字条|你发现一个神秘的字条：xxxx。"),buildBuff(BUFF.TITLE, "神秘字条|cluexxx。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])])],
+                [statChangeCallback([-10, 0, 0, 0, 0, 0]),buffCallback([buildBuff(BUFF.MESSAGE, "空空如也|你搜索了半天没有发现有用的东西。"),buildBuff(BUFF.MESSAGE, "离去|你从沼泽缓缓离去。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])])]
+
+            ]
+        ),
+        new AdvancedEventAttrsV2(
+            null,
+            [
+                [statChangeCallback([50, 50, 50, 50, 50, 0]),buffCallback([buildBuff(BUFF.MESSAGE, "九头蛇的宝藏|你在离开的路上竟然发现九头蛇隐藏的宝藏。"),buildBuff(BUFF.MESSAGE, "九头蛇的宝藏|全属性+50。"),buildBuff(BUFF.TITLE, "九头蛇的宝藏|你获得了九头蛇的宝藏。"),buildBuff(BUFF.NEXT, STAGE_IDS[level])])]
+            ]
+        )
+    ));
+
 }
 //
 //
