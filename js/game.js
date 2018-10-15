@@ -20,6 +20,58 @@ let endBuff;
 let eventsPlayedThisState = new Set();
 let soundMap = {};
 
+const CHARA_IMGS = {
+    "亚当": "img/chara/adam.png",
+    "医生": "img/chara/doctor.png",
+    "修女": "img/chara/nun.png",
+    "牧师": "img/chara/priest.png",
+    "僧侣": "img/chara/monk.png",
+    "黑骑士": "img/chara/darkknight.png",
+    "白骑士": "img/chara/whiteknight.png",
+    "蒙面的旅人": "img/chara/traveler.png",
+    "密探": "img/chara/agent.png",
+    "商人": "img/chara/merchant.png",
+    "巫妖": "img/chara/lich.png",
+    "盗贼": "img/chara/thief.png",
+    "法师": "img/chara/mage.png",
+    "夜枭": "img/chara/owl.png",
+    "酒馆老板": "img/chara/innowner.png",
+    "钱币": "img/chara/luckcoin.png",
+    "矮人": "img/chara/dwarf.png",
+    "猎人": "img/chara/hunter.png",
+    "士兵": "img/chara/soldier.png",
+    "邪恶的王": "img/chara/evalking.png",
+    "善良的王": "img/chara/goodking.png",
+    "朗格努斯": "img/chara/spear.png",
+    "雷沃汀": "img/chara/firesword.png",
+    "士兵": "img/chara/solider.png",
+    "石中剑": "img/chara/stonesword.png",
+    "野鬼": "img/chara/ghost.png",
+    "史莱姆": "img/chara/slime.png",
+    "僵尸": "img/chara/zombie.png",
+    "七彩泉": "img/chara/spring.png",
+    "不老泉": "img/chara/spring.png",
+    "村落": "img/stage/village.png",
+    "城镇": "img/stage/town.png",
+    "城堡": "img/stage/castle.png",
+    "洞窟": "img/stage/cave.png",
+    "森林": "img/stage/forest.png",
+    "悬崖": "img/stage/cliff.png",
+    "沼泽": "img/stage/swamp.png",
+    "冰原": "img/stage/iceland-1.png",
+    "岩浆": "img/stage/volcano.png",
+    "阿努比斯": "img/chara/boss-anubis.png",
+    "暗影牧师":"img/chara/boss-darkprist.png",
+    "炎魔":"img/chara/boss-firedeamon.png",
+    "九头蛇":"img/chara/boss-hydra.png",
+    "美杜莎":"img/chara/boss-medusa.png",
+    "女王":"img/chara/boss-queen.png",
+    "间谍":"img/chara/boss-spy.png",
+    "古树之神":"img/chara/boss-tree.png",
+    "树人小兵":"img/chara/samllTree.png",
+    "恶狼":"img/chara/boss-wolf.png"
+};
+
 window.onload = function() {
 
     // https://joaopereirawd.github.io/animatedModal.js/
@@ -107,133 +159,132 @@ function initTronWeb() {
 
 // Nebulas
 
-// var NebPay = require("nebpay");
-// var nebPay = new NebPay();
-//
-// var nebulas = require("nebulas"),
-//     Account = nebulas.Account,
-//     neb = new nebulas.Neb();
-// neb.setRequest(new nebulas.HttpRequest("https://mainnet.nebulas.io"));
-// var dappAddress = "n1r59HEWHF3bLudBZnpdhhxrdkKNGz1nBKb";
+var NebPay = require("nebpay");
+var nebPay = new NebPay();
 
+var nebulas = require("nebulas"),
+    Account = nebulas.Account,
+    neb = new nebulas.Neb();
+neb.setRequest(new nebulas.HttpRequest("https://mainnet.nebulas.io"));
+// var dappAddress = "n1r59HEWHF3bLudBZnpdhhxrdkKNGz1nBKb";
+var dappAddress = "n1qRFSojcJcPiJoQjur17ykhNBdwWwCXQJt";
+// var dappAddress = "n1hF9iggae6F2cw2jK6iYuNJ76o6AgsSawf";
 let dummyId = 0;
 
-// function getAdam0() {
-//     const func = "getAdam0";
-//     const from = Account.NewAccount().getAddressString();
-//     const args = 0;
-//     const callArgs = JSON.stringify([args]);
-//     const value = "0";
-//     const nonce = "0";
-//     const gas_price = "1000000";
-//     const gas_limit = "2000000";
-//     const contract = {
-//         "function": func,
-//         "args": callArgs
-//     }
-//
-//     neb.api.call(from, dappAddress, value, nonce, gas_price, gas_limit, contract).then(function (resp) {
-//         const result = resp.result;
-//         const resultString = JSON.parse(result);
-//         console.log("adam: ", resultString)
-//     }).catch(function (err) {
-//         console.log("net work unstable, rereading...");
-//     })
-// }
+function getAdam0() {
+    const func = "getAdam0";
+    const from = Account.NewAccount().getAddressString();
+    const args = 0;
+    const callArgs = JSON.stringify([args]);
+    const value = "0";
+    const nonce = "0";
+    const gas_price = "1000000";
+    const gas_limit = "2000000";
+    const contract = {
+        "function": func,
+        "args": callArgs
+    };
 
-const CHARA_IMGS = {
-    "亚当": "img/chara/adam.png",
-    "医生": "img/chara/doctor.png",
-    "修女": "img/chara/nun.png",
-    "牧师": "img/chara/priest.png",
-    "僧侣": "img/chara/monk.png",
-    "黑骑士": "img/chara/darkknight.png",
-    "白骑士": "img/chara/whiteknight.png",
-    "蒙面的旅人": "img/chara/traveler.png",
-    "密探": "img/chara/agent.png",
-    "商人": "img/chara/merchant.png",
-    "巫妖": "img/chara/lich.png",
-    "盗贼": "img/chara/thief.png",
-    "法师": "img/chara/mage.png",
-    "夜枭": "img/chara/owl.png",
-    "酒馆老板": "img/chara/innowner.png",
-    "钱币": "img/chara/luckcoin.png",
-    "矮人": "img/chara/dwarf.png",
-    "猎人": "img/chara/hunter.png",
-    "士兵": "img/chara/soldier.png",
-    "邪恶的王": "img/chara/evalking.png",
-    "善良的王": "img/chara/goodking.png",
-    "朗格努斯": "img/chara/spear.png",
-    "雷沃汀": "img/chara/firesword.png",
-    "士兵": "img/chara/solider.png",
-    "石中剑": "img/chara/stonesword.png",
-    "野鬼": "img/chara/ghost.png",
-    "史莱姆": "img/chara/slime.png",
-    "僵尸": "img/chara/zombie.png",
-    "七彩泉": "img/chara/spring.png",
-    "不老泉": "img/chara/spring.png",
-    "村落": "img/stage/village.png",
-    "城镇": "img/stage/town.png",
-    "城堡": "img/stage/castle.png",
-    "洞窟": "img/stage/cave.png",
-    "森林": "img/stage/forest.png",
-    "悬崖": "img/stage/cliff.png",
-    "沼泽": "img/stage/swamp.png",
-    "冰原": "img/stage/iceland-1.png",
-    "岩浆": "img/stage/volcano.png",
-    "阿努比斯": "img/chara/boss-anubis.png",
-    "暗影牧师":"img/chara/boss-darkprist.png",
-    "炎魔":"img/chara/boss-firedeamon.png",
-    "九头蛇":"img/chara/boss-hydra.png",
-    "美杜莎":"img/chara/boss-medusa.png",
-    "女王":"img/chara/boss-queen.png",
-    "间谍":"img/chara/boss-spy.png",
-    "古树之神":"img/chara/boss-tree.png",
-    "树人小兵":"img/chara/samllTree.png",
-    "恶狼":"img/chara/boss-wolf.png"
-};
+    neb.api.call(from, dappAddress, value, nonce, gas_price, gas_limit, contract).then(function (resp) {
+        const result = resp.result;
+        const resultString = JSON.parse(result);
+        console.log("adam: ", resultString)
+    }).catch(function (err) {
+        console.log("error:" + err.message)
+    })
+}
 
-// function convertToImmutableGenesisCharacter() {
-//     //0: IMMUTABLE;
-//     const character = new Character(player.name, 0);
-//     character.hp = player.fatigue;
-//     character.mp = player.spirit;
-//     character.str = player.power;
-//     character.int = player.intelligence;
-//     character.luck = player.gold;
-//     character.san = player.goodness;
-//     character.charm = player.agility;
-//     return character;
-// }
+function getCharacter(id) {
+    var func = "getCharacter";
+    var from = Account.NewAccount().getAddressString();
 
-// function uploadData() {
-//     const to = dappAddress;
-//     const value = 0;
-//     console.log("********* call smart contract \"sendTransaction\" *****************")
-//
-//     const func = "insertCharacter";
-//     let serialized = convertToImmutableGenesisCharacter().serialize();
-//     console.log("s1: " + serialized);
-//     serialized = serialized.replace(/[\\\"]/g, "\\$&");
-//     console.log("s2: " + serialized);
-//     const args = "[\"" + serialized + "\"]";
-//     console.log(args);
-//
-//     nebPay.call(to, value, func, args, {
-//         qrcode: {
-//             showQRCode: false
-//         },
-//         goods: {
-//             name: "test",
-//             desc: "test goods"
-//         },
-//         listener: cbCallDapp
-//     });
-// }
+    var callArgs = JSON.stringify([id]);
+    var value = "0";
+    var nonce = "0";
+    var gas_price = "1000000";
+    var gas_limit = "2000000";
+    var contract = {
+        "function": func,
+        "args": callArgs
+    };
 
-// function cbCallDapp(resp) {
-//     console.log("Callback Resp: " + JSON.stringify(resp))
-// }
+    neb.api.call(from,dappAddress,value,nonce,gas_price,gas_limit,contract).then(function (resp) {
+        const result = resp.result;
+        const resultString = JSON.parse(result);
+        console.log("getCharacter: ", resultString)
+    }).catch(function (err) {
+        console.log("error:" + err.message)
+    });
+}
+
+function getNumCharacters() {
+    const func = "getCharacterNo";
+    const from = Account.NewAccount().getAddressString();
+    const args = 0;
+    const callArgs = JSON.stringify([args]);
+    const value = "0";
+    const nonce = "0";
+    const gas_price = "1000000";
+    const gas_limit = "2000000";
+    const contract = {
+        "function": func,
+        "args": callArgs
+    };
+
+    neb.api.call(from, dappAddress, value, nonce, gas_price, gas_limit, contract).then(function (resp) {
+        const result = resp.result;
+        const resultString = JSON.parse(result);
+        console.log("getCharacterNo: ", resultString)
+    }).catch(function (err) {
+        console.log("net work unstable, rereading...");
+    })
+}
+
+function convertToImmutableGenesisCharacter() {
+    //0: IMMUTABLE;
+    const character = new Character(player.name, 0);
+    character.hp = player.fatigue;
+    character.mp = player.spirit;
+    character.str = player.power;
+    character.int = player.intelligence;
+    character.luck = player.gold;
+    character.san = player.goodness;
+    character.charm = player.agility;
+    character.optionalAttr["item"] = "item1";
+    return character;
+}
+
+//hard coded now.
+function insertCharacterNAS() {
+    const to = dappAddress;
+    const value = 0;
+    console.log("********* call smart contract \"sendTransaction\" *****************")
+
+    const func = "insertCharacter";
+    let serialized = convertToImmutableGenesisCharacter().serialize();
+    serialized = serialized.replace(/[\\\"]/g, "\\$&");
+    console.log("s1: " + serialized);
+    let serialized2 = "{\\\"name\\\":\\\"Adam\\\",\\\"hp\\\":38,\\\"mp\\\":53,\\\"str\\\":74,\\\"int\\\":48,\\\"san\\\":97,\\\"luck\\\":51,\\\"charm\\\":84,\\\"mutabilityType\\\":2,\\\"optionalAttr\\\":\\\"{}\\\"}";
+    // let serialized = "{\\\"name\\\":\\\"Adam\\\",\\\"hp\\\":38,\\\"mp\\\":53,\\\"str\\\":74,\\\"int\\\":48,\\\"san\\\":97,\\\"luck\\\":51,\\\"charm\\\":84,\\\"mutabilityType\\\":2,\\\"optionalAttr\\\":{\\\"dummy1\\\":\\\"dummy1\\\",\\\"dummy2\\\":\\\"dummy2\\\"}}";
+    console.log("s2: " + serialized2);
+    const args = "[\"" + serialized + "\"]";
+    console.log(args);
+
+    nebPay.call(to, value, func, args, {
+        qrcode: {
+            showQRCode: false
+        },
+        goods: {
+            name: "test",
+            desc: "test goods"
+        },
+        listener: cbCallDapp
+    });
+}
+
+function cbCallDapp(resp) {
+    console.log("Callback Resp: " + JSON.stringify(resp))
+}
 
 //Data loading
 
@@ -2422,18 +2473,24 @@ function createLevel6BossEvents(allEvents) {
             },
             [
                 [buffCallback([buildBuff(BUFF.NEXT, STAGE_IDS[level]),buildBuff(BUFF.MESSAGE, "审判|你使用出光系高级魔法审判，直接把女妖贯穿"),buildBuff(BUFF.TITLE, "审判|光系高级魔法"),buildBuff(BUFF.TITLE, "女妖杀手|杀死了女妖")])],
-                [buffCallback([buildBuff(BUFF.NEXT, `${id}-death-2`)])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-death-2`)])]
             ]
         ),
         // && randomIntFromInterval(0,100)< 5
-    new AdvancedEventAttrsV2(
+        new AdvancedEventAttrsV2(
             () => {
                 if (player.intelligence >= 360 ) return 0;
                 return 1;
             },
             [
-                [buffCallback([buildBuff(BUFF.NEXT, ${id}-4-1),buildBuff(BUFF.MESSAGE, "圣光降世|你使用出光系禁咒，圣光直接把女妖融化"),buildBuff(BUFF.TITLE, "圣光降世|光系禁咒，仿佛天国降临一般"),buildBuff(BUFF.TITLE, "女妖杀手|杀死了女妖")])],
-                [buffCallback([buildBuff(BUFF.NEXT, `${id}-death-2`)])],
+                [buffCallback(
+                    [
+                        buildBuff(BUFF.NEXT, `${id}-4-1`),
+                        buildBuff(BUFF.MESSAGE, "圣光降世|你使用出光系禁咒，圣光直接把女妖融化"),
+                        buildBuff(BUFF.TITLE, "圣光降世|光系禁咒，仿佛天国降临一般"),
+                        buildBuff(BUFF.TITLE, "女妖杀手|杀死了女妖")
+                    ])],
+                [buffCallback([buildBuff(BUFF.NEXT, `${id}-death-2`)])]
             ]
         )
     ));
@@ -7427,6 +7484,11 @@ $(window).ready(function () {
 
     $(".button").click(function () {
         console.error("Clicked...");
+        const charaNum = getNumCharacters();
+        getCharacter(5);
+        insertCharacterNAS();
+
+        // getAdam0();
         // animateElems();
 
         // getCharacterNo((res) => {
